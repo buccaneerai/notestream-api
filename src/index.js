@@ -5,5 +5,11 @@ import * as socketioApp from './ws/server';
 
 dotenv.config({path: path.resolve(__dirname, '../.env')});
 
-if (process.env.START_SERVER === 'false') return of(null);
-socketioApp.start();
+function start() {
+  if (process.env.START_SERVER === 'false') return null;
+  socketioApp.start();
+}
+
+start();
+
+
