@@ -1,0 +1,50 @@
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+import toPairs from 'lodash/toPairs';
+import { error as logError } from '../utils/logger';
+
+// const MESSAGE = 'ws/MESSAGE';
+export const NEW_STT_STREAM = 'ws/NEW_STT_STREAM';
+export const NEXT_AUDIO_CHUNK = 'ws/NEXT_AUDIO_CHUNK';
+export const STT_STREAM_DONE = 'ws/STT_STREAM_DONE';
+export const CONNECTION = 'ws/CONNECTION';
+export const DISCONNECTION = 'ws/DISCONNECTION';
+export const DISCONNECTING = 'ws/DISCONNECTING';
+export const VOLATILE = 'ws/VOLATILE';
+
+const eventResolvers = {
+  disconnecting: (context, obs) => obs.next({ type: DISCONNECTING, data: { context } }),
+  disconnect: (context, obs, reason) => {
+    obs.next({ type: DISCONNECTION, data: { reason, context } });
+    return obs.complete();
+  },
+  'new-stt-stream': (context, obs, json) =>
+    obs.next({ type: NEW_STT_STREAM, data: { ...json, context } }),
+  'next-stt-chunk': (context, obs, [json, chunk]) =>
+    obs.next({ type: NEXT_AUDIO_CHUNK, data: { chunk, data: json, context } }),
+  'stt-stream-complete': (context, obs, json) =>
+    obs.next({ type: STT_STREAM_DONE, data: { ...json, context } }),
+  volatile: (context, obs) => obs.next({ type: VOLATILE, data: { context } }),
+  error: (context, obs, err) => obs.error(err),
+};
+
+// converts a socket.io connection event stream into an Observable
+export const mapConnectionToEvents = socket => {
+  const clientEvent$ = new Observable(obs => {
+    const context = { socket, user: socket.user };
+    obs.next({ type: CONNECTION, data: { context } });
+    toPairs(eventResolvers).forEach(([eventName, resolver]) =>
+      socket.on(eventName, data => resolver(context, obs, data))
+    );
+  });
+  return clientEvent$;
+};
+
+export const fromSocketIO = ({ io }) => {
+  const clientConnectionSocket$ = new Observable(obs => {
+    io.on('connection', socket => obs.next(socket));
+    io.on('error', err => logError('Error in producer socket', err));
+  });
+  const connectionStream$$ = clientConnectionSocket$.pipe(map(mapConnectionToEvents));
+  return connectionStream$$;
+};

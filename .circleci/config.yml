@@ -1,0 +1,71 @@
+build_defaults: &build_defaults
+  docker:
+    - image: circleci/node:14-stretch
+  environment:
+    STAGE: local
+    SERVICE_NAME: notestream-api
+    DOCKER_REGISTRY_HOST: 158277438783.dkr.ecr.us-east-1.amazonaws.com
+version: 2
+jobs:
+  build:
+    <<: *build_defaults
+    steps:
+      - checkout
+      - run:
+          name: Add node_modules/bin to PATH
+          command: echo 'export PATH=~/project/node_modules/.bin:$PATH' >> $BASH_ENV
+      - restore_cache:
+          key: dependency-cache-{{ checksum "package.json" }}
+      - run:
+          name: Install dependencies
+          command: yarn
+      - save_cache:
+          paths:
+            ~/.cache/yarn
+          key: dependency-cache-{{ checksum "package.json" }}
+      - run:
+          name: Build
+          command: yarn build
+      - run:
+          name: Lint
+          command: yarn lint
+      - run:
+          name: Test
+          command: JWT_SECRET=alohomora yarn test
+      # - run:
+      #     name: Security check for npm packages
+      #     command: nsp check
+      - setup_remote_docker:
+          version: 19.03.13
+      - deploy:
+          name: Deploy to dev
+          command: |
+            if [ "${CIRCLE_BRANCH}" == "dev" ]; then
+              yarn build
+              ECS_TOKEN=$(yarn --silent aws:ecr:createtoken)
+              docker login -u AWS -p $ECS_TOKEN https://$DOCKER_REGISTRY_HOST
+              docker build -t $DOCKER_REGISTRY_HOST/staging-$SERVICE_NAME:$CIRCLE_SHA1 .
+              docker push $DOCKER_REGISTRY_HOST/staging-$SERVICE_NAME:$CIRCLE_SHA1
+              docker build -t $DOCKER_REGISTRY_HOST/staging-$SERVICE_NAME:latest .
+              docker push $DOCKER_REGISTRY_HOST/staging-$SERVICE_NAME:latest
+              yarn aws:ecs:update --stage staging --serviceName $SERVICE_NAME
+            fi
+      - deploy:
+          name: Deploy to prod
+          command: |
+            if [ "${CIRCLE_BRANCH}" == "master" ]; then
+              yarn build
+              ECS_TOKEN=$(yarn --silent aws:ecr:createtoken)
+              docker login -u AWS -p $ECS_TOKEN https://$DOCKER_REGISTRY_HOST
+              docker build -t $DOCKER_REGISTRY_HOST/prod-$SERVICE_NAME:$CIRCLE_SHA1 .
+              docker push $DOCKER_REGISTRY_HOST/prod-$SERVICE_NAME:$CIRCLE_SHA1
+              docker build -t $DOCKER_REGISTRY_HOST/prod-$SERVICE_NAME:latest .
+              docker push $DOCKER_REGISTRY_HOST/prod-$SERVICE_NAME:latest
+              yarn aws:ecs:update --stage prod --serviceName $SERVICE_NAME
+            fi
+workflows:
+  version: 2
+  build_test_deploy:
+    jobs:
+      - build:
+          context: buccaneer

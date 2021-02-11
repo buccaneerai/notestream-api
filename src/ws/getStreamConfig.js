@@ -1,0 +1,50 @@
+// import pick from 'lodash/pick';
+import Joi from 'joi';
+import {of,throwError} from 'rxjs';
+import {filter, map, mergeMap, shareReplay, take} from 'rxjs/operators';
+
+import {NEW_STT_STREAM} from './producer';
+
+const getSttEngines = () => ['deepspeech', 'gcp', 'aws', 'awsmed', 'deepgram'];
+const getInputTypes = () => ['s3File'];
+
+const errors = {
+  invalidConfig: validationError => new Error(validationError),
+};
+
+const schema = Joi.object({
+  streamId: Joi.string().alphanum().min(7).max(30),
+  inputType: Joi.string().required().allow(...getInputTypes()),
+  audioFileId: Joi.string()
+    .alphanum()
+    .min(7)
+    .when('inputType', {is: 's3File', then: Joi.required()}),
+  sttEngines: Joi.array()
+    .default(getSttEngines())
+    .items(Joi.string().allow(...getSttEngines())),
+  preferredSttEngine: Joi.string()
+    .allow(...getSttEngines())
+    .default('deepspeech'), // FIXME - this should be a smarter method
+  channels: Joi.number().integer().default(1).allow(1),
+  sampleRate: Joi.number().integer().default(16000).allow(16000),
+  audioEncoding: Joi.string().allow(['LINEAR16']).default('LINEAR16'),
+  context: Joi.object(),
+  useRealtime: Joi.boolean().default(true),
+});
+
+const validate = (_schema = schema) => config => _schema.validate(config);
+
+const getStreamConfig = (_validate = validate()) => stream$ => stream$.pipe(
+  filter(event => event.type === NEW_STT_STREAM),
+  take(1),
+  map(event => _validate(event.data)),
+  mergeMap(validations => (
+    validations.error
+    ? throwError(errors.invalidConfig(validations.error))
+    : of(validations.value)
+  )),
+  shareReplay(1)
+);
+
+export const testExports = {validate};
+export default getStreamConfig;
