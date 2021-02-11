@@ -1,7 +1,7 @@
 name: Staging deployment
-  on:
-    push:
-      branches: [ dev ]
+on:
+  push:
+    branches: [ dev ]
 env:
   STAGE: local
   SERVICE_NAME: notestream-api
@@ -34,7 +34,7 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
           registry: docker.pkg.github.com
-          tags: buccaneerai/$SERVICE_NAME/api:latest,buccaneerai/$SERVICE_NAME/api:$SHA
+          tags: buccaneerai/$SERVICE_NAME/api:dev,buccaneerai/$SERVICE_NAME/api:$SHA
           env:
             SERVICE_NAME: ${{ env.SERVICE_NAME }}
             SHA: ${{ github.sha }}

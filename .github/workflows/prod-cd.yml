@@ -1,0 +1,68 @@
+name: Prod deployment
+on:
+  push:
+    branches: [ master ]
+env:
+  STAGE: local
+  SERVICE_NAME: notestream-api
+  # DOCKER_REGISTRY_HOST: 158277438783.dkr.ecr.us-east-1.amazonaws.com
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Use node.js 14
+        uses: actions/setup-node@v1
+        with:
+          node-version: '14.x'
+          registry-url: 'https://npm.pkg.github.com/'
+          scope: '@buccaneerai'
+          always-auth: true
+      - run: yarn install
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
+      - name: Run tests
+        run: JWT_SECRET=alohomora yarn test
+      - name: Build the application
+        run: yarn build
+      - name: Build dev docker image for Github
+        run: 
+      - name: Push to GitHub Packages
+        uses: docker/build-push-action@v1
+        with:
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+          registry: docker.pkg.github.com
+          tags: buccaneerai/$SERVICE_NAME/api:latest,buccaneerai/$SERVICE_NAME/api:$SHA
+          env:
+            SERVICE_NAME: ${{ env.SERVICE_NAME }}
+            SHA: ${{ github.sha }}
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+      - name: Login to AWS ECS
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+      - name: Build and push docker image to AWS
+        run: |
+          docker build -t $ECR_REGISTRY/prod-$SERVICE_NAME:$IMAGE_TAG .
+          docker push $ECR_REGISTRY/prod-$SERVICE_NAME:$IMAGE_TAG
+          echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
+        env:
+          SERVICE_NAME: ${{ env.SERVICE_NAME }}
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          IMAGE_TAG: ${{ github.sha }}
+      - name: Tag AWS container as latest
+        run: |
+          docker build -t $ECR_REGISTRY/prod-$SERVICE_NAME:$IMAGE_TAG .
+          docker push $ECR_REGISTRY/prod-$SERVICE_NAME:$IMAGE_TAG
+        env:
+          SERVICE_NAME: ${{ env.SERVICE_NAME }}
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          IMAGE_TAG: latest
+      - name: Redeploy AWS ECS service
+        run: yarn aws:ecs:update --stage prod --serviceName $SERVICE_NAME
