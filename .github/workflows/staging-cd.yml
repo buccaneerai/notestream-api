@@ -1,11 +1,10 @@
 name: Staging deployment
-  on:
-    push:
-      branches: [ dev ]
+on:
+  push:
+    branches: [ dev ]
 env:
   STAGE: local
   SERVICE_NAME: notestream-api
-  # DOCKER_REGISTRY_HOST: 158277438783.dkr.ecr.us-east-1.amazonaws.com
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -19,25 +18,22 @@ jobs:
           registry-url: 'https://npm.pkg.github.com/'
           scope: '@buccaneerai'
           always-auth: true
-      - run: yarn install
+      - name: Setup private npm auth
+        run: yarn install
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
       - name: Run tests
         run: JWT_SECRET=alohomora yarn test
       - name: Build the application
         run: yarn build
-      - name: Build dev docker image for Github
-        run: 
-      - name: Push to GitHub Packages
+      - name: Build Docker image and push to GitHub Packages Registry
         uses: docker/build-push-action@v1
         with:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
           registry: docker.pkg.github.com
-          tags: buccaneerai/$SERVICE_NAME/api:latest,buccaneerai/$SERVICE_NAME/api:$SHA
-          env:
-            SERVICE_NAME: ${{ env.SERVICE_NAME }}
-            SHA: ${{ github.sha }}
+          repository: buccaneerai/${{ env.SERVICE_NAME }}/${{ env.SERVICE_NAME }}
+          tags: dev,${{ github.sha }}
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:

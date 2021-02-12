@@ -2,14 +2,14 @@ import { merge, EMPTY } from 'rxjs';
 import { catchError, map, scan, share, timeout } from 'rxjs/operators';
 import { toAWSTranscribe } from '@buccaneerai/stt-aws';
 // import { toDeepSpeech } from '@buccaneerai/stt-deepspeech';
-// import { toGCPSpeech } from '@buccaneerai/stt-gcp';
+import { toGCPSpeech } from '@buccaneerai/stt-gcp';
 import { toDeepgram } from '@buccaneerai/stt-deepgram';
 
 import { error as logError } from '../utils/logger';
 import mapAwsSttToWords from './mapAwsSttToWords';
 import mapGcpSttToWords from './mapGcpSttToWords';
 import mapDeepgramSttToWords from './mapDeepgramSttToWords';
-import mapDeepSpeechSttToWords from './mapDeepSpeechSttToWords';
+// import mapDeepSpeechSttToWords from './mapDeepSpeechSttToWords';
 
 const defaultPipelines = () => ({
   deepgram: {
@@ -28,14 +28,14 @@ const defaultPipelines = () => ({
   //   operator: toDeepSpeech,
   //   transformer: mapDeepSpeechSttToWords,
   // },
-  // gcp: {
-  //   options: {
-  //     googleCreds: process.env.GOOGLE_APPLICATION_CREDENTIALS,
-  //     sampleRate: 16000,
-  //   },
-  //   operator: toGCPSpeech,
-  //   transformer: mapGcpSttToWords,
-  // },
+  gcp: {
+    options: {
+      googleCreds: process.env.GOOGLE_APPLICATION_CREDENTIALS,
+      sampleRate: 16000,
+    },
+    operator: toGCPSpeech,
+    transformer: mapGcpSttToWords,
+  },
   aws: {
     options: {
       region: process.env.AWS_REGION,
