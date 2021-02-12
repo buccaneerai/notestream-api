@@ -26,16 +26,19 @@ jobs:
         run: JWT_SECRET=alohomora yarn test
       - name: Build the application
         run: yarn build
+      - name: copy .npmrc (so Docker can install private npm packages)
+        run: |
+          echo "@buccaneerai:registry=https://npm.pkg.github.com/" > .npmrc
+          echo "//npm.pkg.github.com/:_authToken=${{ secrets.NPM_AUTH_TOKEN }}" >> .npmrc
       - name: Build Docker image and push to GitHub Packages Registry
-        uses: docker/build-push-action@v2
+        uses: docker/build-push-action@v1
+        id: docker_build
         with:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
           registry: docker.pkg.github.com
           repository: buccaneerai/${{ env.SERVICE_NAME }}/${{ env.SERVICE_NAME }}
           tags: dev,${{ github.sha }}
-          secrets: |
-            NPM_AUTH_TOKEN=${{ secrets.NPM_AUTH_TOKEN }}
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
