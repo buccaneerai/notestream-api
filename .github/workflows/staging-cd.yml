@@ -27,7 +27,7 @@ jobs:
       - name: Build the application
         run: yarn build
       - name: Build Docker image and push to GitHub Packages Registry
-        uses: docker/build-push-action@v1
+        uses: docker/build-push-action@v2
         with:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
