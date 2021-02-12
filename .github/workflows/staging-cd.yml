@@ -28,6 +28,8 @@ jobs:
         run: yarn build
       - name: Build Docker image and push to GitHub Packages Registry
         uses: docker/build-push-action@v1
+        env:
+          NPM_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
         with:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
@@ -52,6 +54,7 @@ jobs:
           SERVICE_NAME: ${{ env.SERVICE_NAME }}
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           IMAGE_TAG: ${{ github.sha }}
+          NPM_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
       - name: Tag AWS container as latest
         run: |
           docker build -t $ECR_REGISTRY/staging-$SERVICE_NAME:$IMAGE_TAG .
@@ -60,5 +63,6 @@ jobs:
           SERVICE_NAME: ${{ env.SERVICE_NAME }}
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           IMAGE_TAG: latest
+          NPM_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
       - name: Redeploy AWS ECS service
         run: yarn aws:ecs:update --stage staging --serviceName $SERVICE_NAME
