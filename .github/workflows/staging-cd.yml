@@ -45,13 +45,13 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.AWS_REGION }}
-      - name: Login to AWS ECS
+      - name: Login to AWS ECR
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
       - name: Build and push docker image to AWS
         run: |
-          docker build -t $ECR_REGISTRY/staging-$SERVICE_NAME:$IMAGE_TAG . -e NPM_AUTH_TOKEN=${{ secrets.NPM_AUTH_TOKEN }}
-          docker push $ECR_REGISTRY/staging-$SERVICE_NAME:$IMAGE_TAG
+          docker build -t $ECR_REGISTRY/$SERVICE_NAME:$IMAGE_TAG .
+          docker push $ECR_REGISTRY/$SERVICE_NAME:$IMAGE_TAG
           echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
         env:
           SERVICE_NAME: ${{ env.SERVICE_NAME }}
@@ -59,11 +59,11 @@ jobs:
           IMAGE_TAG: ${{ github.sha }}
       - name: Tag AWS container as latest
         run: |
-          docker build -t $ECR_REGISTRY/staging-$SERVICE_NAME:$IMAGE_TAG . -e NPM_AUTH_TOKEN=${{ secrets.NPM_AUTH_TOKEN }}
-          docker push $ECR_REGISTRY/staging-$SERVICE_NAME:$IMAGE_TAG
+          docker build -t $ECR_REGISTRY/$SERVICE_NAME:$IMAGE_TAG .
+          docker push $ECR_REGISTRY/$SERVICE_NAME:$IMAGE_TAG
         env:
           SERVICE_NAME: ${{ env.SERVICE_NAME }}
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          IMAGE_TAG: latest
-      - name: Redeploy AWS ECS service
-        run: yarn aws:ecs:update --stage staging --serviceName $SERVICE_NAME
+          IMAGE_TAG: staging
+      # - name: Redeploy AWS ECS service
+        # run: yarn aws:ecs:update --stage staging --serviceName $SERVICE_NAME

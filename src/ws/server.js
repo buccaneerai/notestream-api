@@ -71,7 +71,7 @@ export const startWebSocket = ({
 };
 
 // start server
-export const start = (port = config().WS_PORT) => {
+export const start = (port = config().PORT) => {
   try {
     const app = express();
     app.use(
