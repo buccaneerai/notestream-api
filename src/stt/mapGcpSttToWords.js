@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import { of, throwError } from 'rxjs';
 import { map, mergeMap, filter } from 'rxjs/operators';
-import trace from './trace';
+// import trace from '../operators/trace';
 
 const mapGcpWordToWord = () => w => ({
   text: w.word,
@@ -25,7 +25,7 @@ const mapEvent = () => event => {
 
 const mapGcpSttToWords = () => source$ => (
   source$.pipe(
-    trace('gcp.out'),
+    // trace('gcp.out'),
     mergeMap(event => event.error ? throwError(event.error) : of(event)),
     filter(filterEvents()),
     map(mapEvent()),
