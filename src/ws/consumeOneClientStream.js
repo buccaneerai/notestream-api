@@ -4,14 +4,14 @@ import { filter, map, mergeMap, share, shareReplay, take, takeUntil } from 'rxjs
 import { DISCONNECTION } from './producer';
 import getStreamConfig from './getStreamConfig';
 import createAudioStream from './createAudioStream';
-import stt from '../operators/stt';
+import fileChunkToSTT from '../stt/fileChunkToSTT';
 import nlp from '../operators/nlp';
 import trace from '../operators/trace';
 import predictElements from '../operators/predictElements';
 
 const consumeOneClientStream = (
   _createAudioStream = createAudioStream,
-  _stt = stt,
+  _stt = fileChunkToSTT,
   _nlp = nlp,
   _getStreamConfig = getStreamConfig,
   _predictElements = predictElements

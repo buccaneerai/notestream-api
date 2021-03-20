@@ -3,7 +3,7 @@ import sinon from 'sinon';
 import {marbles} from 'rxjs-marbles/mocha';
 import {mapTo} from 'rxjs/operators';
 
-import stt, {testExports} from './stt';
+import stt, {testExports} from './fileChunkToSTT';
 const {pipelineReducer} = testExports;
 
 const buffers = [

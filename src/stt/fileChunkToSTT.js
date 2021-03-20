@@ -76,14 +76,16 @@ const pipelineReducer = ({ fileChunk$, pipelines = defaultPipelines() }) => (acc
 // fileChunk$ is an observable of Buffers containing audio data
 // audio data should be encoded in LINEAR16 format (16-bit PCM raw audio)
 // with a single channel and a sample rate of 16000 Hz.
-const stt = ({ sttEngines, _pipelineReducer = pipelineReducer }) => fileChunk$ => {
-  // share fileChunks to avoid running the observable multiple times
-  const fileChunkSub$ = fileChunk$.pipe(share());
-  // create an observable for each STT engine's output stream
-  const sttObservables = sttEngines.reduce(_pipelineReducer({ fileChunk$: fileChunkSub$ }), []);
-  const sttOut$ = merge(...sttObservables);
-  return sttOut$;
+const fileChunkToSTT = ({ sttEngines, _pipelineReducer = pipelineReducer }) => {
+  return fileChunk$ => {
+    // share fileChunks to avoid running the observable multiple times
+    const fileChunkSub$ = fileChunk$.pipe(share());
+    // create an observable for each STT engine's output stream
+    const sttObservables = sttEngines.reduce(_pipelineReducer({ fileChunk$: fileChunkSub$ }), []);
+    const sttOut$ = merge(...sttObservables);
+    return sttOut$;
+  };
 };
 
 export const testExports = { pipelineReducer };
-export default stt;
+export default fileChunkToSTT;
