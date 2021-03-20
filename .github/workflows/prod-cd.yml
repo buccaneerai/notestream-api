@@ -11,10 +11,10 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-      - name: Use node.js 14
+      - name: Use node.js 15
         uses: actions/setup-node@v1
         with:
-          node-version: '14.x'
+          node-version: '15.x'
           registry-url: 'https://npm.pkg.github.com/'
           scope: '@buccaneerai'
           always-auth: true
@@ -23,8 +23,6 @@ jobs:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
       - name: Run tests
         run: JWT_SECRET=alohomora yarn test
-      - name: Build the application
-        run: yarn build
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
