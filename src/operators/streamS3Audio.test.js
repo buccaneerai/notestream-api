@@ -1,8 +1,8 @@
-import {expect} from 'chai';
-import sinon from 'sinon';
-import {marbles} from 'rxjs-marbles/mocha';
+const {expect} = require('chai');
+const sinon = require('sinon');
+const {marbles} = require('rxjs-marbles/mocha');
 
-import streamS3Audio from './streamS3Audio';
+const streamS3Audio = require('./streamS3Audio');
 
 describe('ws.streamS3Audio', () => {
   it('should space out chunks over time when realtime option is true', marbles(m => {

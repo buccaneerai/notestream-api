@@ -1,15 +1,15 @@
-import { merge, EMPTY } from 'rxjs';
-import { catchError, map, scan, share, timeout } from 'rxjs/operators';
-import { toAWSTranscribe } from '@buccaneerai/stt-aws';
-// import { toDeepSpeech } from '@buccaneerai/stt-deepspeech';
-import { toGCPSpeech } from '@buccaneerai/stt-gcp';
-import { toDeepgram } from '@buccaneerai/stt-deepgram';
+const { merge, EMPTY } = require('rxjs');
+const { catchError, map, scan, share, timeout } = require('rxjs/operators');
+const { toAWSTranscribe } = require('@buccaneerai/stt-aws');
+// import { toDeepSpeech } = require('@buccaneerai/stt-deepspeech');
+const { toGCPSpeech } = require('@buccaneerai/stt-gcp');
+const { toDeepgram } = require('@buccaneerai/stt-deepgram');
 
-import { error as logError } from '../utils/logger';
-import mapAwsSttToWords from './mapAwsSttToWords';
-import mapGcpSttToWords from './mapGcpSttToWords';
-import mapDeepgramSttToWords from './mapDeepgramSttToWords';
-// import mapDeepSpeechSttToWords from './mapDeepSpeechSttToWords';
+const logError = require('../utils/logger').error;
+const mapAwsSttToWords = require('./mapAwsSttToWords');
+const mapGcpSttToWords = require('./mapGcpSttToWords');
+const mapDeepgramSttToWords = require('./mapDeepgramSttToWords');
+// import mapDeepSpeechSttToWords = require('./mapDeepSpeechSttToWords';
 
 const defaultPipelines = () => ({
   deepgram: {
@@ -87,5 +87,5 @@ const fileChunkToSTT = ({ sttEngines, _pipelineReducer = pipelineReducer }) => {
   };
 };
 
-export const testExports = { pipelineReducer };
-export default fileChunkToSTT;
+module.exports.testExports = { pipelineReducer };
+module.exports = fileChunkToSTT;

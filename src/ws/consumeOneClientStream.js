@@ -1,13 +1,13 @@
-import { combineLatest, merge } from 'rxjs';
-import { filter, map, mergeMap, share, shareReplay, take, takeUntil } from 'rxjs/operators';
+const { combineLatest, merge } = require('rxjs');
+const { filter, map, mergeMap, share, shareReplay, take, takeUntil } = require('rxjs/operators');
 
-import { DISCONNECTION } from './producer';
-import getStreamConfig from './getStreamConfig';
-import createAudioStream from './createAudioStream';
-import {fileChunkToSTT} from '../stt';
-import nlp from '../operators/nlp';
-import trace from '../operators/trace';
-import predictElements from '../operators/predictElements';
+const { DISCONNECTION } = require('./producer');
+const getStreamConfig = require('./getStreamConfig');
+const createAudioStream = require('./createAudioStream');
+const {fileChunkToSTT} = require('../stt');
+const nlp = require('../operators/nlp');
+const trace = require('../operators/trace');
+const predictElements = require('../operators/predictElements');
 
 const consumeOneClientStream = (
   _createAudioStream = createAudioStream,
@@ -55,4 +55,4 @@ const consumeOneClientStream = (
   return messageBack$;
 };
 
-export default consumeOneClientStream;
+module.exports = consumeOneClientStream;

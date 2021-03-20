@@ -1,5 +1,5 @@
-import request from 'request-promise';
-import {from} from 'rxjs';
+const request = require('request-promise');
+const {from} = require('rxjs');
 
 const sendSlackMessage = ({channel = 'new-signups', text}) => {
   const params = {
@@ -12,4 +12,4 @@ const sendSlackMessage = ({channel = 'new-signups', text}) => {
   return from(promise);
 };
 
-export default sendSlackMessage;
+module.exports = sendSlackMessage;

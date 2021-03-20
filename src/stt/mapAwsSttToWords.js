@@ -1,5 +1,5 @@
-import {of} from 'rxjs';
-import {filter, map, mergeMap} from 'rxjs/operators';
+const {of} = require('rxjs');
+const {filter, map, mergeMap} = require('rxjs/operators');
 
 const mapAwsItemToWord = () => item => ({
   text: item.Content,
@@ -23,4 +23,4 @@ const awsTransformer = () => source$ => source$.pipe(
   mergeMap(words => of(...words))
 );
 
-export default awsTransformer;
+module.exports = awsTransformer;

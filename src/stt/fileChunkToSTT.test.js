@@ -1,9 +1,9 @@
-import {expect} from 'chai';
-import sinon from 'sinon';
-import {marbles} from 'rxjs-marbles/mocha';
-import {mapTo} from 'rxjs/operators';
+const {expect} = require('chai');
+const sinon = require('sinon');
+const {marbles} = require('rxjs-marbles/mocha');
+const {mapTo} = require('rxjs/operators');
 
-import stt, {testExports} from './fileChunkToSTT';
+const stt, {testExports} = require('./fileChunkToSTT');
 const {pipelineReducer} = testExports;
 
 const buffers = [

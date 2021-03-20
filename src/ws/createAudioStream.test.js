@@ -1,6 +1,6 @@
-import {expect} from 'chai';
+const {expect} = require('chai');
 
-import createAudioStream, {testExports} from './createAudioStream';
+const createAudioStream, {testExports} = require('./createAudioStream');
 const {errors} = testExports;
 
 describe('createAudioStream', () => {

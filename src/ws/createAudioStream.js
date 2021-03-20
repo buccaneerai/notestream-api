@@ -1,7 +1,7 @@
-import { throwError } from 'rxjs';
+const { throwError } = require('rxjs');
 
-import streamS3Audio from '../operators/streamS3Audio';
-import ingestAudioFromClient from './ingestAudioFromClient';
+const streamS3Audio = require('../operators/streamS3Audio');
+const ingestAudioFromClient = require('./ingestAudioFromClient');
 
 const errors = {
   audioFileDNE: () => new Error('audio file does not exist'),
@@ -27,5 +27,5 @@ const createInputStream = (
   }
 };
 
-export const testExports = { errors };
-export default createInputStream;
+module.exports.testExports = { errors };
+module.exports = createInputStream;

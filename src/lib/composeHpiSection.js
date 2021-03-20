@@ -1,5 +1,5 @@
-import get from 'lodash/get';
-import sortBy from 'lodash/sortBy';
+const get = require('lodash/get');
+const sortBy = require('lodash/sortBy');
 
 const errors = {
   noParser: code => new Error(`no parser for HPI code: ${code}`),
@@ -165,4 +165,4 @@ const composeHpiSection = ({
   return data;
 };
 
-export default composeHpiSection;
+module.exports = composeHpiSection;

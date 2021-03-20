@@ -1,14 +1,14 @@
-// import _ from 'lodash';
-// import {of} from 'rxjs';
-// import {map} from 'rxjs/operators';
+// import _ = require('lodash');
+// import {of} = require('rxjs');
+// import {map} = require('rxjs/operators');
 
-// import graphQLRequest from '../ws/graphQLRequest';
+// import graphQLRequest = require('../ws/graphQLRequest';
 
-// // import trace from './trace';
+// // import trace = require('./trace';
 
 // // Note most exam findings fall under SCTID 271880003:
 // // https://browser.ihtsdotools.org/?perspective=full&conceptId1=271880003&edition=MAIN/SNOMEDCT-US/2020-09-01&release=&languages=en
-// export const defaultTemplates = [
+// module.exportsTemplates = [
 //   // {
 //   //   sctid: null, // unsure if there is a SNOMED concept for this...
 //   //   name: 'general exam',
@@ -510,5 +510,5 @@
 // //   mergeMap(exams => of(...exams)) // emit results one at a time
 // // )
 
-// export const testExports = {mapPredictionsToExams, filterEmptyResults};
+// module.exports.testExports = {mapPredictionsToExams, filterEmptyResults};
 // export default predictPhysicalExamElements;

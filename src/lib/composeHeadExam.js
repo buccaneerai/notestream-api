@@ -1,4 +1,4 @@
-import composeListString from './composeListString';
+const composeListString = require('./composeListString');
 
 const parseQualifiers = values => (
   values && values[0]
@@ -39,4 +39,4 @@ const composeHeadExam = function composeHeadExam({
   return {subtitle, body};
 };
 
-export default composeHeadExam;
+module.exports = composeHeadExam;

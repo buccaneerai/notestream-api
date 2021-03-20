@@ -1,6 +1,6 @@
-import request from 'request-promise';
-import { from, of, zip } from 'rxjs';
-import { bufferCount, map, mergeMap, share } from 'rxjs/operators';
+const request = require('request-promise');
+const { from, of, zip } = require('rxjs');
+const { bufferCount, map, mergeMap, share } = require('rxjs/operators');
 
 // const isDone = words => nextWord === '.';
 
@@ -91,5 +91,5 @@ const nlp = ({
   return nlpOut$;
 };
 
-export const testExports = { charIndexReducer, wordStringReducer, linkTagsToWords };
-export default nlp;
+module.exports.testExports = { charIndexReducer, wordStringReducer, linkTagsToWords };
+module.exports = nlp;

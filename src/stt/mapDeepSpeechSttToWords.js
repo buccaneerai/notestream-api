@@ -1,5 +1,5 @@
-import { of } from 'rxjs';
-import { filter, map, mergeMap } from 'rxjs/operators';
+const { of } = require('rxjs');
+const { filter, map, mergeMap } = require('rxjs/operators');
 
 const filterEvents = () => event => event.transcripts.length;
 
@@ -20,4 +20,4 @@ const mapDeepSpeechSttToWords = () => source$ =>
     mergeMap(words => of(...words))
   );
 
-export default mapDeepSpeechSttToWords;
+module.exports = mapDeepSpeechSttToWords;

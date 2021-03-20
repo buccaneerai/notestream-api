@@ -935,6 +935,15 @@
     rxjs "^6.5.4"
     ws "^7.2.1"
 
+"@buccaneerai/rxjs-s3@^1.0.0":
+  version "1.0.0"
+  resolved "https://npm.pkg.github.com/download/@buccaneerai/rxjs-s3/1.0.0/ca4be2e79997ae0872d7d38f57f9cbdf1ace41ca5496e2f3f931c8b5f2cb5e29#754b35fc20fece9e68be63f515997cf93d2d6a47"
+  integrity sha512-00frLpFKw8u1StMC16FMnbFg5O1/SNaLnZImifG3NsLRMOTB89TRkHWfYMBTDAVnPGlj1JaXKSxXqQVjOMw87A==
+  dependencies:
+    aws-sdk "^2.866.0"
+    lodash "^4.17.20"
+    rxjs "^6.6.3"
+
 "@buccaneerai/stt-aws@^2.0.0":
   version "2.0.0"
   resolved "https://npm.pkg.github.com/download/@buccaneerai/stt-aws/2.0.0/1d75d6d249c0df4d458241123974a5d8a23a553fb9ea9c5f0c3af521bccdb364#a3c8691f463423543f7d984c740db97ebc75b2b3"
@@ -1480,6 +1489,21 @@ aws-sdk@^2.438.0:
   version "2.797.0"
   resolved "https://registry.yarnpkg.com/aws-sdk/-/aws-sdk-2.797.0.tgz#e9510a582606a580e7bbb686f01da28476599a2d"
   integrity sha512-fFc/2Xr7NkSXlZ9+2rCOFovA9NO1OnIyEaJFVwMM9gaqzucwRAfNNT0Pa1Kua5dhWrcf/mX0Z4mCDnTBf0/5mA==
+  dependencies:
+    buffer "4.9.2"
+    events "1.1.1"
+    ieee754 "1.1.13"
+    jmespath "0.15.0"
+    querystring "0.2.0"
+    sax "1.2.1"
+    url "0.10.3"
+    uuid "3.3.2"
+    xml2js "0.4.19"
+
+aws-sdk@^2.866.0:
+  version "2.868.0"
+  resolved "https://registry.yarnpkg.com/aws-sdk/-/aws-sdk-2.868.0.tgz#2c31f5d788e4487ac29f51498e46cc91b0d1de6a"
+  integrity sha512-ZayPsA/ycaAXqqa2oDyf8iUpl1WOLODZS8ZdvYj77L5owMQm0XC7yqiD+WHj9nToUECF9VAD+AKQMIN6695tVQ==
   dependencies:
     buffer "4.9.2"
     events "1.1.1"

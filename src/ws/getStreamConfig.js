@@ -1,9 +1,9 @@
-// import pick from 'lodash/pick';
-import Joi from 'joi';
-import {of,throwError} from 'rxjs';
-import {filter, map, mergeMap, shareReplay, take} from 'rxjs/operators';
+// import pick = require('lodash/pick');
+const Joi = require('joi');
+const {of,throwError} = require('rxjs');
+const {filter, map, mergeMap, shareReplay, take} = require('rxjs/operators');
 
-import {NEW_STT_STREAM} from './producer';
+const {NEW_STT_STREAM} = require('./producer');
 
 const getSttEngines = () => ['deepspeech', 'gcp', 'aws', 'awsmed', 'deepgram'];
 const getInputTypes = () => ['s3File'];
@@ -46,5 +46,5 @@ const getStreamConfig = (_validate = validate()) => stream$ => stream$.pipe(
   shareReplay(1)
 );
 
-export const testExports = {validate};
-export default getStreamConfig;
+module.exports.testExports = {validate};
+module.exports = getStreamConfig;

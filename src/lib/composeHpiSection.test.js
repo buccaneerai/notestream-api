@@ -1,6 +1,6 @@
-import {expect} from 'chai';
+const {expect} = require('chai');
 
-import composeHpiSection from './composeHpiSection';
+const composeHpiSection = require('./composeHpiSection');
 
 const fakeVerifiedFindings = [
   {

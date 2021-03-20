@@ -1,5 +1,5 @@
-import {of} from 'rxjs';
-import {map, mergeMap, filter} from 'rxjs/operators';
+const {of} = require('rxjs');
+const {map, mergeMap, filter} = require('rxjs/operators');
 
 const mapDeepspeechWordToWord = () => w => ({
   text: w.word,
@@ -22,4 +22,4 @@ const mapDeepgramSttToWords = () => source$ => source$.pipe(
   mergeMap(words => of(...words))
 );
 
-export default mapDeepgramSttToWords;
+module.exports = mapDeepgramSttToWords;

@@ -1,7 +1,7 @@
-import _ from 'lodash';
-import bcrypt from 'bcrypt';
-import { bindCallback, of, throwError } from 'rxjs';
-import { mergeMap } from 'rxjs/operators';
+const _ = require('lodash');
+const bcrypt = require('bcrypt');
+const { bindCallback, of, throwError } = require('rxjs');
+const { mergeMap } = require('rxjs/operators');
 
 // returns array with [hash<String>, salt<String>]
 const hashPassword = function hashPassword({
@@ -20,4 +20,4 @@ const hashPassword = function hashPassword({
   return hash$;
 };
 
-export default hashPassword;
+module.exports = hashPassword;

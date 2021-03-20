@@ -1,7 +1,7 @@
-import { expect } from 'chai';
-import { marbles } from 'rxjs-marbles/mocha';
+const { expect } = require('chai');
+const { marbles } = require('rxjs-marbles/mocha');
 
-import mapGcpSttToWords from './mapGcpSttToWords';
+const mapGcpSttToWords = require('./mapGcpSttToWords');
 
 const gcpEvent = [
   {

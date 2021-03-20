@@ -1,7 +1,7 @@
-import {expect} from 'chai';
-import {marbles} from 'rxjs-marbles/mocha';
+const {expect} = require('chai');
+const {marbles} = require('rxjs-marbles/mocha');
 
-import shortenChunks from './shortenChunks';
+const shortenChunks = require('./shortenChunks');
 
 describe('internals.shortenChunks', () => {
   it('should correctly divide input into chunks', marbles(m => {

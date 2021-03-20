@@ -1,12 +1,12 @@
-import _ from 'lodash';
-// import fp from 'lodash/fp';
-import { of, merge, timer, zip } from 'rxjs';
-import { filter, map, mergeMap, share } from 'rxjs/operators';
+const _ = require('lodash');
+// import fp = require('lodash/fp';
+const { of, merge, timer, zip } = require('rxjs');
+const { filter, map, mergeMap, share } = require('rxjs/operators');
 
-import trace from './trace';
-import predictROSElements from './predictROSElements';
-import predictPFSHElements from './predictPFSHElements';
-import graphQLRequest from '../ws/graphQLRequest';
+const trace = require('./trace');
+const predictROSElements = require('./predictROSElements');
+const predictPFSHElements = require('./predictPFSHElements');
+const graphQLRequest = require('../ws/graphQLRequest');
 
 const fakeExamCodes = [
   'BC-headShapeExam',
@@ -231,7 +231,7 @@ const predictElements = (pipelines = defaultPipelines) => noteStreamEvent$ => {
   return intent$;
 };
 
-export const testExports = {
+module.exports.testExports = {
   matchIsSNOMED,
   mapPatternMatchToPrediction,
   mapNLPEventToPredictions,
@@ -239,4 +239,4 @@ export const testExports = {
   getElementsAndChildrenFromCodes,
 };
 
-export default predictElements;
+module.exports = predictElements;

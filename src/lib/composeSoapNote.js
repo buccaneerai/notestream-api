@@ -1,8 +1,8 @@
-import composeIntroSection from './composeIntroSection';
-import composeHpiSection from './composeHpiSection';
-import composeRosSection from './composeRosSection';
-import composeExamSection from './composeExamSection';
-import composeProblemSection from './composeProblemSection';
+const composeIntroSection = require('./composeIntroSection');
+const composeHpiSection = require('./composeHpiSection');
+const composeRosSection = require('./composeRosSection');
+const composeExamSection = require('./composeExamSection');
+const composeProblemSection = require('./composeProblemSection');
 
 const defaultConfig = {
   intro: {},
@@ -94,4 +94,4 @@ const composeSoapNote = function composeSoapNote({
   return sectionsArr;
 };
 
-export default composeSoapNote;
+module.exports = composeSoapNote;

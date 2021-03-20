@@ -1,8 +1,8 @@
-import { map, mergeAll } from 'rxjs/operators';
+const { map, mergeAll } = require('rxjs/operators');
 
-import { fromSocketIO } from './producer';
-import consumeOneClientStream from './consumeOneClientStream';
-import trace from '../operators/trace';
+const { fromSocketIO } = require('./producer');
+const consumeOneClientStream = require('./consumeOneClientStream');
+const trace = require('../operators/trace');
 
 const createConsumer = ({
   io,
@@ -18,4 +18,4 @@ const createConsumer = ({
   return consumer$;
 };
 
-export default createConsumer;
+module.exports = createConsumer;

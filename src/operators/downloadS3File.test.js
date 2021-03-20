@@ -1,8 +1,8 @@
-import {expect} from 'chai';
-import sinon from 'sinon';
-import {marbles} from 'rxjs-marbles/mocha';
+const {expect} = require('chai');
+const sinon = require('sinon');
+const {marbles} = require('rxjs-marbles/mocha');
 
-import downloadS3File, {testExports} from './downloadS3File';
+const downloadS3File, {testExports} = require('./downloadS3File');
 const {downloadBytes, pump} = testExports;
 
 const fakeS3Res = {

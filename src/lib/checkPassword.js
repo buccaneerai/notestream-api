@@ -1,6 +1,6 @@
-import bcrypt from 'bcrypt';
-import { bindCallback, of, throwError } from 'rxjs';
-import { mergeMap } from 'rxjs/operators';
+const bcrypt = require('bcrypt');
+const { bindCallback, of, throwError } = require('rxjs');
+const { mergeMap } = require('rxjs/operators');
 
 const checkPassword = function checkPassword({
   plainPassword,
@@ -18,4 +18,4 @@ const checkPassword = function checkPassword({
   return compare$;
 };
 
-export default checkPassword;
+module.exports = checkPassword;

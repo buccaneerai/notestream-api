@@ -1,6 +1,6 @@
-import _ from 'lodash';
-import {of} from 'rxjs';
-import {mergeMap} from 'rxjs/operators';
+const _ = require('lodash');
+const {of} = require('rxjs');
+const {mergeMap} = require('rxjs/operators');
 
 const sliceBuffer = (buffer, cutoffLength) => index => {
   return buffer.slice(index * cutoffLength, (index + 1) * cutoffLength);
@@ -17,4 +17,4 @@ const shortenChunks = (cutoffLength = 512) => {
   );
 };
 
-export default shortenChunks;
+module.exports = shortenChunks;

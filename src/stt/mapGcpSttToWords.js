@@ -1,7 +1,7 @@
-import _ from 'lodash';
-import { of, throwError } from 'rxjs';
-import { map, mergeMap, filter } from 'rxjs/operators';
-// import trace from '../operators/trace';
+const _ = require('lodash');
+const { of, throwError } = require('rxjs');
+const { map, mergeMap, filter } = require('rxjs/operators');
+// import trace = require('../operators/trace');
 
 const mapGcpWordToWord = () => w => ({
   text: w.word,
@@ -33,4 +33,4 @@ const mapGcpSttToWords = () => source$ => (
   )
 );
 
-export default mapGcpSttToWords;
+module.exports = mapGcpSttToWords;

@@ -1,4 +1,4 @@
-import {toS3File} from '@buccaneerai/rxjs-s3';
+const {toS3File} = require('@buccaneerai/rxjs-s3');
 
 const defaultOptions = {
   s3Key: process.env.S3_AUDIO_DIR,
@@ -12,4 +12,4 @@ const storeAudioToS3 = function storeAudioToS3(options = {}) {
   };
 };
 
-export default storeAudioToS3;
+module.exports = storeAudioToS3;

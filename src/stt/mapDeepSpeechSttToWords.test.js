@@ -1,7 +1,7 @@
-import {expect} from 'chai';
-import {marbles} from 'rxjs-marbles/mocha';
+const {expect} = require('chai');
+const {marbles} = require('rxjs-marbles/mocha');
 
-import mapDeepSpeechSttToWords from './mapDeepSpeechSttToWords';
+const mapDeepSpeechSttToWords = require('./mapDeepSpeechSttToWords');
 
 const deepspeechEvents = [
   {

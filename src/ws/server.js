@@ -1,14 +1,17 @@
-import express from 'express';
-import http from 'http';
-// import helmet from 'helmet';
-// import compression from 'compression';
-// import bodyParser from 'body-parser';
-import cors from 'cors';
-import Server from 'socket.io';
+const express = require('express');
+const http = require('http');
+// import helmet = require('helmet');
+// import compression = require('compression');
+// import bodyParser = require('body-parser');
+const cors = require('cors');
+const Server = require('socket.io');
 
-import config from '../utils/config';
-import logger, { info as logInfo, error as logError } from '../utils/logger';
-import createConsumer from './createConsumer';
+const config = require('../utils/config');
+const logger = require('../utils/logger');
+const createConsumer = require('./createConsumer');
+
+const logInfo = logger.info;
+const logError = logger.error;
 
 const defaultSocketOptions = {
   path: '/',
@@ -37,7 +40,7 @@ const startSocketIO = ({
   return io;
 };
 
-export const startWebSocket = ({
+const startWebSocket = ({
   expressApp,
   wsPort,
   _startSocketIO = startSocketIO,
@@ -71,7 +74,7 @@ export const startWebSocket = ({
 };
 
 // start server
-export const start = (port = config().PORT) => {
+const start = (port = config().PORT) => {
   try {
     const app = express();
     app.use(
@@ -87,3 +90,6 @@ export const start = (port = config().PORT) => {
     logError(`Error starting server: caught @ ${__filename} => `, err);
   }
 };
+
+module.exports.start = start;
+module.exports.startWebSocket = startWebSocket;

@@ -1,1 +1,1 @@
-export {default as fileChunkToSTT} from './fileChunkToSTT';
+module.exports.fileChunkToSTT = require('./fileChunkToSTT');

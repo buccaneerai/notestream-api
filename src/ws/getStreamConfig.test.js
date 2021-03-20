@@ -1,8 +1,8 @@
-import {expect} from 'chai';
-import {marbles} from 'rxjs-marbles/mocha';
+const {expect} = require('chai');
+const {marbles} = require('rxjs-marbles/mocha');
 
-import {NEW_STT_STREAM} from './producer';
-import getStreamConfig, {testExports} from './getStreamConfig';
+const {NEW_STT_STREAM} = require('./producer');
+const getStreamConfig, {testExports} = require('./getStreamConfig');
 const {validate} = testExports;
 
 const sampleConfig = {
