@@ -3,11 +3,8 @@
 
 ## Running it locally
 
-> 🍎 There is a known issue on Mac M1 ARM chips: You must use Rosetta to run this application or else it will likely complain with an exception (involving WASM memory allocation).
+> 🍎 There is a known issue on Mac M1 ARM chips: You must use node 15 or higher for it to work. 
 
-### Install dependencies
-```bash
-yarn
 ```
 > ⚠️ This service makes use of private npm packages, so you'll need to be authenticated to use our company's private npm registry.
 
