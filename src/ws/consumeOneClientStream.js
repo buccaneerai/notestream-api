@@ -4,7 +4,7 @@ import { filter, map, mergeMap, share, shareReplay, take, takeUntil } from 'rxjs
 import { DISCONNECTION } from './producer';
 import getStreamConfig from './getStreamConfig';
 import createAudioStream from './createAudioStream';
-import fileChunkToSTT from '../stt/fileChunkToSTT';
+import {fileChunkToSTT} from '../stt';
 import nlp from '../operators/nlp';
 import trace from '../operators/trace';
 import predictElements from '../operators/predictElements';
