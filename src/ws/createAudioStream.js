@@ -27,5 +27,5 @@ const createInputStream = (
   }
 };
 
-module.exports.testExports = { errors };
 module.exports = createInputStream;
+module.exports.testExports = { errors };
