@@ -61,7 +61,7 @@
     "start": "node src/index.js",
     "jwt:createadmintoken": "node ./scripts/generateTempAdminToken",
     "jwt:createsecret": "node ./scripts/createJwtSecret",
-    "test": "START_SERVER=false SUPPRESS_LOGS=1 mocha ./src/*.test.js ./src/**/*.test.js --exit",
+    "test": "START_SERVER=false SUPPRESS_LOGS=1 mocha \"./{,!(node_modules)/**/}*.test.js\" --exit",
     "aws:ecr:createtoken": "node ./scripts/getEcrToken",
     "aws:ecs:update": "node ./scripts/redeploy"
   }
