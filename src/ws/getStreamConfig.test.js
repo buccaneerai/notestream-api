@@ -21,6 +21,9 @@ const sampleConfig = {
   ],
   preferredSttEngine: 'deepspeech',
   useRealtime: true,
+  saveRawAudio: false,
+  saveRawSTT: false,
+  saveNormalizedSTT: false,
 };
 
 describe('getStreamConfig', () => {

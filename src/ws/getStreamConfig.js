@@ -14,6 +14,7 @@ const errors = {
 
 const schema = Joi.object({
   streamId: Joi.string().alphanum().min(7).max(30),
+  runId: Joi.string().alphanum().min(7).max(30),
   inputType: Joi.string().required().allow(...getInputTypes()),
   audioFileId: Joi.string()
     .alphanum()
@@ -30,6 +31,9 @@ const schema = Joi.object({
   audioEncoding: Joi.string().allow(['LINEAR16']).default('LINEAR16'),
   context: Joi.object(),
   useRealtime: Joi.boolean().default(true),
+  saveRawAudio: Joi.boolean().default(false),
+  saveRawSTT: Joi.boolean().default(false),
+  saveNormalizedSTT: Joi.boolean().default(false),
 });
 
 const validate = (_schema = schema) => config => _schema.validate(config);
