@@ -4,7 +4,7 @@ const {observe} = require('rxjs-marbles/mocha');
 const {of} = require('rxjs');
 const {finalize} = require('rxjs/operators');
 
-const trace = require('./trace';
+const trace = require('./trace');
 
 describe('trace', () => {
   it('should log the data that passes through the observable', observe(() => {

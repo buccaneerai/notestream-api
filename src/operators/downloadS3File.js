@@ -46,5 +46,5 @@ const download = ({
   return fileChunk$;
 };
 
-module.exports.testExports = {downloadBytes, pump};
 module.exports = download;
+module.exports.testExports = {downloadBytes, pump};

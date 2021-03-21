@@ -3,7 +3,8 @@ const {marbles} = require('rxjs-marbles/mocha');
 const sinon = require('sinon');
 const {of} = require('rxjs');
 
-const predictElements, {testExports} = require('./predictElements';
+const predictElements = require('./predictElements');
+const {testExports} = predictElements;
 const {
   matchIsSNOMED,
   mapPatternMatchToPrediction,

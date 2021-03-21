@@ -231,6 +231,8 @@ const predictElements = (pipelines = defaultPipelines) => noteStreamEvent$ => {
   return intent$;
 };
 
+
+module.exports = predictElements;
 module.exports.testExports = {
   matchIsSNOMED,
   mapPatternMatchToPrediction,
@@ -238,5 +240,3 @@ module.exports.testExports = {
   mapStreamToPatternMatcherPredictions,
   getElementsAndChildrenFromCodes,
 };
-
-module.exports = predictElements;

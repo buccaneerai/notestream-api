@@ -1,7 +1,8 @@
 const {expect} = require('chai');
 const {marbles} = require('rxjs-marbles/mocha');
 
-const nlp, {testExports} = require('./nlp');
+const nlp = require('./nlp');
+const {testExports} = nlp;
 const {wordStringReducer,linkTagsToWords} = testExports;
 
 const rawText = "hi. hi my name is Ein. I'm dr. Wishart. how can I help you? hi. uh. I've got this crazy bad headache.";

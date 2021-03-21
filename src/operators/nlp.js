@@ -91,5 +91,5 @@ const nlp = ({
   return nlpOut$;
 };
 
-module.exports.testExports = { charIndexReducer, wordStringReducer, linkTagsToWords };
 module.exports = nlp;
+module.exports.testExports = { charIndexReducer, wordStringReducer, linkTagsToWords };

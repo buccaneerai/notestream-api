@@ -2,8 +2,8 @@ const {expect} = require('chai');
 const sinon = require('sinon');
 const {marbles} = require('rxjs-marbles/mocha');
 
-const downloadS3File, {testExports} = require('./downloadS3File');
-const {downloadBytes, pump} = testExports;
+const downloadS3File = require('./downloadS3File');
+const {downloadBytes, pump} = downloadS3File.testExports;
 
 const fakeS3Res = {
   Body: Buffer.from('abcd'),
