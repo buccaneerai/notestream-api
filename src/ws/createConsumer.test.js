@@ -1,7 +1,7 @@
 const {expect} = require('chai');
 const {of} = require('rxjs');
 
-const createConsumer = require('./createConsumer';
+const createConsumer = require('./createConsumer');
 
 describe('createConsumer', () => {
   it('should export a function', () => {
