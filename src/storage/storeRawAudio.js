@@ -12,14 +12,14 @@ const errors = {
 };
 
 const storeRawAudio = function storeRawAudio(
-  encounterId,
+  runId,
   options = {},
   _toS3File = toS3File
 ) {
   const config = {...defaultOptions, ...options};
   if (!config.s3Bucket) return () => throwError(errors.bucketRequired());
   if (!config.prefixDir) return () => throwError(errors.prefixDirRequired());
-  const s3Key = `${config.prefixDir}/${encounterId}/audio.linear16`;
+  const s3Key = `${config.prefixDir}/${runId}/audio.linear16`;
   return buffer$ => buffer$.pipe(
     _toS3File({s3Key, s3Bucket: config.s3Bucket})
   );
