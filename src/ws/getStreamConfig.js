@@ -46,5 +46,5 @@ const getStreamConfig = (_validate = validate()) => stream$ => stream$.pipe(
   shareReplay(1)
 );
 
-module.exports.testExports = {validate};
 module.exports = getStreamConfig;
+module.exports.testExports = {validate};
