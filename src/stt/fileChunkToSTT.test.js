@@ -3,7 +3,8 @@ const sinon = require('sinon');
 const {marbles} = require('rxjs-marbles/mocha');
 const {mapTo} = require('rxjs/operators');
 
-const stt, {testExports} = require('./fileChunkToSTT');
+const stt = require('./fileChunkToSTT');
+const {testExports} = stt;
 const {pipelineReducer} = testExports;
 
 const buffers = [
