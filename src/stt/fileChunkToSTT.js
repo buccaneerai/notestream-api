@@ -1,5 +1,5 @@
 const { merge, EMPTY } = require('rxjs');
-const { catchError, map, scan, share, timeout } = require('rxjs/operators');
+const { catchError, map, scan, share, tap, timeout } = require('rxjs/operators');
 const { toAWSTranscribe } = require('@buccaneerai/stt-aws');
 // import { toDeepSpeech } = require('@buccaneerai/stt-deepspeech');
 const { toGCPSpeech } = require('@buccaneerai/stt-gcp');
@@ -52,9 +52,10 @@ const defaultPipelines = () => ({
 // STT engines requested
 const pipelineReducer = function pipelineReducer({
   fileChunk$,
-  encounterId,
+  runId,
   pipelines = defaultPipelines(),
-  storeOutput = false,
+  saveRawSTT = false,
+  saveNormalizedSTT = false,
 }) {
   return (acc, sttEngine) => [
     ...acc,
@@ -65,11 +66,7 @@ const pipelineReducer = function pipelineReducer({
       // trace(`STT_IN:${sttEngine}`),
       pipelines[sttEngine].operator(pipelines[sttEngine].options),
       timeout(15000),
-      (
-        storeOutput
-        ? storeRawSttEvents({encounterId, sttEngine})
-        : data => data // pass data through
-      ),
+      saveRawSTT ? storeRawSttEvents({runId, sttEngine}) : tap(null),
       // trace(`STT_RAW:${sttEngine}`),
       // transform output to standard format
       pipelines[sttEngine].transformer(),
@@ -90,8 +87,10 @@ const pipelineReducer = function pipelineReducer({
 // audio data should be encoded in LINEAR16 format (16-bit PCM raw audio)
 // with a single channel and a sample rate of 16000 Hz.
 const fileChunkToSTT = function fileChunkToSTT({
-  encounterId,
+  runId,
   sttEngines,
+  saveRawSTT = false,
+  saveNormalizedSTT = false,
   _pipelineReducer = pipelineReducer
 }) {
   return fileChunk$ => {
@@ -99,7 +98,12 @@ const fileChunkToSTT = function fileChunkToSTT({
     const fileChunkSub$ = fileChunk$.pipe(share());
     // create an observable for each STT engine's output stream
     const sttObservables = sttEngines.reduce(
-      _pipelineReducer({ fileChunk$: fileChunkSub$, encounterId }),
+      _pipelineReducer({
+        runId,
+        saveRawSTT,
+        saveNormalizedSTT,
+        fileChunk$: fileChunkSub$
+      }),
       []
     );
     const sttOut$ = merge(...sttObservables);

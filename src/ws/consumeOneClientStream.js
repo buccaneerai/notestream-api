@@ -44,7 +44,11 @@ const consumeOneClientStream = function consumeOneClientStream(
         clientStreamSub$.pipe(
           _createAudioStream(config),
           config.saveRawAudio ? _storeRawAudioToS3(config.runId) : tap(null),
-          _stt({ sttEngines: config.sttEngines, saveRawSTT: config.saveRawSTT })
+          _stt({
+            sttEngines: config.sttEngines,
+            saveRawSTT: config.saveRawSTT,
+            saveNormalizedSTT: config.saveNormalizedSTT
+          })
         )
       ),
       map(event => ({ ...event, pipeline: 'stt' })),
