@@ -100,6 +100,17 @@
     rxjs "^6.5.4"
     ws "^7.2.1"
 
+"@buccaneerai/rxjs-csv@^2.0.0":
+  version "2.0.0"
+  resolved "https://npm.pkg.github.com/download/@buccaneerai/rxjs-csv/2.0.0/8d6a2a9b60fa0ba1671394952868b6e84e1293d680eb0cac3f565f359e59bd4b#abf3ec799c439086ae5a53b32fefaaea17af075f"
+  integrity sha512-63oIgCWoF+Cr5Hv7dbAC4HHB8nw7lV/bGGuujCCMqwQC6iUC2WQ6Xg+JZ57V759k6QXz9J3xQxkVeESH1Yeaeg==
+  dependencies:
+    csv-parse "^4.15.3"
+    json2csv "^5.0.6"
+    lodash "^4.17.20"
+    rxjs "^6.6.3"
+    rxjs-stream "^3.2.1"
+
 "@buccaneerai/rxjs-s3@^1.0.0":
   version "1.0.0"
   resolved "https://npm.pkg.github.com/download/@buccaneerai/rxjs-s3/1.0.0/ca4be2e79997ae0872d7d38f57f9cbdf1ace41ca5496e2f3f931c8b5f2cb5e29#754b35fc20fece9e68be63f515997cf93d2d6a47"
@@ -1135,6 +1146,11 @@ csv-parse@^4.14.1:
   version "4.14.1"
   resolved "https://registry.yarnpkg.com/csv-parse/-/csv-parse-4.14.1.tgz#b6b3736508fb94682fa6d450fe1755237221d291"
   integrity sha512-4wmcO7QbWtDAncGFaBwlWFPhEN4Akr64IbM4zvDwEOFekI8blLc04Nw7XjQjtSNy+3AUAgBgtUa9nWo5Cq89Xg==
+
+csv-parse@^4.15.3:
+  version "4.15.3"
+  resolved "https://registry.yarnpkg.com/csv-parse/-/csv-parse-4.15.3.tgz#8a62759617a920c328cb31c351b05053b8f92b10"
+  integrity sha512-jlTqDvLdHnYMSr08ynNfk4IAUSJgJjTKy2U5CQBSu4cN9vQOJonLVZP4Qo4gKKrIgIQ5dr07UwOJdi+lRqT12w==
 
 cycle@1.0.x:
   version "1.0.3"
@@ -2643,12 +2659,26 @@ json-stringify-safe@~5.0.1:
   resolved "https://registry.yarnpkg.com/json-stringify-safe/-/json-stringify-safe-5.0.1.tgz#1296a2d58fd45f19a0f6ce01d65701e2c735b6eb"
   integrity sha1-Epai1Y/UXxmg9s4B1lcB4sc1tus=
 
+json2csv@^5.0.6:
+  version "5.0.6"
+  resolved "https://registry.yarnpkg.com/json2csv/-/json2csv-5.0.6.tgz#590e0e1b9579e59baa53bda0c0d840f4d8009687"
+  integrity sha512-0/4Lv6IenJV0qj2oBdgPIAmFiKKnh8qh7bmLFJ+/ZZHLjSeiL3fKKGX3UryvKPbxFbhV+JcYo9KUC19GJ/Z/4A==
+  dependencies:
+    commander "^6.1.0"
+    jsonparse "^1.3.1"
+    lodash.get "^4.4.2"
+
 json5@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/json5/-/json5-1.0.1.tgz#779fb0018604fa854eacbf6252180d83543e3dbe"
   integrity sha512-aKS4WQjPenRxiQsC93MNfjx+nbF4PAdYzmd/1JIj8HYzqfbu86beTuNgXDzPknWk0n0uARlyewZo4s++ES36Ow==
   dependencies:
     minimist "^1.2.0"
+
+jsonparse@^1.3.1:
+  version "1.3.1"
+  resolved "https://registry.yarnpkg.com/jsonparse/-/jsonparse-1.3.1.tgz#3f4dae4a91fac315f71062f8521cc239f1366280"
+  integrity sha1-P02uSpH6wxX3EGL4UhzCOfE2YoA=
 
 jsonwebtoken@^8.1.0, jsonwebtoken@^8.5.1:
   version "8.5.1"
@@ -2784,6 +2814,11 @@ lodash.camelcase@^4.3.0:
   version "4.3.0"
   resolved "https://registry.yarnpkg.com/lodash.camelcase/-/lodash.camelcase-4.3.0.tgz#b28aa6288a2b9fc651035c7711f65ab6190331a6"
   integrity sha1-soqmKIorn8ZRA1x3EfZathkDMaY=
+
+lodash.get@^4.4.2:
+  version "4.4.2"
+  resolved "https://registry.yarnpkg.com/lodash.get/-/lodash.get-4.4.2.tgz#2d177f652fa31e939b4438d5341499dfa3825e99"
+  integrity sha1-LRd/ZS+jHpObRDjVNBSZ36OCXpk=
 
 lodash.includes@^4.3.0:
   version "4.3.0"
