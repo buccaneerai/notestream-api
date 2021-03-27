@@ -90,6 +90,14 @@
   dependencies:
     regenerator-runtime "^0.13.4"
 
+"@bottlenose/rxsocketio@^0.7.0":
+  version "0.7.0"
+  resolved "https://registry.yarnpkg.com/@bottlenose/rxsocketio/-/rxsocketio-0.7.0.tgz#c27522e470a2092e95751801853003c83b1ecc18"
+  integrity sha512-mFxTm1D3iz18O4yzpL+FdLSTxOUvhYHqMEcsWcN44aX8kkto1fRpNzIkNs72xVkR1kAVnvlAYVV1Vr6Z8T0LEg==
+  dependencies:
+    rxjs "^6.5.4"
+    socket.io-client "^2.3.0"
+
 "@bottlenose/rxws@^0.7.0":
   version "0.7.0"
   resolved "https://registry.yarnpkg.com/@bottlenose/rxws/-/rxws-0.7.0.tgz#a57dfbf21e854fc85fd81e5be46cf144177cb1d2"
@@ -99,6 +107,16 @@
     lodash "^4.17.15"
     rxjs "^6.5.4"
     ws "^7.2.1"
+
+"@buccaneerai/graphql-sdk@^1.2.0":
+  version "1.2.0"
+  resolved "https://npm.pkg.github.com/download/@buccaneerai/graphql-sdk/1.2.0/3421af931401482e7b50c46b397ef50c90c2ffba70d0ea005e26e0aa7cd38f90#8a661d22e31dbbf113d8f6133fa73e243076b960"
+  integrity sha512-peQGvPB6Q3SNMGE4lRQfzXRijvBgnh2sHqAktbVR2e5ld9wlQJqb8RCneYAl6MZ4wVpX37w2a+CbzL8yJq7cYg==
+  dependencies:
+    graphql "^15.5.0"
+    graphql-request "^3.4.0"
+    lodash "^4.17.20"
+    rxjs "^6.6.3"
 
 "@buccaneerai/rxjs-csv@^2.0.0":
   version "2.0.0"
@@ -1406,6 +1424,23 @@ engine.io-client@~3.4.0:
     parseqs "0.0.6"
     parseuri "0.0.6"
     ws "~6.1.0"
+    xmlhttprequest-ssl "~1.5.4"
+    yeast "0.1.2"
+
+engine.io-client@~3.5.0:
+  version "3.5.1"
+  resolved "https://registry.yarnpkg.com/engine.io-client/-/engine.io-client-3.5.1.tgz#b500458a39c0cd197a921e0e759721a746d0bdb9"
+  integrity sha512-oVu9kBkGbcggulyVF0kz6BV3ganqUeqXvD79WOFKa+11oK692w1NyFkuEj4xrkFRpZhn92QOqTk4RQq5LiBXbQ==
+  dependencies:
+    component-emitter "~1.3.0"
+    component-inherit "0.0.3"
+    debug "~3.1.0"
+    engine.io-parser "~2.2.0"
+    has-cors "1.1.0"
+    indexof "0.0.1"
+    parseqs "0.0.6"
+    parseuri "0.0.6"
+    ws "~7.4.2"
     xmlhttprequest-ssl "~1.5.4"
     yeast "0.1.2"
 
@@ -4069,6 +4104,23 @@ socket.io-client@2.3.0:
     socket.io-parser "~3.3.0"
     to-array "0.1.4"
 
+socket.io-client@^2.3.0:
+  version "2.4.0"
+  resolved "https://registry.yarnpkg.com/socket.io-client/-/socket.io-client-2.4.0.tgz#aafb5d594a3c55a34355562fc8aea22ed9119a35"
+  integrity sha512-M6xhnKQHuuZd4Ba9vltCLT9oa+YvTsP8j9NcEiLElfIg8KeYPyhWOes6x4t+LTAC8enQbE/995AdTem2uNyKKQ==
+  dependencies:
+    backo2 "1.0.2"
+    component-bind "1.0.0"
+    component-emitter "~1.3.0"
+    debug "~3.1.0"
+    engine.io-client "~3.5.0"
+    has-binary2 "~1.0.2"
+    indexof "0.0.1"
+    parseqs "0.0.6"
+    parseuri "0.0.6"
+    socket.io-parser "~3.3.0"
+    to-array "0.1.4"
+
 socket.io-parser@~3.3.0:
   version "3.3.1"
   resolved "https://registry.yarnpkg.com/socket.io-parser/-/socket.io-parser-3.3.1.tgz#f07d9c8cb3fb92633aa93e76d98fd3a334623199"
@@ -4741,6 +4793,11 @@ ws@~6.1.0:
   integrity sha512-eqZfL+NE/YQc1/ZynhojeV8q+H050oR8AZ2uIev7RU10svA9ZnJUddHcOUZTJLinZ9yEfdA2kSATS2qZK5fhJA==
   dependencies:
     async-limiter "~1.0.0"
+
+ws@~7.4.2:
+  version "7.4.4"
+  resolved "https://registry.yarnpkg.com/ws/-/ws-7.4.4.tgz#383bc9742cb202292c9077ceab6f6047b17f2d59"
+  integrity sha512-Qm8k8ojNQIMx7S+Zp8u/uHOx7Qazv3Yv4q68MiWWWOJhiwG5W3x7iqmRtJo8xxrciZUY4vRxUTJCKuRnF28ZZw==
 
 xdg-basedir@^4.0.0:
   version "4.0.0"
