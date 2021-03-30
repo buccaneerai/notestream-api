@@ -109,9 +109,9 @@
     ws "^7.2.1"
 
 "@buccaneerai/graphql-sdk@^1.2.0":
-  version "1.2.0"
-  resolved "https://npm.pkg.github.com/download/@buccaneerai/graphql-sdk/1.2.0/3421af931401482e7b50c46b397ef50c90c2ffba70d0ea005e26e0aa7cd38f90#8a661d22e31dbbf113d8f6133fa73e243076b960"
-  integrity sha512-peQGvPB6Q3SNMGE4lRQfzXRijvBgnh2sHqAktbVR2e5ld9wlQJqb8RCneYAl6MZ4wVpX37w2a+CbzL8yJq7cYg==
+  version "1.3.0"
+  resolved "https://npm.pkg.github.com/download/@buccaneerai/graphql-sdk/1.3.0/4ec636c972c49c8844c3372de2c3a34cd30b76dc02e2db0e157dddd64b31f624#672b2a717f3457e3429125882c59f5de1c2733d8"
+  integrity sha512-bZInliV8trhiJH6NALdZOa/67wpgeDx83FC8tWl3GXitoDcybHxzf34orP0BYBAfD6h/UxjKrJbBkgl8T21wlQ==
   dependencies:
     graphql "^15.5.0"
     graphql-request "^3.4.0"
@@ -2895,12 +2895,12 @@ lodash.set@^4.0.0:
   resolved "https://registry.yarnpkg.com/lodash.set/-/lodash.set-4.3.2.tgz#d8757b1da807dde24816b0d6a84bea1a76230b23"
   integrity sha1-2HV7HagH3eJIFrDWqEvqGnYjCyM=
 
-lodash@^4.17.10, lodash@^4.17.11, lodash@^4.17.15, lodash@^4.17.19, lodash@^4.17.20:
+lodash@^4.17.10, lodash@^4.17.11, lodash@^4.17.15, lodash@^4.17.19:
   version "4.17.20"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.20.tgz#b44a9b6297bcb698f1c51a3545a2b3b368d59c52"
   integrity sha512-PlhdFcillOINfeV7Ni6oF1TAEayyZBoZ8bcshTHqOYJYlrqzRK5hagpagky5o4HfCzzd1TRkXPMFq6cKk9rGmA==
 
-lodash@^4.17.21:
+lodash@^4.17.20, lodash@^4.17.21:
   version "4.17.21"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.21.tgz#679591c564c3bffaae8454cf0b3df370c3d6911c"
   integrity sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==
@@ -3930,10 +3930,17 @@ rxjs-stream@^3.2.1:
   resolved "https://registry.yarnpkg.com/rxjs-stream/-/rxjs-stream-3.2.1.tgz#928e356150a917d6f741e2e08339414fdcbd71f1"
   integrity sha512-SbubqPmtaEU1YZEU3HChFutKCKc4uB3kMykaciP+yH7hoq9UY5zC85OoviCf+woWMngXBUfEziFNRwsh59mgJA==
 
-rxjs@^6.3.3, rxjs@^6.5.4, rxjs@^6.6.3:
+rxjs@^6.3.3, rxjs@^6.5.4:
   version "6.6.3"
   resolved "https://registry.yarnpkg.com/rxjs/-/rxjs-6.6.3.tgz#8ca84635c4daa900c0d3967a6ee7ac60271ee552"
   integrity sha512-trsQc+xYYXZ3urjOiJOuCOa5N3jAZ3eiSpQB5hIT8zGlL2QfnHLJ2r7GMkBGuIausdJN1OneaI6gQlsqNHHmZQ==
+  dependencies:
+    tslib "^1.9.0"
+
+rxjs@^6.6.3:
+  version "6.6.7"
+  resolved "https://registry.yarnpkg.com/rxjs/-/rxjs-6.6.7.tgz#90ac018acabf491bf65044235d5863c4dab804c9"
+  integrity sha512-hTdwr+7yYNIT5n4AMYp85KA6yw2Va0FLa3Rguvbpa4W3I5xynaBZo41cM3XM+4Q6fRMj3sBYIR1VAmZMXYJvRQ==
   dependencies:
     tslib "^1.9.0"
 
