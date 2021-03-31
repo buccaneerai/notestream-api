@@ -1,5 +1,12 @@
 const { merge, EMPTY } = require('rxjs');
-const { catchError, map, scan, share, tap, timeout } = require('rxjs/operators');
+const {
+  catchError,
+  map,
+  scan,
+  share,
+  tap,
+  timeout
+} = require('rxjs/operators');
 const { toAWSTranscribe } = require('@buccaneerai/stt-aws');
 // import { toDeepSpeech } = require('@buccaneerai/stt-deepspeech');
 const { toGCPSpeech } = require('@buccaneerai/stt-gcp');
@@ -20,6 +27,7 @@ const defaultPipelines = () => ({
     },
     operator: toDeepgram,
     transformer: mapDeepgramSttToWords,
+    timeout: 20000,
   },
   // deepspeech: {
   //   options: {
@@ -36,6 +44,7 @@ const defaultPipelines = () => ({
     },
     operator: toGCPSpeech,
     transformer: mapGcpSttToWords,
+    timeout: 20000,
   },
   aws: {
     options: {
@@ -45,6 +54,7 @@ const defaultPipelines = () => ({
     },
     operator: toAWSTranscribe,
     transformer: mapAwsSttToWords,
+    timeout: 15000,
   },
 });
 
@@ -55,7 +65,7 @@ const pipelineReducer = function pipelineReducer({
   runId,
   pipelines = defaultPipelines(),
   saveRawSTT = false,
-  saveNormalizedSTT = false,
+  _storeRawSttEvents = storeRawSttEvents,
 }) {
   return (acc, sttEngine) => [
     ...acc,
@@ -65,8 +75,8 @@ const pipelineReducer = function pipelineReducer({
       // run the STT pipeline
       // trace(`STT_IN:${sttEngine}`),
       pipelines[sttEngine].operator(pipelines[sttEngine].options),
-      timeout(15000),
-      saveRawSTT ? storeRawSttEvents({runId, sttEngine}) : tap(null),
+      timeout(pipelines[sttEngine].timeout),
+      saveRawSTT ? _storeRawSttEvents({runId, sttEngine}) : tap(null),
       // trace(`STT_RAW:${sttEngine}`),
       // transform output to standard format
       pipelines[sttEngine].transformer(),
@@ -90,9 +100,9 @@ const fileChunkToSTT = function fileChunkToSTT({
   runId,
   sttEngines,
   saveRawSTT = false,
-  saveNormalizedSTT = false,
-  _pipelineReducer = pipelineReducer
+  _pipelineReducer = pipelineReducer,
 }) {
+  console.log('fileChunktoSTT.params', {runId, sttEngines, saveRawSTT});
   return fileChunk$ => {
     // share fileChunks to avoid running the observable multiple times
     const fileChunkSub$ = fileChunk$.pipe(share());
@@ -101,7 +111,6 @@ const fileChunkToSTT = function fileChunkToSTT({
       _pipelineReducer({
         runId,
         saveRawSTT,
-        saveNormalizedSTT,
         fileChunk$: fileChunkSub$
       }),
       []
