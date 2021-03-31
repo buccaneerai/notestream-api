@@ -1,3 +1,4 @@
+const pick = require('lodash/pick');
 const { combineLatest, merge } = require('rxjs');
 const {
   filter,
@@ -17,6 +18,9 @@ const {fileChunkToSTT} = require('../stt');
 const nlp = require('../operators/nlp');
 const trace = require('../operators/trace');
 const predictElements = require('../operators/predictElements');
+const createWindows = require('../operators/createWindows');
+const storeRawAudio = require('../storage/storeRawAudio');
+const storeWords = require('../storage/storeWords');
 
 const consumeOneClientStream = function consumeOneClientStream(
   _createAudioStream = createAudioStream,
@@ -24,7 +28,9 @@ const consumeOneClientStream = function consumeOneClientStream(
   _nlp = nlp,
   _getStreamConfig = getStreamConfig,
   _predictElements = predictElements,
-  _storeRawAudioToS3 = storeRawAudioToS3
+  _storeRawAudio = storeRawAudio,
+  _storeWords = storeWords,
+  _createWindows = createWindows
 ) {
   return connectionStream$ => {
     const clientStreamSub$ = connectionStream$.pipe(shareReplay(5));
@@ -37,21 +43,31 @@ const consumeOneClientStream = function consumeOneClientStream(
       map(e => e.data.context.socket),
       shareReplay(1)
     );
-    const config$ = clientStreamSub$.pipe(_getStreamConfig(), shareReplay(1));
+    const config$ = clientStreamSub$.pipe(
+      _getStreamConfig(),
+      shareReplay(1)
+    );
     const stt$ = config$.pipe(
       take(1),
       mergeMap(config =>
         clientStreamSub$.pipe(
           _createAudioStream(config),
-          config.saveRawAudio ? _storeRawAudioToS3(config.runId) : tap(null),
-          _stt({
-            sttEngines: config.sttEngines,
-            saveRawSTT: config.saveRawSTT,
-            saveNormalizedSTT: config.saveNormalizedSTT
-          })
+          (
+            config.saveRawAudio
+            ? _storeRawAudio(pick(config, 'runId', 'audioFileId'))
+            : tap(null)
+          ),
+          _stt(pick(config, 'runId', 'sttEngines', 'saveRawSTT', 'saveWords')),
+          config.saveWords ? _storeWords({runId: config.runId}) : tap(null),
         )
       ),
       map(event => ({ ...event, pipeline: 'stt' })),
+      share()
+    );
+    const noteWindow$ = config$.pipe(
+      take(1),
+      mergeMap(config => stt$.pipe(_createWindows(config))),
+      filter(words => !words),
       share()
     );
     const nlp$ = combineLatest([config$, stt$]).pipe(
@@ -65,7 +81,7 @@ const consumeOneClientStream = function consumeOneClientStream(
       _predictElements(),
       map(event => ({ ...event, pipeline: 'predictedElement' }))
     );
-    const output$ = merge(stt$, nlp$, predictedElement$);
+    const output$ = merge(stt$, noteWindow$, nlp$, predictedElement$);
     const messageBack$ = combineLatest([socket$, output$]).pipe(
       takeUntil(disconnect$),
       map(([socket, event]) => socket.emit('message', event))
