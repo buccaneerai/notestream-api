@@ -109,9 +109,9 @@
     ws "^7.2.1"
 
 "@buccaneerai/graphql-sdk@^1.2.0":
-  version "1.4.0"
-  resolved "https://npm.pkg.github.com/download/@buccaneerai/graphql-sdk/1.4.0/d09215c4581e0e1d44a1a5107a22febaa87d3f6ab56fa1e6df54a37251e7bc52#c3001942b65e0d4759a5035c132b68eeb3f35547"
-  integrity sha512-yxo63NiJOW5hkHJ9WiBTxa2PfnRL1snwZfjzvhv1M2eN1nak5a+KzHoRv70+XOe/CmeMrzYgVG+Tlc7g+Y/J+w==
+  version "1.5.0"
+  resolved "https://npm.pkg.github.com/download/@buccaneerai/graphql-sdk/1.5.0/9cee3e7a31931e54a3408e5ee71fd19ad4e0bfa2d0712c47c95d71b293bc6a57#c41da86a7cfa3ef7355d35f140320cc5e9c5b70b"
+  integrity sha512-vC+ryd8NCBJ7EGW+ZsgEdn7+Nagd7AUlgWjK2rzrzSqBJDvzqKWJsuZ/8N22d3TT1HYu4KH7ScEDGxJoCAq/AA==
   dependencies:
     graphql "^15.5.0"
     graphql-request "^3.4.0"
