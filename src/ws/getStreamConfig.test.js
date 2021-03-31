@@ -23,7 +23,7 @@ const sampleConfig = {
   useRealtime: true,
   saveRawAudio: false,
   saveRawSTT: false,
-  saveNormalizedSTT: false,
+  saveWords: false,
 };
 
 describe('getStreamConfig', () => {

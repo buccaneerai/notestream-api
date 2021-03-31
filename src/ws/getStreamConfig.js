@@ -1,7 +1,9 @@
 // import pick = require('lodash/pick');
 const Joi = require('joi');
-const {of,throwError} = require('rxjs');
-const {filter, map, mergeMap, shareReplay, take} = require('rxjs/operators');
+const omit = require('lodash/omit');
+const {of,throwError,zip} = require('rxjs');
+const {filter, map, mergeMap, shareReplay, tap, take} = require('rxjs/operators');
+const {createRun} = require('@buccaneerai/graphql-sdk');
 
 const {NEW_STT_STREAM} = require('./producer');
 
@@ -10,6 +12,7 @@ const getInputTypes = () => ['s3File'];
 
 const errors = {
   invalidConfig: validationError => new Error(validationError),
+  invalidGraphQLResponse: res => new Error(`invalid GraphQL response: ${res}`),
 };
 
 const schema = Joi.object({
@@ -33,22 +36,49 @@ const schema = Joi.object({
   useRealtime: Joi.boolean().default(true),
   saveRawAudio: Joi.boolean().default(false),
   saveRawSTT: Joi.boolean().default(false),
-  saveNormalizedSTT: Joi.boolean().default(false),
+  saveWords: Joi.boolean().default(false),
+  saveWindows: Joi.boolean().default(false),
+  windowLength: Joi.number().integer().default(20000),
+  windowTimeoutInterval: Joi.number().integer().default(15000),
 });
 
-const validate = (_schema = schema) => config => _schema.validate(config);
-
-const getStreamConfig = (_validate = validate()) => stream$ => stream$.pipe(
-  filter(event => event.type === NEW_STT_STREAM),
-  take(1),
-  map(event => _validate(event.data)),
-  mergeMap(validations => (
-    validations.error
-    ? throwError(errors.invalidConfig(validations.error))
-    : of(validations.value)
-  )),
-  shareReplay(1)
+const validate = (_schema = schema) => (
+  configEvent => _schema.validate(configEvent.data)
 );
+
+const eventIsNewSTTStream = event => event.type === NEW_STT_STREAM;
+
+const processValidationOrThrow = validations => (
+  validations.error
+  ? throwError(errors.invalidConfig(validations.error))
+  : of(validations.value)
+);
+
+const validateAndParseResponse = response => (
+  response && response.createRun
+  ? of(response.createRun)
+  : throwError(errors.invalidGraphQLResponse(response))
+);
+
+const getStreamConfig = function getStreamConfig(
+  _validate = validate(),
+  _createRun = createRun
+) {
+  return stream$ => stream$.pipe(
+    filter(eventIsNewSTTStream),
+    take(1),
+    map(_validate),
+    mergeMap(processValidationOrThrow),
+    mergeMap(config => zip(
+      of(config),
+      _createRun({doc: {...omit(config, 'context'), status: 'running'}}).pipe(
+        mergeMap(validateAndParseResponse)
+      )
+    )),
+    map(([config, run]) => ({...config, runId: run._id})),
+    shareReplay(1)
+  );
+};
 
 module.exports = getStreamConfig;
 module.exports.testExports = {validate};
