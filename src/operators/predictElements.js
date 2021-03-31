@@ -88,7 +88,7 @@ const getElementsAndChildrenFromCodes = (
   _requestFindingInputsByCodes = requestFindingInputsByCodes
 ) =>
   of(codes).pipe(
-    trace('0'),
+    // trace('0'),
     mergeMap(codeList =>
       _.isArray(codeList)
         ? // FIXME: - this has a timer to allow the demo to connect to Mongo
@@ -96,17 +96,17 @@ const getElementsAndChildrenFromCodes = (
           timer(3000).pipe(() => _requestElementsByCodes(codeList))
         : timer(3000).pipe(() => _requestElementsByCodes([codeList]))
     ),
-    trace('1'),
+    // trace('1'),
     map(e => ({ ...e, findingCodes: e.findingCodes || [] })),
     // get all of the findings
-    trace('2'),
+    // trace('2'),
     mergeMap(({ elements }) =>
       zip(
         of(elements),
         _requestFindingsByCodes(elements.flatMap(e => e.findingCodes))
       )
     ),
-    trace('3'),
+    // trace('3'),
     map(([elements, { findings }]) => [
       elements,
       (
@@ -118,7 +118,7 @@ const getElementsAndChildrenFromCodes = (
         : []
       ),
     ]),
-    trace('4'),
+    // trace('4'),
     // get all of the finding inputs
     mergeMap(([elements, findings]) =>
       zip(
@@ -127,7 +127,7 @@ const getElementsAndChildrenFromCodes = (
         _requestFindingInputsByCodes(findings.flatMap(f => f.findingInputCodes))
       )
     ),
-    trace('5'),
+    // trace('5'),
     map(([elements, findings, { findingInputs }]) => ({
       elements,
       findings,
