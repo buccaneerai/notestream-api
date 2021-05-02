@@ -8,6 +8,8 @@ const mapDeepSpeechWordToWord = transcript => word => ({
   end: word.endTime,
   start: word.startTime,
   confidence: transcript.confidence,
+  speaker: null,
+  speakerConfidence: null,
 });
 
 const mapEventToWords = () => event =>
