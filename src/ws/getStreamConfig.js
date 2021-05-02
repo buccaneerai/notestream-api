@@ -60,10 +60,10 @@ const validateAndParseResponse = response => (
   : throwError(errors.invalidGraphQLResponse(response))
 );
 
-const getStreamConfig = function getStreamConfig(
+const getStreamConfig = function getStreamConfig({
   _validate = validate(),
   _createRun = createRun
-) {
+} = {}) {
   return stream$ => stream$.pipe(
     filter(eventIsNewSTTStream),
     take(1),
