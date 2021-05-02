@@ -1,3 +1,4 @@
+const _ = require('lodash');
 const {of} = require('rxjs');
 const {map, mergeMap, filter} = require('rxjs/operators');
 
@@ -6,10 +7,14 @@ const mapDeepspeechWordToWord = () => w => ({
   end: w.end,
   start: w.start,
   confidence: w.confidence,
+  speaker: _.get(w, 'speaker', null),
+  speakerConfidence: null,
 });
 
 const filterEvents = () => event => (
-  event.is_final && event.channel.alternatives[0]
+  _.get(event, 'is_final', false)
+  &&
+  _.get(event, 'channel.alternatives[0]', false)
 );
 
 const mapEvent = () => event => (

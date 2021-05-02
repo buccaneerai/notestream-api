@@ -14,25 +14,29 @@ const deepgramEvents = [{
             "confidence": 0.98063844,
             "end": 0.68,
             "start": 0.17999999,
-            "word": "soldiers"
+            "word": "soldiers",
+            "speaker": 0,
           },
           {
             "confidence": 0.80589044,
             "end": 1.42,
             "start": 1.06,
-            "word": "sailors"
+            "word": "sailors",
+            "speaker": 0,
           },
           {
             "confidence": 0.6254763,
             "end": 1.66,
             "start": 1.42,
-            "word": "on"
+            "word": "on",
+            "speaker": 0,
           },
           {
             "confidence": 0.38039473,
             "end": 2.047875,
             "start": 1.66,
-            "word": "air"
+            "word": "air",
+            "speaker": 0,
           }
         ]
       }
@@ -58,55 +62,64 @@ const deepgramEvents = [{
               "confidence": 0.98453885,
               "end": 0.6786893,
               "start": 0.17868932,
-              "word": "soldiers"
+              "word": "soldiers",
+              "speaker": 0,
             },
             {
               "confidence": 0.7530638,
               "end": 1.4096602,
               "start": 1.0522815,
-              "word": "sailors"
+              "word": "sailors",
+              "speaker": 0,
             },
             {
               "confidence": 0.8435231,
               "end": 1.6479126,
               "start": 1.4096602,
-              "word": "and"
+              "word": "and",
+              "speaker": 0,
             },
             {
               "confidence": 0.23861745,
               "end": 2.1479125,
               "start": 1.6479126,
-              "word": "air"
+              "word": "air",
+              "speaker": 0,
             },
             {
               "confidence": 0.887734,
               "end": 2.4023786,
               "start": 2.2832525,
-              "word": "of"
+              "word": "of",
+              "speaker": 0,
             },
             {
               "confidence": 0.9802551,
               "end": 2.5612135,
               "start": 2.4023786,
-              "word": "the"
+              "word": "the",
+              "speaker": 0,
             },
             {
               "confidence": 0.9982851,
               "end": 3.0612135,
               "start": 2.5612135,
-              "word": "allied"
+              "word": "allied",
+              "speaker": 0,
             },
             {
               "confidence": 0.97914654,
               "end": 3.6965535,
               "start": 3.1965535,
-              "word": "expedition"
+              "word": "expedition",
+              "speaker": 0,
             },
             {
               "confidence": 0.9935487,
               "end": 4.095875,
               "start": 3.712767,
-              "word": "force"
+              "word": "force",
+              "speaker": 0,
             }
           ]
         }
@@ -125,58 +138,76 @@ const deepgramEvents = [{
 
 const wordsOut = [
   {
-    "confidence": 0.98453885,
+    "text": "soldiers",
     "end": 0.6786893,
     "start": 0.17868932,
-    "text": "soldiers"
+    "confidence": 0.98453885,
+    "speaker": 0,
+    "speakerConfidence": null,
   },
   {
-    "confidence": 0.7530638,
+    "text": "sailors",
     "end": 1.4096602,
     "start": 1.0522815,
-    "text": "sailors"
+    "confidence": 0.7530638,
+    "speaker": 0,
+    "speakerConfidence": null,
   },
   {
-    "confidence": 0.8435231,
+    "text": "and",
     "end": 1.6479126,
     "start": 1.4096602,
-    "text": "and"
+    "confidence": 0.8435231,
+    "speaker": 0,
+    "speakerConfidence": null,
   },
   {
-    "confidence": 0.23861745,
+    "text": "air",
     "end": 2.1479125,
     "start": 1.6479126,
-    "text": "air"
+    "confidence": 0.23861745,
+    "speaker": 0,
+    "speakerConfidence": null,
   },
   {
-    "confidence": 0.887734,
+    "text": "of",
     "end": 2.4023786,
     "start": 2.2832525,
-    "text": "of"
+    "confidence": 0.887734,
+    "speaker": 0,
+    "speakerConfidence": null,
   },
   {
-    "confidence": 0.9802551,
+    "text": "the",
     "end": 2.5612135,
     "start": 2.4023786,
-    "text": "the"
+    "confidence": 0.9802551,
+    "speaker": 0,
+    "speakerConfidence": null,
   },
   {
-    "confidence": 0.9982851,
+    "text": "allied",
     "end": 3.0612135,
     "start": 2.5612135,
-    "text": "allied"
+    "confidence": 0.9982851,
+    "speaker": 0,
+    "speakerConfidence": null,
   },
   {
-    "confidence": 0.97914654,
+    "text": "expedition",
     "end": 3.6965535,
     "start": 3.1965535,
-    "text": "expedition"
+    "confidence": 0.97914654,
+    "speaker": 0,
+    "speakerConfidence": null,
   },
   {
-    "confidence": 0.9935487,
+    "text": "force",
     "end": 4.095875,
     "start": 3.712767,
-    "text": "force"
+    "confidence": 0.9935487,
+    "speaker": 0,
+    "speakerConfidence": null,
   },
 ];
 
