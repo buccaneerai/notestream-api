@@ -131,7 +131,7 @@ const normalizedWords = [
     confidence: 1.0,
     start: 0.92,
     end: 1.37,
-    speaker: 0,
+    speaker: 1,
     speakerConfidence: 0.48,
   },
   {
@@ -139,7 +139,7 @@ const normalizedWords = [
     confidence: 1.0,
     start: 1.37,
     end: 1.59,
-    speaker: 0,
+    speaker: 1,
     speakerConfidence: 0.48,
   },
   {
@@ -147,7 +147,7 @@ const normalizedWords = [
     confidence: 1.0,
     start: 1.59,
     end: 2.13,
-    speaker: 0,
+    speaker: 1,
     speakerConfidence: 0.48,
   },
   {
@@ -155,7 +155,7 @@ const normalizedWords = [
     confidence: 1.0,
     start: 2.2,
     end: 2.38,
-    speaker: 0,
+    speaker: 2,
     speakerConfidence: 0.49,
   },
   {
@@ -163,7 +163,7 @@ const normalizedWords = [
     confidence: 1.0,
     start: 2.38,
     end: 2.49,
-    speaker: 0,
+    speaker: 2,
     speakerConfidence: 0.49,
   },
   {
@@ -171,7 +171,7 @@ const normalizedWords = [
     confidence: 0.97,
     start: 2.49,
     end: 2.88,
-    speaker: 0,
+    speaker: 2,
     speakerConfidence: 0.49,
   },
   {
@@ -179,7 +179,7 @@ const normalizedWords = [
     confidence: 1.0,
     start: 2.88,
     end: 3.64,
-    speaker: 0,
+    speaker: 2,
     speakerConfidence: 0.49,
   },
   {
@@ -187,7 +187,7 @@ const normalizedWords = [
     confidence: 0.97,
     start: 3.64,
     end: 4.12,
-    speaker: 0,
+    speaker: 2,
     speakerConfidence: 0.49,
   },
 ];
@@ -202,7 +202,7 @@ describe('operators.mapIBMSttToWords', () => {
     const testEvents = _.take(events, 10);
     const input$ = m.cold('012345678(9|)', testEvents);
     const actual$ = input$.pipe(mapIBMSttToWords());
-    const expected$ = m.cold('012345678(9|)', normalizedWords);
+    const expected$ = m.cold('---------(012345678|)', normalizedWords);
     m.expect(actual$).toBeObservable(expected$);
   }));
 

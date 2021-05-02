@@ -53,7 +53,7 @@ const createWordsWithSpeakers = () => ([words, speakerLabels]) => (
     const speakerLabel = speakerLabels.find(filterSpeakerForWord(w));
     return {
       ...w,
-      speaker: _.isNumber(speakerLabel.speaker) ? speakerLabel.speaker - 1 : null,
+      speaker: _.get(speakerLabel, 'speaker', null),
       speakerConfidence: _.get(speakerLabel, 'confidence', null),
     };
   })
