@@ -8,7 +8,8 @@ const mapGcpWordToWord = () => w => ({
   start: Number.parseInt(w.startTime.seconds, 10) + w.startTime.nanos / 1000000000,
   end: Number.parseInt(w.endTime.seconds, 10) + w.endTime.nanos / 1000000000,
   confidence: w.confidence,
-  speakerTag: w.speaker_tag,
+  speaker: _.get(w, 'speaker_tag', null),
+  speakerConfidence: null,
 });
 
 const filterEvents = () => event => _.get(event, 'results[0]', false);
