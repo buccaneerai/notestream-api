@@ -1,3 +1,4 @@
+const get = require('lodash/get');
 const {of} = require('rxjs');
 const {filter, map, mergeMap} = require('rxjs/operators');
 
@@ -6,6 +7,8 @@ const mapAwsItemToWord = () => item => ({
   end: item.EndTime,
   start: item.StartTime,
   confidence: null,
+  speaker: null,
+  speakerConfidence: null,
 });
 
 const filterEvents = () => event => (
@@ -14,7 +17,8 @@ const filterEvents = () => event => (
 );
 
 const mapEvent = () => event => (
-  event.Transcript.Results[0].Alternatives[0].Items.map(mapAwsItemToWord())
+  get(event, 'Transcript.Results[0].Alternatives[0].Items', [])
+    .map(mapAwsItemToWord())
 );
 
 const awsTransformer = () => source$ => source$.pipe(
