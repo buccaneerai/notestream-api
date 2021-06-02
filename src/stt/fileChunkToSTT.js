@@ -7,15 +7,17 @@ const {
   tap,
   timeout
 } = require('rxjs/operators');
-const { toAWSTranscribe } = require('@buccaneerai/stt-aws');
 // import { toDeepSpeech } = require('@buccaneerai/stt-deepspeech');
-const { toGCPSpeech } = require('@buccaneerai/stt-gcp');
+const { toAWSTranscribe } = require('@buccaneerai/stt-aws');
 const { toDeepgram } = require('@buccaneerai/stt-deepgram');
+const { toGCPSpeech } = require('@buccaneerai/stt-gcp');
+const { toIBM } = require('@buccaneerai/stt-ibm');
 
 const logError = require('../utils/logger').error;
 const mapAwsSttToWords = require('./mapAwsSttToWords');
 const mapGcpSttToWords = require('./mapGcpSttToWords');
 const mapDeepgramSttToWords = require('./mapDeepgramSttToWords');
+const mapIBMSttToWords = require('./mapIBMSttToWords');
 const storeRawSttEvents = require('../storage/storeRawSttEvents');
 // import mapDeepSpeechSttToWords = require('./mapDeepSpeechSttToWords';
 
@@ -24,9 +26,25 @@ const defaultPipelines = () => ({
     options: {
       username: process.env.DEEPGRAM_USERNAME,
       password: process.env.DEEPGRAM_PASSWORD,
+      useSpeakerLabels: true,
+      usePunctuation: true,
+      interimResults: false,
+      sampleRate: 16000,
     },
     operator: toDeepgram,
     transformer: mapDeepgramSttToWords,
+    timeout: 20000,
+  },
+  ibm: {
+    options: {
+      instanceId: process.env.IBM_STT_INSTANCE_ID,
+      region: process.env.IBM_REGION,
+      secretAccessKey: process.env.IBM_SECRET_ACCESS_KEY,
+      interimResults: false,
+      sampleRate: 16000,
+    },
+    operator: toIBM,
+    transformer: mapIBMSttToWords,
     timeout: 20000,
   },
   // deepspeech: {
@@ -102,7 +120,6 @@ const fileChunkToSTT = function fileChunkToSTT({
   saveRawSTT = false,
   _pipelineReducer = pipelineReducer,
 }) {
-  console.log('fileChunktoSTT.params', {runId, sttEngines, saveRawSTT});
   return fileChunk$ => {
     // share fileChunks to avoid running the observable multiple times
     const fileChunkSub$ = fileChunk$.pipe(share());

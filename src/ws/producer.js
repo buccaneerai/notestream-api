@@ -7,6 +7,7 @@ const logError = require('../utils/logger').error;
 const NEW_STT_STREAM = 'ws/NEW_STT_STREAM';
 const NEXT_AUDIO_CHUNK = 'ws/NEXT_AUDIO_CHUNK';
 const STT_STREAM_DONE = 'ws/STT_STREAM_DONE';
+const STT_STREAM_STOP = 'ws/STT_STREAM_STOP';
 const CONNECTION = 'ws/CONNECTION';
 const DISCONNECTION = 'ws/DISCONNECTION';
 const DISCONNECTING = 'ws/DISCONNECTING';
@@ -18,6 +19,7 @@ const eventResolvers = {
     obs.next({ type: DISCONNECTION, data: { reason, context } });
     return obs.complete();
   },
+  stop: (context, obs) => obs.next({type: STT_STREAM_STOP, data: { context }}),
   'new-stt-stream': (context, obs, json) =>
     obs.next({ type: NEW_STT_STREAM, data: { ...json, context } }),
   'next-stt-chunk': (context, obs, [json, chunk]) =>
@@ -45,7 +47,9 @@ const fromSocketIO = ({ io }) => {
     io.on('connection', socket => obs.next(socket));
     io.on('error', err => logError('Error in producer socket', err));
   });
-  const connectionStream$$ = clientConnectionSocket$.pipe(map(mapConnectionToEvents));
+  const connectionStream$$ = clientConnectionSocket$.pipe(
+    map(mapConnectionToEvents)
+  );
   return connectionStream$$;
 };
 
@@ -54,6 +58,7 @@ module.exports.fromSocketIO = fromSocketIO;
 module.exports.NEW_STT_STREAM = NEW_STT_STREAM;
 module.exports.NEXT_AUDIO_CHUNK = NEXT_AUDIO_CHUNK;
 module.exports.STT_STREAM_DONE = STT_STREAM_DONE;
+module.exports.STT_STREAM_STOP = STT_STREAM_STOP;
 module.exports.CONNECTION = CONNECTION;
 module.exports.DISCONNECTION = DISCONNECTION;
 module.exports.DISCONNECTING = DISCONNECTING;

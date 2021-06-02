@@ -12,6 +12,7 @@ const {
 } = require('rxjs/operators');
 
 const storeWindows = require('../storage/storeWindows');
+const trace = require('../operators/trace');
 
 const createWindows = function createWindows({
   runId,
@@ -21,7 +22,6 @@ const createWindows = function createWindows({
   windowTimeoutInterval = 15000,
   _storeWindows = storeWindows
 }) {
-  console.log('createWindows.params', runId, saveWindows, windowLength, windowTimeoutInterval);
   return word$ => {
     const wordSub$ = word$.pipe(shareReplay(100));
     const windowIndex$ = wordSub$.pipe(
@@ -30,7 +30,7 @@ const createWindows = function createWindows({
       // calculate the window index/number for the last word
       map(endTime => roundTo.down(endTime / (windowLength / 1000), 0)),
       // use each index only once
-      distinct()
+      distinct(),
     );
     // FIXME: make sure this does not drop the first word in each index...
     const windowWords$ = windowIndex$.pipe(
@@ -38,9 +38,10 @@ const createWindows = function createWindows({
         const closeWindow$ = timer(windowLength + windowTimeoutInterval);
         return wordSub$.pipe(
           filter(w =>
-            w.startTime >= i * (windowLength / 1000)
-            && w.endTime < (i + 1) * (windowLength / 1000)
+            w.start >= i * (windowLength / 1000)
+            && w.end < (i + 1) * (windowLength / 1000)
           ),
+          // tap(w => console.log(`createWindows.[${i}]`, w)),
           takeUntil(closeWindow$),
           (
             saveWindows

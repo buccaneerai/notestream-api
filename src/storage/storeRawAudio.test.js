@@ -20,7 +20,7 @@ describe('storeRawAudio', () => {
       operator,
     ];
     const out$ = of('foo').pipe(storeRawAudio(...params));
-    expect(operator.calledOnce).to.be.true;
+    expect(operator.callCount).to.equal(1);
     expect(operator.getCall(0).args[0]).to.deep.equal({
       s3Bucket: 'mr-bucket',
       s3Key: 'audio/abc/audio.linear16',
@@ -41,7 +41,7 @@ describe('storeRawAudio', () => {
     ];
     const source$ = m.cold('0--1(2|)', fakeBuffers);
     const actual$ = source$.pipe(storeRawAudio(...params));
-    const expected$ = m.cold('0--1(2|)', fakeBuffers);
+    const expected$ = m.cold('0--12', fakeBuffers);
     m.expect(actual$).toBeObservable(expected$);
   }));
 });

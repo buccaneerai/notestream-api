@@ -76,7 +76,7 @@ const linkTagsToWords = () => (words, { entities, matches, tokens }) => {
 
 const nlp = ({
   spacyUrl = process.env.NLP_SERVICE_URL,
-  maxWords = 20,
+  maxWords = 200,
   _stringifyWords = stringifyWords,
   _extractTags = extractTags,
   _linkTagsToWords = linkTagsToWords,

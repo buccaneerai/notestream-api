@@ -13,7 +13,7 @@ const buffers = [
   Buffer.from('xyz'),
 ];
 
-describe('stt', () => {
+describe('stt.fileChunkToSTT', () => {
   it('should pass fileChunks into downstream STT pipelines', marbles(m => {
     const awsOut = [
       {text: 'hello', sttEngine: 'aws'},
@@ -47,22 +47,36 @@ describe('stt', () => {
   }));
 
   it('should properly compose stt pipelines', marbles(m => {
+    const _storeRawSttEvents = sinon.stub().returns(source$ => source$);
     const fileChunk$ = m.cold('0--1--(2|)', buffers);
     const pipelines = {
       deepgram: {
         options: {username: 'foo', password: 'bar'},
-        operator: sinon.stub().returns(mapTo({data: 'deepgram'})),
-        transformer: sinon.stub().returns(mapTo({data: 'deepgramtransformed'})),
+        operator: sinon.stub().returns(
+          source$ => source$.pipe(mapTo({data: 'deepgram'}))
+        ),
+        transformer: sinon.stub().returns(
+          source$ => source$.pipe(mapTo({data: 'deepgramtransformed'}))
+        ),
       },
-      deepspeech: {
-        options: {foo: 'bar'},
-        operator: sinon.stub().returns(mapTo({data: 'deepspeech'})),
+      ibm: {
+        options: {instanceId: 'foo', region: 'us-east', secretAccessToken: 'bar'},
+        operator: sinon.stub().returns(
+          source$ => source$.pipe(mapTo({data: 'watson'}))
+        ),
         transformer: sinon.stub().returns(obs$ => obs$),
       },
       gcp: {options: {}},
     };
-    const reducer = pipelineReducer({fileChunk$, pipelines});
-    const engines = ['deepgram', 'deepspeech'];
+    const params = {
+      fileChunk$,
+      pipelines,
+      _storeRawSttEvents,
+      runId: 'myrunid',
+      saveRawSTT: false,
+    };
+    const reducer = pipelineReducer(params);
+    const engines = ['deepgram', 'ibm'];
     const pipelinesOut = engines.reduce(reducer, []);
     expect(pipelinesOut.length).to.equal(2);
     m.expect(pipelinesOut[0]).toBeObservable(m.cold(
@@ -76,9 +90,9 @@ describe('stt', () => {
     m.expect(pipelinesOut[1]).toBeObservable(m.cold(
       '0--1--(2|)',
       [
-        {data: 'deepspeech', sttEngine: 'deepspeech', i: 0},
-        {data: 'deepspeech', sttEngine: 'deepspeech', i: 1},
-        {data: 'deepspeech', sttEngine: 'deepspeech', i: 2},
+        {data: 'watson', sttEngine: 'ibm', i: 0},
+        {data: 'watson', sttEngine: 'ibm', i: 1},
+        {data: 'watson', sttEngine: 'ibm', i: 2},
       ]
     ));
   }));

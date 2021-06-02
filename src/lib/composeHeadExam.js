@@ -29,7 +29,7 @@ const composeHeadExam = function composeHeadExam({
   findingsWithInput,
   subtitle = 'Head'
 }) {
-  console.log('findings', JSON.stringify(findingsWithInput));
+  // console.log('findings', JSON.stringify(findingsWithInput));
   const descriptors = findingsWithInput.flatMap(
     f => f.verifiedFindings.map(
       vf => parsers[f.code].parse(vf.findingInputCodes, vf.findingInputValues)

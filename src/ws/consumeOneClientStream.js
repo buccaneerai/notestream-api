@@ -8,10 +8,11 @@ const {
   shareReplay,
   take,
   takeUntil,
-  tap
+  tap,
+  toArray
 } = require('rxjs/operators');
 
-const { DISCONNECTION } = require('./producer');
+const { DISCONNECTION, STT_STREAM_STOP } = require('./producer');
 const getStreamConfig = require('./getStreamConfig');
 const createAudioStream = require('./createAudioStream');
 const {fileChunkToSTT} = require('../stt');
@@ -21,6 +22,8 @@ const predictElements = require('../operators/predictElements');
 const createWindows = require('../operators/createWindows');
 const storeRawAudio = require('../storage/storeRawAudio');
 const storeWords = require('../storage/storeWords');
+const storeAllNlp = require('../storage/storeAllNlp');
+const createPredictions = require('../storage/createPredictions');
 
 const consumeOneClientStream = function consumeOneClientStream(
   _createAudioStream = createAudioStream,
@@ -30,6 +33,8 @@ const consumeOneClientStream = function consumeOneClientStream(
   _predictElements = predictElements,
   _storeRawAudio = storeRawAudio,
   _storeWords = storeWords,
+  _storeNlp = storeNlp,
+  _createPredictions = createPredictions,
   _createWindows = createWindows
 ) {
   return connectionStream$ => {
@@ -37,6 +42,9 @@ const consumeOneClientStream = function consumeOneClientStream(
     const disconnect$ = clientStreamSub$.pipe(
       filter(e => e.type === DISCONNECTION),
       trace('ws.DISCONNECTION')
+    );
+    const stop$ = clientStreamSub$.pipe(
+      filter(e => e.type === STT_STREAM_STOP)
     );
     const socket$ = clientStreamSub$.pipe(
       filter(e => e.data.context && e.data.context.socket),
@@ -70,20 +78,40 @@ const consumeOneClientStream = function consumeOneClientStream(
       filter(words => !words),
       share()
     );
-    const nlp$ = combineLatest([config$, stt$]).pipe(
-      filter(([config, sttEvent]) => sttEvent.sttEngine === config.preferredSttEngine),
-      map(([, word]) => word),
-      _nlp(),
-      map(event => ({ ...event, pipeline: 'nlp' })),
-      share()
+    const output$ = combineLatest([config$, noteWindow$]).pipe(
+      mergeMap(([config, [words, noteWindowId]]) => {
+        const nlp$ = of(...words).pipe(
+          _nlp(),
+          map(event => ({...event, pipeline: 'nlp'})),
+          share()
+        );
+        const saveNlp$ = nlp$.pipe(
+          toArray(),
+          mergeMap(nlpEvents => _storeAllNlp())
+        );
+        const predictedElement = nlp$.pipe(
+          // FIXME: this must return {findingCode, strategy, confidence}
+          _predictElements(config, 'runId'),
+          _createPredictions(),
+          map(event => ({ ...event, pipeline: 'predictedElement' }))
+        );
+        return merge(stt$, nlp$, predictedElement$);
+      })
     );
-    const predictedElement$ = nlp$.pipe(
-      _predictElements(),
-      map(event => ({ ...event, pipeline: 'predictedElement' }))
-    );
-    const output$ = merge(stt$, noteWindow$, nlp$, predictedElement$);
+    // const nlp$ = combineLatest([config$, stt$]).pipe(
+    //   filter(([config, sttEvent]) => sttEvent.sttEngine === config.preferredSttEngine),
+    //   map(([, word]) => word),
+    //   _nlp(),
+    //   map(event => ({ ...event, pipeline: 'nlp' })),
+    //   share()
+    // );
+    // const predictedElement$ = nlp$.pipe(
+    //   _predictElements(),
+    //   map(event => ({ ...event, pipeline: 'predictedElement' }))
+    // );
+    // const output$ = merge(stt$, noteWindow$, nlp$, predictedElement$);
     const messageBack$ = combineLatest([socket$, output$]).pipe(
-      takeUntil(disconnect$),
+      takeUntil(merge(disconnect$, stop$)),
       map(([socket, event]) => socket.emit('message', event))
       // map(([socket, event]) => socket.emit('stt-output', event))
     );

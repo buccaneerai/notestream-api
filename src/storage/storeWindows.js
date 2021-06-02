@@ -1,6 +1,6 @@
 const AWS = require('aws-sdk');
 const {from,of,throwError} = require('rxjs');
-const {map,mergeMap,scan,takeLast} = require('rxjs/operators');
+const {map,mapTo,mergeMap,scan,takeLast} = require('rxjs/operators');
 const {toCSV} = require('@buccaneerai/rxjs-csv');
 const {
   createNoteWindow,
@@ -24,16 +24,16 @@ const toS3File = function toS3File({
   s3Bucket,
   s3Key,
   contentType,
-  _putObject = defaultS3Client.putObject,
+  _s3 = defaultS3Client,
 }) {
   return source$ => source$.pipe(
     mergeMap(buffer => from(
-      _putObject({
+      _s3.putObject({
         Bucket: s3Bucket,
         Key: s3Key,
         ContentType: contentType,
         Body: buffer,
-        Tagging: `runId=${runId},windowId=${windowId},dataType=words`,
+        Tagging: `runId=${runId}&windowId=${windowId}&dataType=words`,
       }).promise()
     ))
   );
@@ -70,8 +70,7 @@ const storeWindows = function storeWindows({
       mergeMap(({_id}) => {
         return wordWindow$.pipe(
           _toCSV(),
-          map(csvStrings => csvStrings.reduce((acc, str) => `${acc}${str}`, '')),
-          scan((acc, nextCsvStr) => `${acc}${nextCsvStr}` , ''),
+          scan((acc, nextCsvStr) => `${acc}\n${nextCsvStr}` , ''),
           takeLast(1),
           map(csvStr => Buffer.from(csvStr, 'utf8')),
           _toS3File({
@@ -82,7 +81,8 @@ const storeWindows = function storeWindows({
             contentType: 'text/csv',
           }),
           takeLast(1),
-          mergeMap(() => _updateNoteWindow({docId: _id, set: {}}))
+          mergeMap(() => _updateNoteWindow({docId: _id, set: {}})),
+          mapTo(_id)
         );
       })
     );

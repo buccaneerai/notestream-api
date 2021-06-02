@@ -1,72 +1,66 @@
 const AWS = require('aws-sdk');
-const {from,merge} = require('rxjs');
-const {
-  bufferCount,
-  filter,
-  map,
-  mapTo,
-  mergeMap,
-  scan,
-  share,
-  takeLast,
-  toArray
-} = require('rxjs/operators');
+const {from,of,throwError} = require('rxjs');
+const {map,mergeMap,scan,takeLast} = require('rxjs/operators');
 const {toCSV} = require('@buccaneerai/rxjs-csv');
 
 const defaultOptions = {
   s3Bucket: process.env.S3_DATA_STORAGE_BUCKET,
   prefixDir: process.env.S3_JOB_STORAGE_DIR,
-  bufferSize: 50,
 };
 
 const defaultS3Client = new AWS.S3();
 
 const toS3File = function toS3File({
   runId,
+  noteWindowId,
   s3Bucket,
   s3Key,
   contentType,
-  _putObject = defaultS3Client.putObject,
+  _s3 = defaultS3Client,
 }) {
   return source$ => source$.pipe(
     mergeMap(buffer => from(
-      _putObject({
+      _s3.putObject({
         Bucket: s3Bucket,
         Key: s3Key,
         ContentType: contentType,
         Body: buffer,
-        Tagging: `runId=${runId}`
+        Tagging: `runId=${runId}&noteWindowId=${noteWindowId}&dataType=nlp`,
       }).promise()
     ))
   );
 };
 
-const storeWords = function storeWords({
+const storeAllNlp = function storeAllNlp({
   runId,
+  windowIndex,
+  startTime,
+  endTime,
   options = {},
+  _createNoteWindow = createNoteWindow,
+  _updateNoteWindow = updateNoteWindow,
   _toCSV = toCSV,
   _toS3File = toS3File
 }) {
   const config = {...defaultOptions, ...options};
-  return word$ => {
-    const wordSub$ = word$.pipe(share());
-    const s3Out$ = wordSub$.pipe(
+  return nlpEvents$ => {
+    nlpEvents$.pipe(
+      mergeMap(nlpEvents => of(...nlpEvents)),
       _toCSV(),
-      toArray(),
-      map(csvStrings => csvStrings.reduce((acc, str) => `${acc}${str}`, '')),
-      scan((acc, nextCsvStr) => `${acc}${nextCsvStr}` , ''),
-      // takeLast(1),
+      scan((acc, nextCsvStr) => `${acc}\n${nextCsvStr}` , ''),
+      takeLast(1),
       map(csvStr => Buffer.from(csvStr, 'utf8')),
       _toS3File({
         runId,
-        s3Key: `${config.prefixDir}/${runId}/words.csv`,
+        noteWindowId: _id,
         s3Bucket: config.s3Bucket,
+        s3Key: `${config.prefixDir}/${runId}/note-windows/${_id}-nlp.csv`,
         contentType: 'text/csv',
       }),
-      mapTo(1)
+      takeLast(1),
     );
-    return merge(wordSub$, s3Out$).pipe(filter(d => d !== 1));
+    return storage$;
   };
 };
 
-module.exports = storeWords;
+module.exports = storeAllNlp;

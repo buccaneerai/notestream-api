@@ -20,16 +20,16 @@ const toS3File = function toS3File({
   s3Bucket,
   s3Key,
   contentType,
-  _putObject = defaultS3Client.putObject,
+  _s3 = defaultS3Client,
 }) {
   return source$ => source$.pipe(
     mergeMap(buffer => from(
-      _putObject({
+      _s3.putObject({
         Bucket: s3Bucket,
         Key: s3Key,
         ContentType: contentType,
         Body: buffer,
-        Tagging: `audioFileId=${audioFileId},runId=${runId}`
+        Tagging: `audioFileId=${audioFileId}&runId=${runId}`
       }).promise()
     ))
   );
@@ -39,12 +39,13 @@ const storeRawAudio = function storeRawAudio({
   audioFileId,
   runId,
   options = {},
+  encoding = 'linear16',
   _toS3File = toS3File
 }) {
   const config = {...defaultOptions, ...options};
   if (!config.s3Bucket) return () => throwError(errors.bucketRequired());
   if (!config.prefixDir) return () => throwError(errors.prefixDirRequired());
-  const s3Key = `${config.prefixDir}/${runId}/audio.linear16`;
+  const s3Key = `${config.prefixDir}/${runId}/audio.${encoding}`;
   return buffer$ => {
     const bufferSub$ = buffer$.pipe(share());
     const storage$ = bufferSub$.pipe(
