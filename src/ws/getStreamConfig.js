@@ -3,7 +3,7 @@ const Joi = require('joi');
 const omit = require('lodash/omit');
 const {of,throwError,zip} = require('rxjs');
 const {filter, map, mergeMap, shareReplay, tap, take} = require('rxjs/operators');
-const {createRun} = require('@buccaneerai/graphql-sdk');
+const {client} = require('@buccaneerai/graphql-sdk');
 
 const {NEW_STT_STREAM} = require('./producer');
 
@@ -62,10 +62,15 @@ const validateAndParseResponse = response => (
   : throwError(errors.invalidGraphQLResponse(response))
 );
 
+const gql = (url = process.env.GRAPHQL_URL, token = process.env.JWT_TOKEN) => (
+  client({url, token})
+);
+
 const getStreamConfig = function getStreamConfig({
   _validate = validate(),
-  _createRun = createRun
+  _createRun = gql().createRun,
 } = {}) {
+  const gql = client({url, token});
   return stream$ => stream$.pipe(
     filter(eventIsNewSTTStream),
     take(1),

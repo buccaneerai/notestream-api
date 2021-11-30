@@ -1,7 +1,7 @@
 const get = require('lodash/get');
 const { throwError } = require('rxjs');
 const {map,mergeMap} = require('rxjs/operators');
-const {findAudioFiles} = require('@buccaneerai/graphql-sdk');
+const {client} = require('@buccaneerai/graphql-sdk');
 
 const streamS3Audio = require('../operators/streamS3Audio');
 const ingestAudioFromClient = require('./ingestAudioFromClient');
@@ -10,9 +10,13 @@ const errors = {
   audioFileDNE: () => new Error('audio file does not exist'),
 };
 
+const gql = (url = process.env.GRAPHQL_URL, token = process.env.JWT_TOKEN) => (
+  client({url, token})
+);
+
 const createInputStream = function createInputStream(
   config,
-  _findAudioFiles = findAudioFiles
+  _findAudioFiles = gql().findAudioFiles,
 ) {
   return clientStream$ => {
     switch (config.inputType) {

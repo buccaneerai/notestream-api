@@ -2,10 +2,7 @@ const AWS = require('aws-sdk');
 const {from,of,throwError} = require('rxjs');
 const {map,mapTo,mergeMap,scan,takeLast} = require('rxjs/operators');
 const {toCSV} = require('@buccaneerai/rxjs-csv');
-const {
-  createNoteWindow,
-  updateNoteWindow
-} = require('@buccaneerai/graphql-sdk');
+const {client} = require('@buccaneerai/graphql-sdk');
 
 const defaultOptions = {
   s3Bucket: process.env.S3_DATA_STORAGE_BUCKET,
@@ -39,14 +36,19 @@ const toS3File = function toS3File({
   );
 };
 
+const gql = (url = process.env.GRAPHQL_URL, token = process.env.JWT_TOKEN) => (
+  client({url, token})
+);
+
+
 const storeWindows = function storeWindows({
   runId,
   windowIndex,
   startTime,
   endTime,
   options = {},
-  _createNoteWindow = createNoteWindow,
-  _updateNoteWindow = updateNoteWindow,
+  _createNoteWindow = gql().createNoteWindow,
+  _updateNoteWindow = gql().updateNoteWindow,
   _toCSV = toCSV,
   _toS3File = toS3File
 }) {
