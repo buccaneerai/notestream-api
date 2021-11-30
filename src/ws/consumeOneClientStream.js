@@ -9,32 +9,28 @@ const {
   take,
   takeUntil,
   tap,
-  toArray
 } = require('rxjs/operators');
 
 const { DISCONNECTION, STT_STREAM_STOP } = require('./producer');
 const getStreamConfig = require('./getStreamConfig');
 const createAudioStream = require('./createAudioStream');
-const {fileChunkToSTT} = require('../stt');
-const nlp = require('../operators/nlp');
+const toSTT = require('../operators/toSTT');
+// const nlp = require('../operators/nlp');
 const trace = require('../operators/trace');
-const predictElements = require('../operators/predictElements');
+// const predictElements = require('../operators/predictElements');
 const createWindows = require('../operators/createWindows');
 const storeRawAudio = require('../storage/storeRawAudio');
-const storeWords = require('../storage/storeWords');
-const storeAllNlp = require('../storage/storeAllNlp');
-const createPredictions = require('../storage/createPredictions');
+// const storeWords = require('../storage/storeWords');
+// const createPredictions = require('../storage/createPredictions');
 
 const consumeOneClientStream = function consumeOneClientStream(
   _createAudioStream = createAudioStream,
-  _stt = fileChunkToSTT,
-  _nlp = nlp,
+  _toSTT = toSTT,
   _getStreamConfig = getStreamConfig,
-  _predictElements = predictElements,
+  // _predictElements = predictElements,
   _storeRawAudio = storeRawAudio,
-  _storeWords = storeWords,
-  _storeNlp = storeNlp,
-  _createPredictions = createPredictions,
+  // _storeNlp = storeNlp,
+  // _createPredictions = createPredictions,
   _createWindows = createWindows
 ) {
   return connectionStream$ => {
@@ -46,6 +42,7 @@ const consumeOneClientStream = function consumeOneClientStream(
     const stop$ = clientStreamSub$.pipe(
       filter(e => e.type === STT_STREAM_STOP)
     );
+    const end$ = merge(disconnect$, stop$).pipe(share());
     const socket$ = clientStreamSub$.pipe(
       filter(e => e.data.context && e.data.context.socket),
       map(e => e.data.context.socket),
@@ -65,8 +62,21 @@ const consumeOneClientStream = function consumeOneClientStream(
             ? _storeRawAudio(pick(config, 'runId', 'audioFileId'))
             : tap(null)
           ),
-          _stt(pick(config, 'runId', 'sttEngines', 'saveRawSTT', 'saveWords')),
-          config.saveWords ? _storeWords({runId: config.runId}) : tap(null),
+          _toSTT({
+            stop$: end$,
+            ...pick(
+              config,
+              'streamId',
+              'audioFileId',
+              'inputType',
+              'runId',
+              'sttEngines',
+              'ensemblers',
+              'ensemblerOptions',
+              'saveRawSTT',
+              'saveWords'
+            )
+          })
         )
       ),
       map(event => ({ ...event, pipeline: 'stt' })),
@@ -80,40 +90,28 @@ const consumeOneClientStream = function consumeOneClientStream(
     );
     const output$ = combineLatest([config$, noteWindow$]).pipe(
       mergeMap(([config, [words, noteWindowId]]) => {
-        const nlp$ = of(...words).pipe(
-          _nlp(),
-          map(event => ({...event, pipeline: 'nlp'})),
-          share()
-        );
-        const saveNlp$ = nlp$.pipe(
-          toArray(),
-          mergeMap(nlpEvents => _storeAllNlp())
-        );
-        const predictedElement = nlp$.pipe(
-          // FIXME: this must return {findingCode, strategy, confidence}
-          _predictElements(config, 'runId'),
-          _createPredictions(),
-          map(event => ({ ...event, pipeline: 'predictedElement' }))
-        );
-        return merge(stt$, nlp$, predictedElement$);
+        // const nlp$ = of(...words).pipe(
+        //   _nlp(),
+        //   map(event => ({...event, pipeline: 'nlp'})),
+        //   share()
+        // );
+        // const saveNlp$ = nlp$.pipe(
+        //   toArray(),
+        //   mergeMap(nlpEvents => _storeAllNlp())
+        // );
+        // const predictedElement = nlp$.pipe(
+        //   // FIXME: this must return {findingCode, strategy, confidence}
+        //   _predictElements(config, 'runId'),
+        //   _createPredictions(),
+        //   map(event => ({ ...event, pipeline: 'predictedElement' }))
+        // );
+        // return merge(stt$, nlp$, predictedElement$);
+        return stt$;
       })
     );
-    // const nlp$ = combineLatest([config$, stt$]).pipe(
-    //   filter(([config, sttEvent]) => sttEvent.sttEngine === config.preferredSttEngine),
-    //   map(([, word]) => word),
-    //   _nlp(),
-    //   map(event => ({ ...event, pipeline: 'nlp' })),
-    //   share()
-    // );
-    // const predictedElement$ = nlp$.pipe(
-    //   _predictElements(),
-    //   map(event => ({ ...event, pipeline: 'predictedElement' }))
-    // );
-    // const output$ = merge(stt$, noteWindow$, nlp$, predictedElement$);
     const messageBack$ = combineLatest([socket$, output$]).pipe(
-      takeUntil(merge(disconnect$, stop$)),
+      takeUntil(end$),
       map(([socket, event]) => socket.emit('message', event))
-      // map(([socket, event]) => socket.emit('stt-output', event))
     );
     return messageBack$;
   };
