@@ -24,11 +24,13 @@ const schema = Joi.object({
     .min(7)
     .when('inputType', {is: 's3File', then: Joi.required()}),
   sttEngines: Joi.array()
-    .default(getSttEngines())
-    .items(Joi.string().allow(...getSttEngines())),
-  preferredSttEngine: Joi.string()
-    .allow(...getSttEngines())
-    .default('deepspeech'), // FIXME - this should be a smarter method
+    .items(Joi.string().allow(...getSttEngines()))
+    .default(['aws-medical', 'gcp', 'ibm', 'deepgram']),
+  ensemblers: Joi.array()
+    .items(Joi.string())
+    .default(['tfEnsembler']),
+  ensemblerOptions: Joi.object()
+    .default({baselineSTTEngine: 'aws-medical'}),
   channels: Joi.number().integer().default(1).allow(1),
   sampleRate: Joi.number().integer().default(16000).allow(16000),
   audioEncoding: Joi.string().allow(['LINEAR16']).default('LINEAR16'),
