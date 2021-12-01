@@ -64,6 +64,6 @@
     "test:debug": "START_SERVER=false mocha \"./{,!(node_modules)/**/}*.test.js\" --exit",
     "aws:ecr:createtoken": "node ./scripts/getEcrToken",
     "aws:ecs:update": "node ./scripts/redeploy",
-    "notestream": "node ./scripts/notestream/index.js"
+    "cli": "node ./scripts/notestream/index.js"
   }
 }
