@@ -46,10 +46,10 @@
     rxjs "^6.5.4"
     socket.io-client "^2.3.0"
 
-"@buccaneerai/graphql-sdk@^2.17.0":
-  version "2.17.0"
-  resolved "https://npm.pkg.github.com/download/@buccaneerai/graphql-sdk/2.17.0/bea5b59a8948ae1c784109490f881e127dd9ea9629098a1f00cc83fef117d0ff#70d5f5724ac0521cfc6aeba5b17919657a9b619f"
-  integrity sha512-9HgqqwmOH3LS4pQBE7Bxjm9Ghf0ssYKKchvIy2H2nrdrsCXd0Kp028dXi+acJ8N7YJPyWRch/tJBtblPsGCANQ==
+"@buccaneerai/graphql-sdk@^2.18.0":
+  version "2.18.0"
+  resolved "https://npm.pkg.github.com/download/@buccaneerai/graphql-sdk/2.18.0/787d60608e6032395850c75e739ce84e0ac8488a34c1c369a7c1a7440e54dae9#87d80b5930c744f5accd11a22fb017d934e618c7"
+  integrity sha512-qDPA7IDJJrkWTbN6GVPetxaL+vJ4Kk99v/unWdj7J32H8OtxNkbPeE5oeIr+fT903/o8RgR5HIL6W3XTM16ZiQ==
   dependencies:
     graphql "^15.5.0"
     graphql-request "^3.4.0"
