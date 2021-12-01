@@ -20,11 +20,11 @@ const eventResolvers = {
     return obs.complete();
   },
   stop: (context, obs) => obs.next({type: STT_STREAM_STOP, data: { context }}),
-  'new-stt-stream': (context, obs, json) =>
+  'new-stream': (context, obs, json) =>
     obs.next({ type: NEW_STT_STREAM, data: { ...json, context } }),
-  'next-stt-chunk': (context, obs, [json, chunk]) =>
+  'next-chunk': (context, obs, [json, chunk]) =>
     obs.next({ type: NEXT_AUDIO_CHUNK, data: { chunk, data: json, context } }),
-  'stt-stream-complete': (context, obs, json) =>
+  complete: (context, obs, json) =>
     obs.next({ type: STT_STREAM_DONE, data: { ...json, context } }),
   volatile: (context, obs) => obs.next({ type: VOLATILE, data: { context } }),
   error: (context, obs, err) => obs.error(err),
