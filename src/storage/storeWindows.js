@@ -44,6 +44,8 @@ const gql = (url = process.env.GRAPHQL_URL, token = process.env.JWT_TOKEN) => (
 const storeWindows = function storeWindows({
   runId,
   windowIndex,
+  start,
+  end,
   startTime,
   endTime,
   options = {},
@@ -57,6 +59,8 @@ const storeWindows = function storeWindows({
     const doc = {
       runId,
       windowIndex,
+      start,
+      end,
       timeStarted: startTime,
       timeEnded: endTime,
       wordsUploaded: false,
