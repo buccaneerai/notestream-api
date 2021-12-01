@@ -4,15 +4,17 @@ const {
   delay,
   filter,
   map,
-  mapTo
+  mapTo,
+  tap
 } = require('rxjs/operators');
 const randomstring = require('randomstring');
 
 const {conduit} = require('@buccaneerai/rxjs-socketio');
+// const trace = require('./trace');
 
 const makeStreamId = () => randomstring.generate(7)
 
-const mapMessageToWord = () => message => get(message, 'word', null);
+const mapResponseToWord = () => response => get(response, 'message', null);
 
 const toSTT = ({
   streamId,
@@ -71,12 +73,9 @@ const toSTT = ({
     lastMessage$
   );
   const messageOut$ = message$.pipe(_conduit(conduitOptions));
-  const word$ = messageOut$.pipe(
-    map(mapMessageToWord()),
-    filter(w => !!w)
-  );
+  const word$ = messageOut$.pipe(map(mapResponseToWord()));
   return word$;
 };
 
 module.exports = toSTT;
-module.exports.testExports = {mapMessageToWord};
+module.exports.testExports = {mapResponseToWord};

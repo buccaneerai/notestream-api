@@ -4,11 +4,11 @@ const {marbles} = require('rxjs-marbles/mocha');
 const {tap} = require('rxjs/operators');
 
 const toSTT = require('./toSTT');
-const {mapMessageToWord} = toSTT.testExports;
+const {mapResponseToWord} = toSTT.testExports;
 
-const fakeMessages = [
-  {word: {text: 'foo', start: 0, end: 0.5, sttEngine: 'aws'}},
-  {word: {text: 'foo', start: 0, end: 0.5, sttEngine: 'gcp'}},
+const fakeResponses = [
+  {message: {text: 'foo', start: 0, end: 0.5, sttEngine: 'aws'}, topic: 'message'},
+  {message: {text: 'foo', start: 0, end: 0.5, sttEngine: 'gcp'}, topic: 'message'},
 ];
 
 describe('toSTT', () => {
@@ -17,14 +17,14 @@ describe('toSTT', () => {
   });
 
   it('should map API responses to word objects', () => {
-    const actual = mapMessageToWord()(fakeMessages[0]);
-    const expected = fakeMessages[0].word;
+    const actual = mapResponseToWord()(fakeResponses[0]);
+    const expected = fakeResponses[0].message;
     expect(actual).to.equal(expected);
   });
 
   it('should return correct output stream given valid input stream', marbles(m => {
     const source$ = m.cold('----|', []);
-    const fakeOut$ = m.cold('-0-1--|', fakeMessages);
+    const fakeOut$ = m.cold('-0-1--|', fakeResponses);
     const params = {
       streamId: 'fakestream',
       runId: 'fakerun',
@@ -38,7 +38,7 @@ describe('toSTT', () => {
       _conduit: sinon.stub().returns(source$ => fakeOut$),
     };
     const out$ = source$.pipe(toSTT(params));
-    const expected$ = m.cold('-0-1--|', fakeMessages.map(m => m.word));
+    const expected$ = m.cold('-0-1--|', fakeResponses.map(r => r.message));
     m.expect(out$).toBeObservable(expected$);
   }));
 });
