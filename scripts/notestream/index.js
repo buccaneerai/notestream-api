@@ -39,7 +39,7 @@ program
   .option('-u, --url <url>', 'url of server',`http://localhost:${process.env.PORT}`)
   .option('-a, --token <token>', 'JWT token', process.env.JWT_TOKEN)
   .option('--stt-engines <sttEngines...>', 'stt engines to use', ['aws-medical', 'gcp', 'ibm'])
-  .option('--ensemblers <ensemblers...>', 'ensemblers to use', null)
+  .option('--ensemblers <ensemblers...>', 'ensemblers to use')
   .option('--save-words', 'whether to store word output', true)
   .option('--save-raw-stt', 'whether to store raw STT ooutput', true)
   .option('--save-windows', 'whether to save note windows', true)
