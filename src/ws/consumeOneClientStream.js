@@ -89,7 +89,7 @@ const consumeOneClientStream = function consumeOneClientStream(
       share()
     );
     const output$ = combineLatest([config$, noteWindow$]).pipe(
-      mergeMap(([config, [words, noteWindowId]]) => {
+      // mergeMap(([config, [words, noteWindowId]]) => {
         // const nlp$ = of(...words).pipe(
         //   _nlp(),
         //   map(event => ({...event, pipeline: 'nlp'})),
@@ -106,8 +106,9 @@ const consumeOneClientStream = function consumeOneClientStream(
         //   map(event => ({ ...event, pipeline: 'predictedElement' }))
         // );
         // return merge(stt$, nlp$, predictedElement$);
-        return stt$;
-      })
+      //   return stt$;
+      // })
+      mergeMap(() => stt$)
     );
     const messageBack$ = combineLatest([socket$, output$]).pipe(
       takeUntil(end$),
