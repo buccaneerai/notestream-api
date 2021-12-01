@@ -36,10 +36,10 @@ const schema = Joi.object({
   audioEncoding: Joi.string().allow(['LINEAR16']).default('LINEAR16'),
   context: Joi.object(),
   useRealtime: Joi.boolean().default(true),
-  saveRawAudio: Joi.boolean().default(false),
-  saveRawSTT: Joi.boolean().default(false),
-  saveWords: Joi.boolean().default(false),
-  saveWindows: Joi.boolean().default(false),
+  saveRawAudio: Joi.boolean().default(true),
+  saveRawSTT: Joi.boolean().default(true),
+  saveWords: Joi.boolean().default(true),
+  saveWindows: Joi.boolean().default(true),
   windowLength: Joi.number().integer().default(20000),
   windowTimeoutInterval: Joi.number().integer().default(15000),
 });
@@ -70,7 +70,6 @@ const getStreamConfig = function getStreamConfig({
   _validate = validate(),
   _createRun = gql().createRun,
 } = {}) {
-  const gql = client({url, token});
   return stream$ => stream$.pipe(
     filter(eventIsNewSTTStream),
     take(1),
