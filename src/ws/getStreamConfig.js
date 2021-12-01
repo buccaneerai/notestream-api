@@ -8,7 +8,7 @@ const {client} = require('@buccaneerai/graphql-sdk');
 const {NEW_STT_STREAM} = require('./producer');
 
 const getSttEngines = () => ['deepspeech', 'gcp', 'aws', 'awsmed', 'deepgram'];
-const getInputTypes = () => ['s3File'];
+const getInputTypes = () => ['s3File', 'audioStream'];
 
 const errors = {
   invalidConfig: validationError => new Error(validationError),
@@ -31,6 +31,7 @@ const schema = Joi.object({
     .default(['tfEnsembler']),
   ensemblerOptions: Joi.object()
     .default({baselineSTTEngine: 'aws-medical'}),
+  sendSTTOutput: Joi.boolean().default(false),
   channels: Joi.number().integer().default(1).allow(1),
   sampleRate: Joi.number().integer().default(16000).allow(16000),
   audioEncoding: Joi.string().allow(['LINEAR16']).default('LINEAR16'),

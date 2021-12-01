@@ -26,6 +26,7 @@ const sampleConfig = {
   ensemblers: ['tfEnsembler'],
   ensemblerOptions: {baselineSTTEngine: 'aws-medical'},
   // preferredSttEngine: 'deepspeech',
+  sendSTTOutput: false,
   useRealtime: true,
   saveRawAudio: true,
   saveRawSTT: true,
