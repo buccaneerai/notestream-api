@@ -12,7 +12,7 @@ const {
 } = require('rxjs/operators');
 
 const storeWindows = require('../storage/storeWindows');
-const trace = require('../operators/trace');
+// const trace = require('../operators/trace');
 
 const createWindows = function createWindows({
   runId,
@@ -50,6 +50,8 @@ const createWindows = function createWindows({
               windowLength,
               windowTimeoutInterval,
               windowIndex: i,
+              start: i * windowLength / 1000,
+              end: (i + 1) * windowLength / 1000,
               startTime: i * windowLength,
               endTime: (i + 1) * windowLength
             })
