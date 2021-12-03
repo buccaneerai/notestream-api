@@ -2,7 +2,7 @@
 const Joi = require('joi');
 const omit = require('lodash/omit');
 const {of,throwError,zip} = require('rxjs');
-const {filter, map, mergeMap, shareReplay, tap, take} = require('rxjs/operators');
+const {filter, map, mergeMap, shareReplay, take} = require('rxjs/operators');
 const {client} = require('@buccaneerai/graphql-sdk');
 
 const {NEW_STT_STREAM} = require('./producer');

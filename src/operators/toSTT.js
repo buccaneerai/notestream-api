@@ -4,8 +4,7 @@ const {
   delay,
   filter,
   map,
-  mapTo,
-  tap
+  mapTo
 } = require('rxjs/operators');
 const randomstring = require('randomstring');
 
