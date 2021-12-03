@@ -1,7 +1,7 @@
-import {of,timer} from 'rxjs';
-import {mapTo,mergeMap,scan} from 'rxjs/operators';
+const {of,timer} = require('rxjs');
+const {mapTo,mergeMap,scan} = require('rxjs/operators');
 
-import downloadS3File from './downloadS3File';
+const downloadS3File = require('./downloadS3File');
 
 const streamS3Audio = ({
   s3Key,
@@ -24,4 +24,4 @@ const streamS3Audio = ({
   return audioChunk$;
 };
 
-export default streamS3Audio;
+module.exports = streamS3Audio;

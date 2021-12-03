@@ -1,10 +1,10 @@
-// import {expect} from 'chai';
-// import {of} from 'rxjs';
-// import sinon from 'sinon';
-// import {finalize, tap} from 'rxjs/operators';
-// import {marbles,observe} from 'rxjs-marbles/mocha';
+// import {expect} = require('chai');
+// import {of} = require('rxjs');
+// import sinon = require('sinon');
+// import {finalize, tap} = require('rxjs/operators');
+// import {marbles,observe} = require('rxjs-marbles/mocha');
 
-// import predictPhysicalExamElements, {defaultTemplates} from './predictPhysicalExamElements';
+// import predictPhysicalExamElements, {defaultTemplates} = require('./predictPhysicalExamElements';
 
 // describe('predictPhysicalExamElements', () => {
 //   it('should output correct physical exams when given valid predictions', observe(() => {

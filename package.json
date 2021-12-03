@@ -6,17 +6,11 @@
   "license": "UNLICENSED",
   "private": true,
   "devDependencies": {
-    "@babel/cli": "^7.4.3",
-    "@babel/core": "^7.4.3",
-    "@babel/node": "^7.2.2",
-    "@babel/polyfill": "^7.4.3",
-    "@babel/preset-env": "^7.4.3",
-    "@babel/register": "^7.4.0",
-    "babel-eslint": "^10.0.1",
+    "@bottlenose/rxsocketio": "^0.7.0",
     "chai": "^4.2.0",
     "commander": "^6.1.0",
     "csv-parse": "^4.14.1",
-    "eslint": "^5.11.0",
+    "eslint": "^7.22.0",
     "eslint-config-airbnb": "^17.1.0",
     "eslint-config-prettier": "^6.12.0",
     "eslint-plugin-import": "^2.14.0",
@@ -30,10 +24,10 @@
     "sinon": "^7.2.2"
   },
   "dependencies": {
-    "@buccaneerai/stt-aws": "^2.0.0",
-    "@buccaneerai/stt-deepgram": "^2.0.0",
-    "@buccaneerai/stt-deepspeech": "^0.9.0",
-    "@buccaneerai/stt-gcp": "^0.9.0",
+    "@buccaneerai/graphql-sdk": "^2.18.0",
+    "@buccaneerai/rxjs-csv": "^2.0.0",
+    "@buccaneerai/rxjs-s3": "^1.0.0",
+    "@buccaneerai/rxjs-socketio": "^2.0.0",
     "aws-sdk": "^2.438.0",
     "bcrypt": "^3.0.5",
     "cors": "^2.8.5",
@@ -60,15 +54,16 @@
     "winston": "^3.1.0"
   },
   "scripts": {
-    "build": "rm -rf ./build/* && babel ./src -d ./build --source-maps --ignore test.js ",
-    "dev": "npx babel-node ./src/index.js --presets @babel/preset-env",
-    "debug": "babel-node debug ./src/index.js --presets @babel/preset-env --inspect",
+    "start": "node src/index.js",
+    "dev": "npx nodemon ./src/index.js",
+    "debug": "npx nodemon debug ./src/index.js --inspect",
     "lint": "eslint -c .eslintrc ./src",
-    "start": "node build/index.js",
     "jwt:createadmintoken": "node ./scripts/generateTempAdminToken",
     "jwt:createsecret": "node ./scripts/createJwtSecret",
-    "test": "START_SERVER=false SUPPRESS_LOGS=1 mocha --require @babel/register --require @babel/polyfill ./src/*.test.js ./src/**/*.test.js --exit --require source-map-support",
+    "test": "START_SERVER=false SUPPRESS_LOGS=1 mocha \"./{,!(node_modules)/**/}*.test.js\" --exit",
+    "test:debug": "START_SERVER=false mocha \"./{,!(node_modules)/**/}*.test.js\" --exit",
     "aws:ecr:createtoken": "node ./scripts/getEcrToken",
-    "aws:ecs:update": "node ./scripts/redeploy"
+    "aws:ecs:update": "node ./scripts/redeploy",
+    "cli": "node ./scripts/notestream/index.js"
   }
 }

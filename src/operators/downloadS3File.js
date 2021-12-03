@@ -1,6 +1,6 @@
-import AWS from 'aws-sdk';
-import {BehaviorSubject,from,of,zip} from 'rxjs';
-import {map,mergeMap,tap} from 'rxjs/operators';
+const AWS = require('aws-sdk');
+const {BehaviorSubject,from,of,zip} = require('rxjs');
+const {map,mergeMap,tap} = require('rxjs/operators');
 
 const s3Client = new AWS.S3({region: process.env.AWS_REGION});
 
@@ -46,5 +46,5 @@ const download = ({
   return fileChunk$;
 };
 
-export const testExports = {downloadBytes, pump};
-export default download;
+module.exports = download;
+module.exports.testExports = {downloadBytes, pump};

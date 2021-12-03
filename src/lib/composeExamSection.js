@@ -1,6 +1,6 @@
-import get from 'lodash/get';
+const get = require('lodash/get');
 
-import composeHeadExam from './composeHeadExam';
+const composeHeadExam = require('./composeHeadExam');
 
 const bodySystems = {
   constitutional: {
@@ -112,4 +112,4 @@ const composeExamSection = function composeExamSection({
   return data;
 };
 
-export default composeExamSection;
+module.exports = composeExamSection;

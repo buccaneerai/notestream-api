@@ -1,4 +1,4 @@
-import jwt from 'jsonwebtoken';
+const jwt = require('jsonwebtoken');
 
 const authenticator = function authenticator(
   socket,
@@ -17,4 +17,4 @@ const authenticator = function authenticator(
   return next(new Error('Unauthorized'));
 };
 
-export default authenticator;
+module.exports = authenticator;

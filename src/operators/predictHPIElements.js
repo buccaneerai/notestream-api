@@ -1,7 +1,7 @@
-import { of } from 'rxjs';
-import { map } from 'rxjs/operators';
+const { of } = require('rxjs');
+const { map } = require('rxjs/operators');
 
-export const defaultElements = [
+const defaultElements = [
   {
     name: 'HPI - Location',
     description: 'AKA region. Example: left leg',
@@ -194,4 +194,5 @@ const predictHPIElements = () =>
     }))
   );
 
-export default predictHPIElements;
+module.exports = predictHPIElements;
+module.exports.defaultElements = defaultElements;

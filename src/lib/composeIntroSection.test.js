@@ -1,6 +1,6 @@
-import {expect} from 'chai';
+const {expect} = require('chai');
 
-import composeIntroSection from './composeIntroSection';
+const composeIntroSection = require('./composeIntroSection');
 
 describe('composeIntroSection', () => {
   it('should return a correct paragraph when given valid input', () => {

@@ -1,10 +1,10 @@
-import { from } from 'rxjs';
-// import { ajax } from 'rxjs/ajax';
-// import {catchError} from 'rxjs/operators';
-import { GraphQLClient } from 'graphql-request';
+const { from } = require('rxjs');
+// import { ajax } = require('rxjs/ajax');
+// import {catchError} = require('rxjs/operators');
+const { GraphQLClient } = require('graphql-request');
 
-import config from '../utils/config';
-// import trace from '../operators/trace';
+const config = require('../utils/config');
+// import trace = require('../operators/trace');
 
 const graphqlClient = () => {
   // const token = _getState().getState().users.token;
@@ -21,4 +21,4 @@ function graphqlRequest(query, variables = null) {
   return res$;
 }
 
-export default graphqlRequest;
+module.exports = graphqlRequest;

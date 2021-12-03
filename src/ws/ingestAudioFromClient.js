@@ -1,7 +1,7 @@
-import {concat,of} from 'rxjs';
-import {filter,map,share} from 'rxjs/operators';
+const {concat,of} = require('rxjs');
+const {filter,map,share} = require('rxjs/operators');
 
-import {NEXT_AUDIO_CHUNK,STT_STREAM_DONE,NEW_STT_STREAM} from './producer';
+const {NEXT_AUDIO_CHUNK,STT_STREAM_DONE,NEW_STT_STREAM} = require('./producer');
 
 const ingestAudioFromClient = () => {
   // in theory, a websocket can broadcast multiple audio streams, either
@@ -39,4 +39,4 @@ const ingestAudioFromClient = () => {
   };
 };
 
-export default ingestAudioFromClient;
+module.exports = ingestAudioFromClient;

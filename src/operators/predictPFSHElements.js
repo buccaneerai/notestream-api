@@ -1,7 +1,7 @@
-import { of } from 'rxjs';
-import { map } from 'rxjs/operators';
+const { of } = require('rxjs');
+const { map } = require('rxjs/operators');
 
-export const defaultElements = [
+const defaultElements = [
   {
     name: 'Exercise Habits',
     description: 'Exercise habits of the patient',
@@ -34,4 +34,5 @@ const predictPFSHElements = () => () =>
     }))
   );
 
-export default predictPFSHElements;
+module.exports = predictPFSHElements;
+module.exports.defaultElements = defaultElements;

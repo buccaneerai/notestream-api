@@ -1,10 +1,10 @@
-import {expect} from 'chai';
-import sinon from 'sinon';
-import {observe} from 'rxjs-marbles/mocha';
-import {of} from 'rxjs';
-import {finalize} from 'rxjs/operators';
+const {expect} = require('chai');
+const sinon = require('sinon');
+const {observe} = require('rxjs-marbles/mocha');
+const {of} = require('rxjs');
+const {finalize} = require('rxjs/operators');
 
-import trace from './trace';
+const trace = require('./trace');
 
 describe('trace', () => {
   it('should log the data that passes through the observable', observe(() => {

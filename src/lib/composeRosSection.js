@@ -1,4 +1,4 @@
-import get from 'lodash/get';
+const get = require('lodash/get');
 
 const bodySystems = {
   constitutional: {
@@ -128,4 +128,4 @@ const composeRosSection = function composeRosSection({
   return data;
 };
 
-export default composeRosSection;
+module.exports = composeRosSection;

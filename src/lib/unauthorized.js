@@ -1,7 +1,7 @@
-import { throwError } from 'rxjs';
+const { throwError } = require('rxjs');
 
 const unauthorized = function unauthorized() {
   return throwError(new Error('unauthorized'));
 };
 
-export default unauthorized;
+module.exports = unauthorized;

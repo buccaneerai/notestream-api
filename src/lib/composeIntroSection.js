@@ -21,4 +21,4 @@ const composeIntroSection = ({
   return {paragraphs: [{body: paragraph, subtitle: null}], bullets: []};
 };
 
-export default composeIntroSection;
+module.exports = composeIntroSection;
