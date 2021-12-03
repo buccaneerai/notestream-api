@@ -11,10 +11,10 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-      - name: Use node.js 15
+      - name: Use node.js 16
         uses: actions/setup-node@v1
         with:
-          node-version: '15.x'
+          node-version: '16.x'
           registry-url: 'https://npm.pkg.github.com/'
           scope: '@buccaneerai'
           always-auth: true
@@ -22,6 +22,8 @@ jobs:
         run: yarn install
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
+      - name: Setup test environment
+        run: cp local.env .env
       - name: Run tests
         run: JWT_SECRET=alohomora yarn test
       - name: copy .npmrc (so Docker can install private npm packages)
