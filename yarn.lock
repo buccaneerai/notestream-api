@@ -56,10 +56,10 @@
     lodash "^4.17.20"
     rxjs "^6.6.3"
 
-"@buccaneerai/rxjs-csv@^2.0.0":
-  version "2.0.0"
-  resolved "https://npm.pkg.github.com/download/@buccaneerai/rxjs-csv/2.0.0/8d6a2a9b60fa0ba1671394952868b6e84e1293d680eb0cac3f565f359e59bd4b#abf3ec799c439086ae5a53b32fefaaea17af075f"
-  integrity sha512-63oIgCWoF+Cr5Hv7dbAC4HHB8nw7lV/bGGuujCCMqwQC6iUC2WQ6Xg+JZ57V759k6QXz9J3xQxkVeESH1Yeaeg==
+"@buccaneerai/rxjs-csv@^2.1.0":
+  version "2.1.0"
+  resolved "https://npm.pkg.github.com/download/@buccaneerai/rxjs-csv/2.1.0/f22c800c570024b3ec27ab46e6b979fef113407cfe1b34b85a2bd131eb1e0064#157393b019e42bd0b698e53270139866470a2f17"
+  integrity sha512-fEQBiNB71z/5klPTMaUX04Rk0gfXN49liv0/Z5SteUU7YplTpe6j10bSr2sOH1uG8Zg2GZjHu5/V/F7SIw1a2A==
   dependencies:
     csv-parse "^4.15.3"
     json2csv "^5.0.6"

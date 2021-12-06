@@ -11,7 +11,7 @@ const defaultOptions = {
 
 const errors = {
   badGraphQLResponse: res => new Error(`bad GraphQL response: ${res}`)
-}
+};
 
 const defaultS3Client = new AWS.S3();
 
