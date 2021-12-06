@@ -25,7 +25,7 @@
   },
   "dependencies": {
     "@buccaneerai/graphql-sdk": "^2.18.0",
-    "@buccaneerai/rxjs-csv": "^2.0.0",
+    "@buccaneerai/rxjs-csv": "^2.1.0",
     "@buccaneerai/rxjs-s3": "^1.0.0",
     "@buccaneerai/rxjs-socketio": "^2.0.0",
     "aws-sdk": "^2.438.0",
