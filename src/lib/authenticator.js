@@ -15,8 +15,8 @@ const authenticator = ({
   const token = get(socket, 'handshake.auth.token', null);
   if (!token) return next(errors.unauthorized());
   try {
-    const {userId} = _jwt.verify(token, secret);
-    if (userId) return next();
+    const data = _jwt.verify(token, secret);
+    if (get(data, '_id', null)) return next();
     return next(errors.unauthorized());
   } catch (e) {
     _logger.error(e.message, {message: 'Unauthorized'});
