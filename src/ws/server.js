@@ -4,8 +4,9 @@ const http = require('http');
 // import compression = require('compression');
 // import bodyParser = require('body-parser');
 const cors = require('cors');
-const Server = require('socket.io');
+const {Server} = require('socket.io');
 
+const authenticator = require('../lib/authenticator');
 const config = require('../utils/config');
 const logger = require('../utils/logger');
 const createConsumer = require('./createConsumer');
@@ -18,25 +19,21 @@ const defaultSocketOptions = {
   transports: ['websocket'],
   allowUpgrades: true,
   serveClient: false,
+  cors: {
+    origin: ['http://localhost:3000', '*:*'],
+    credentials: true,
+    allowedHeaders: ['authorization'],
+  }
 };
 
 const startSocketIO = ({
   httpServer,
-  origins = ['http://localhost:3000', '*:*'], // '*:*' FIXME: is this necessary?
   socketOptions = defaultSocketOptions,
   _socketIO = (...params) => new Server(...params),
-  // _authenticator = authenticator,
+  _authenticator = authenticator,
 }) => {
-  const io = _socketIO(httpServer, { origins, ...socketOptions });
-  io.origins(origins);
-  // TODO: Answer -> This is how to handle an error in the socket
-  // Does that mean we should keep it or let it throw out and handle it at the observable level?
-  // io.on('connection', (socket) => {
-  //   socket.on('error', (error) => {
-  //     console.log('We got the error!');
-  //   });
-  // });
-  // io.use(_authenticator); // FIXME: - add authentication
+  const io = _socketIO(httpServer, { ...socketOptions });
+  io.use(_authenticator());
   return io;
 };
 
