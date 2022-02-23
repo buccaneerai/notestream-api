@@ -45,8 +45,9 @@ const toSTT = ({
     saveWords,
   };
   const conduitOptions = {
-    url: `${url}?token=${token}`,
+    url,
     socketOptions: {
+      auth: {token},
       transports: ['websocket'],
     },
   };
