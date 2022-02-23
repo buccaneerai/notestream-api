@@ -64,10 +64,11 @@ const consumeOneClientStream = function consumeOneClientStream(
     );
     const config$ = clientStreamSub$.pipe(
       _getStreamConfig(),
+      take(1),
       shareReplay(1)
     );
     const stt$ = config$.pipe(
-      take(1),
+      trace('ws.START_STREAM'),
       mergeMap(config =>
         clientStreamSub$.pipe(
           _createAudioStream(config),
@@ -83,7 +84,6 @@ const consumeOneClientStream = function consumeOneClientStream(
       share()
     );
     const noteWindow$ = config$.pipe(
-      take(1),
       mergeMap(config => stt$.pipe(_createWindows(config))),
       filter(words => !words),
       share()
