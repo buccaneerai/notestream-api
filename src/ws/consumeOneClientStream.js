@@ -14,15 +14,11 @@ const {
 
 const { DISCONNECTION, STT_STREAM_STOP } = require('./producer');
 const getStreamConfig = require('./getStreamConfig');
-const createAudioStream = require('./createAudioStream');
+const createAudioStream = require('../audio/createAudioStream');
 const toSTT = require('../operators/toSTT');
-// const nlp = require('../operators/nlp');
 const trace = require('../operators/trace');
-// const predictElements = require('../operators/predictElements');
 const createWindows = require('../operators/createWindows');
 const storeRawAudio = require('../storage/storeRawAudio');
-// const storeWords = require('../storage/storeWords');
-// const createPredictions = require('../storage/createPredictions');
 
 const getSttConfig = config => pick(
   config,
@@ -92,8 +88,12 @@ const consumeOneClientStream = function consumeOneClientStream(
     //   map(([,noteWindow]) => stt$),
     //   trace('consumeOneClientStream.out')
     // );
+    const runId$ = config$.pipe(
+      map(conf => ({runId: conf.runId, pipeline: 'runCreated'}))
+    );
     const output$ = config$.pipe(
       mergeMap(config => merge(
+        runId$,
         noteWindow$,
         stt$.pipe(filter(() => config.sendSTTOutput))
       )),
