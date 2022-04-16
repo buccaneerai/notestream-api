@@ -2,9 +2,9 @@ const get = require('lodash/get');
 const {concat, merge, of} = require('rxjs');
 const {
   delay,
-  filter,
   map,
-  mapTo
+  mapTo,
+  scan
 } = require('rxjs/operators');
 const randomstring = require('randomstring');
 
@@ -31,7 +31,7 @@ const toSTT = ({
   delayTime = 2000,
   url = process.env.STT_WEBSOCKET_URL,
   token = process.env.JWT_TOKEN,
-}) => fileChunk$ => {
+}) => linear16Chunk$ => {
   const _streamId = streamId || _makeStreamId();
   const streamConfig = {
     streamId: _streamId,
@@ -57,14 +57,10 @@ const toSTT = ({
   }).pipe(
     delay(delayTime)
   );
-  // FIXME: this currently does not stream audio to the STT api.  That
-  // has yet to be implemented...
-  const fileChunkMessage$ = fileChunk$.pipe(filter(() => false));
-  // const fileChunkMessage$ = fileChunk$.pipe(
-    // map(chunk => ({topic: 'next-stt-chunk', binary: chunk}))
-    // FIXME: this is a hack to ensure the websocket opens before trying to
-    // send messages
-  // );
+  const fileChunkMessage$ = linear16Chunk$.pipe(
+    scan((acc, next) => [next, acc[1] + 1], [null, -1]),
+    map(([chunk, i]) => ({topic: 'next-stt-chunk', index: i, binary: chunk}))
+  );
   const stopMessage$ = stop$.pipe(mapTo({topic: 'stop', streamId: _streamId}));
   const lastMessage$ = of({topic: 'stt-stream-complete', streamId: _streamId});
   const message$ = concat(
