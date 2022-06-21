@@ -59,6 +59,25 @@
     rxjs "^6.6.3"
     rxjs-stream "^3.2.1"
 
+"@buccaneerai/rxjs-fs@^2.0.0":
+  version "2.0.0"
+  resolved "https://npm.pkg.github.com/download/@buccaneerai/rxjs-fs/2.0.0/e778d394005535f9722fd3c3ef26629cb4bc6e17fc1e70e16836f2f9b2274a18#641833108d6f36f4b9f4b98b6fe63d30c771cf53"
+  integrity sha512-RqC9Z2kA5miJD16efHeo54ahyhy8VL7IBMKYqS0DMeTatYyb5Kh/AbZnx9pJcOIJ/AmADZNJ/rJU5xBNxyA7Lg==
+  dependencies:
+    lodash "^4.17.20"
+    rxjs "^6.6.3"
+
+"@buccaneerai/rxjs-linear16@^2.0.1":
+  version "2.0.1"
+  resolved "https://npm.pkg.github.com/download/@buccaneerai/rxjs-linear16/2.0.1/283810056b2ab0058ae5e267ad0e05b274673559fac41f8bfb54bf5df3c7b786#cb4a89f8cc45a86e0f15ad185301b39d86d170e2"
+  integrity sha512-XECDLyZOcK5djd9ci6m+XgMwvoIcffybhsYqINtalCFspRxR04wSZPJnkxDhAOopTyWlWCPB8puT0e/5MCtU6g==
+  dependencies:
+    "@buccaneerai/rxjs-fs" "^2.0.0"
+    lodash "^4.17.20"
+    mime "^2.5.2"
+    rxjs "^6.6.3"
+    wavefile "11.0.0"
+
 "@buccaneerai/rxjs-s3@^1.0.0":
   version "1.0.0"
   resolved "https://npm.pkg.github.com/download/@buccaneerai/rxjs-s3/1.0.0/ca4be2e79997ae0872d7d38f57f9cbdf1ace41ca5496e2f3f931c8b5f2cb5e29#754b35fc20fece9e68be63f515997cf93d2d6a47"
@@ -2495,6 +2514,11 @@ mime@1.6.0:
   resolved "https://registry.yarnpkg.com/mime/-/mime-1.6.0.tgz#32cd9e5c64553bd58d19a568af452acff04981b1"
   integrity sha512-x0Vn8spI+wuJ1O6S7gnbaQg8Pxh4NNHb7KSINmEWKiPE4RKOplvijn+NkmYmmRgP68mc70j2EbeTFRsrswaQeg==
 
+mime@^2.5.2:
+  version "2.6.0"
+  resolved "https://registry.yarnpkg.com/mime/-/mime-2.6.0.tgz#a2a682a95cd4d0cb1d6257e28f83da7e35800367"
+  integrity sha512-USPkMeET31rOMiarsBNIHZKLGgvKc/LrjofAnBlOttf5ajRvqiRA8QsenbcooctK6d6Ts6aqZXBA+XbkKthiQg==
+
 mimic-response@^1.0.0, mimic-response@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/mimic-response/-/mimic-response-1.0.1.tgz#4923538878eef42063cb8a3e3b0798781487ab1b"
@@ -4025,6 +4049,11 @@ verror@1.10.0:
     assert-plus "^1.0.0"
     core-util-is "1.0.2"
     extsprintf "^1.2.0"
+
+wavefile@11.0.0:
+  version "11.0.0"
+  resolved "https://registry.yarnpkg.com/wavefile/-/wavefile-11.0.0.tgz#9302165874327ff63a704d00b154c753eaa1b8e7"
+  integrity sha512-/OBiAALgWU24IG7sC84cDO/KfFuvajWc5Uec0oV2zrpOOZZDgGdOwHwgEzOrwh8jkubBk7PtZfQBIcI1OaE5Ng==
 
 which@^2.0.1:
   version "2.0.2"
