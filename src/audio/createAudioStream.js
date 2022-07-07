@@ -1,11 +1,12 @@
 const get = require('lodash/get');
 const { throwError } = require('rxjs');
-const {map,mergeMap} = require('rxjs/operators');
+const {map,mergeMap,tap} = require('rxjs/operators');
 const {client} = require('@buccaneerai/graphql-sdk');
+const {toLinear16} = require('@buccaneerai/rxjs-linear16');
 
 const streamS3Audio = require('./streamS3Audio');
 const ingestAudioFromClient = require('./ingestAudioFromClient');
-const audioChunkToLinear16 = require('./audioChunkToLinear16');
+// const audioChunkToLinear16 = require('./audioChunkToLinear16');
 
 const errors = {
   audioFileDNE: () => new Error('audio file does not exist'),
@@ -19,6 +20,8 @@ const gql = (url = process.env.GRAPHQL_URL, token = process.env.JWT_TOKEN) => (
 const createInputStream = function createInputStream(
   config,
   _findAudioFiles = gql().findAudioFiles,
+  _ingestAudioFromClient = ingestAudioFromClient,
+  _toLinear16 = toLinear16
 ) {
   return clientStream$ => {
     switch (config.inputType) {
@@ -35,17 +38,28 @@ const createInputStream = function createInputStream(
             : throwError(errors.audioFileDNE())
           )
         );
+      // Stream of audio data. For example, from a web brower.
       case 'audioStream':
         return clientStream$.pipe(
-          ingestAudioFromClient(),
-          audioChunkToLinear16({
-            audioEncoding: config.audioEncoding,
-            sampleRate: config.sampleRate,
-            channels: config.channels,
+          _ingestAudioFromClient(),
+          // TODO: currently only supports raw LINEAR16 (mimeType=audio/l16)
+          // _audioChunkToLinear16({
+          //   audioEncoding: config.audioEncoding,
+          //   sampleRate: config.sampleRate,
+          //   channels: config.channels,
+          // })
+        );
+      // From our internal telephone API
+      case 'telephoneCall':
+        return clientStream$.pipe(
+          _ingestAudioFromClient(),
+          _toLinear16({
+            mimeType: 'audio/x-mulaw',
+            sampleRate: 8000,
+            channels: 1,
+            firstChunkContainsHeaders: false,
           })
         );
-      // case 'fileUpload':
-      // return clientStream$.pipe();
       default:
         return throwError(errors.unknownInputType());
     }
