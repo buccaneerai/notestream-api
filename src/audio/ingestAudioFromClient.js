@@ -1,6 +1,14 @@
 const get = require('lodash/get');
-// const {concat,of} = require('rxjs');
-const {filter,map,share,takeUntil} = require('rxjs/operators');
+// const {of,throwError} = require('rxjs');
+const {
+  filter,
+  map,
+  // mergeMap,
+  share,
+  takeUntil,
+  tap
+} = require('rxjs/operators');
+// const isBase64 = require('is-base64');
 
 const {
   NEXT_AUDIO_CHUNK,
@@ -9,13 +17,16 @@ const {
   // NEW_STT_STREAM
 } = require('../ws/producer');
 
+// const errors = {
+//   notBase64: () => new Error('audio data must be valid base64'),
+// };
+
 const ingestAudioFromClient = () => {
   // note that in theory, a websocket could broadcast multiple audio streams, either
-  // seqeuentially or in parallel.  This function creates a new audio stream
-  // observable for each separate audio stream (usually a patient visit)
+  // seqeuentially or in parallel.  We currently assume that there is just one
+  // stream.
   return socketStream$ => {
-    // multicast to avoid re-subscribing
-    const clientInput$ = socketStream$.pipe(share());
+    const clientInput$ = socketStream$.pipe(share()); // subscribe only once
     const audioComplete$ = clientInput$.pipe(
       filter(e => [STT_STREAM_DONE, STT_STREAM_STOP].includes(e.type))
     );
@@ -23,27 +34,14 @@ const ingestAudioFromClient = () => {
       takeUntil(audioComplete$),
       filter(e => e.type === NEXT_AUDIO_CHUNK),
       map(e => get(e, 'data.chunk'))
+      // TODO: it should validate input data
+      // mergeMap(buffer =>
+      //   isBase64(buffer.toString('base64'))
+      //   ? of(buffer)
+      //   : throwError(errors.notBase64())
+      // ),
     );
     return audioChunk$;
-    // whenever a new audio stream is created, create a new observable
-    // containing all of the events for that stream
-    // const audioStream$$ = clientInput$.pipe(
-    //   filter(e => e.type === NEW_STT_STREAM),
-    //   map(e => {
-    //     const {streamId} = e.data;
-    //     const audioStream$ = concat(
-    //       of(e),
-    //       audioChunk$.pipe(
-    //         filter(({data}) => data.streamId === streamId)
-    //       ),
-    //       audioComplete$.pipe(
-    //         filter(({data}) => data.streamId === streamId)
-    //       )
-    //     );
-    //     return audioStream$;
-    //   })
-    // );
-    // return audioStream$$;
   };
 };
 

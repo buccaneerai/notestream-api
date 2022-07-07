@@ -15,8 +15,8 @@ describe('ingestAudioFromClient', () => {
 
   it('should properly ingest audio chunks from a client stream', marbles(m => {
     const events = [
-      {type: NEXT_AUDIO_CHUNK, data: {chunk: Buffer.from('abc')}},
-      {type: NEXT_AUDIO_CHUNK, data: {chunk: Buffer.from('abc')}},
+      {type: NEXT_AUDIO_CHUNK, data: {chunk: Buffer.from('abc', 'base64')}},
+      {type: NEXT_AUDIO_CHUNK, data: {chunk: Buffer.from('abc', 'base64')}},
       {type: STT_STREAM_STOP},
     ];
     const in$ = m.cold('--0-1-(2|)', events);
@@ -27,4 +27,16 @@ describe('ingestAudioFromClient', () => {
     ]);
     m.expect(result$).toBeObservable(expected$);
   }));
+
+  // it('should throw if data is not base64', marbles(m => {
+  //   const events = [
+  //     {type: NEXT_AUDIO_CHUNK, data: {chunk: Buffer.from('abc', 'base64')}},
+  //     {type: NEXT_AUDIO_CHUNK, data: {chunk: Buffer.from('abc', 'base64')}},
+  //     {type: STT_STREAM_STOP},
+  //   ];
+  //   const in$ = m.cold('--0-1-(2|)', events);
+  //   const result$ = in$.pipe(ingestAudioFromClient());
+  //   const expected$ = m.cold('--#', null, new Error('audio data must be valid base64'));
+  //   m.expect(result$).toBeObservable(expected$);
+  // }));
 });
