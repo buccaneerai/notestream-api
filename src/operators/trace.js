@@ -4,7 +4,7 @@ const { tap } = require('rxjs/operators');
 const { info } = require('../utils/logger');
 
 const defaultOptions = {
-  blacklist: ['context', 'data.context'],
+  blacklist: ['context', 'data.context', 'data.chunk'],
 };
 
 const trace = (label, options = defaultOptions, log = info) => (
