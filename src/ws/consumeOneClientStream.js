@@ -1,4 +1,4 @@
-// const get = require('lodash/get');
+const get = require('lodash/get');
 const pick = require('lodash/pick');
 const { combineLatest, merge } = require('rxjs');
 const {
@@ -10,6 +10,7 @@ const {
   take,
   takeUntil,
   tap,
+  withLatestFrom
 } = require('rxjs/operators');
 
 const { DISCONNECTION, STT_STREAM_STOP } = require('./producer');
@@ -46,8 +47,7 @@ const consumeOneClientStream = function consumeOneClientStream(
   return connectionStream$ => {
     const clientStreamSub$ = connectionStream$.pipe(shareReplay(5));
     const disconnect$ = clientStreamSub$.pipe(
-      filter(e => e.type === DISCONNECTION),
-      trace('ws.DISCONNECTION')
+      filter(e => e.type === DISCONNECTION)
     );
     const stop$ = clientStreamSub$.pipe(
       filter(e => e.type === STT_STREAM_STOP)
@@ -65,15 +65,22 @@ const consumeOneClientStream = function consumeOneClientStream(
     );
     const stt$ = config$.pipe(
       trace('ws.START_STREAM'),
-      mergeMap(config =>
+      withLatestFrom(socket$),
+      map(([config, socket]) => [config, get(socket, 'handshake.auth.token')]),
+      mergeMap(([config, token]) =>
         clientStreamSub$.pipe(
           _createAudioStream(config),
-          (
-            config.inputType === 'audioStream' && config.saveRawAudio
-            ? _storeRawAudio(pick(config, 'runId', 'audioFileId'))
-            : tap(null)
-          ),
-          _toSTT({stop$: end$, ...getSttConfig(config)})
+          // FIXME - should store audio
+          // (
+          //   config.inputType === 'audioStream' && config.saveRawAudio
+          //   ? _storeRawAudio(pick(config, 'runId', 'audioFileId'))
+          //   : tap(null)
+          // ),
+          _toSTT({
+            token,
+            stop$: end$,
+            ...getSttConfig(config)
+          })
         )
       ),
       map(event => ({ ...event, pipeline: 'stt' })),
