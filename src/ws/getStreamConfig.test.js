@@ -10,7 +10,7 @@ const {testExports} = getStreamConfig;
 const {validate} = testExports;
 
 const sampleConfig = {
-  audioEncoding: 'LINEAR16',
+  audioEncoding: 'audio/l16',
   audioFileId: 'abcdefg',
   channels: 1,
   inputType: 's3File',
