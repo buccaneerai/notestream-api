@@ -1,6 +1,6 @@
 const get = require('lodash/get');
 const { throwError } = require('rxjs');
-const {map,mergeMap,tap} = require('rxjs/operators');
+const {map,mergeMap} = require('rxjs/operators');
 const {client} = require('@buccaneerai/graphql-sdk');
 const {toLinear16} = require('@buccaneerai/rxjs-linear16');
 

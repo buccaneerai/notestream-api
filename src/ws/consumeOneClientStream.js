@@ -9,7 +9,6 @@ const {
   shareReplay,
   take,
   takeUntil,
-  tap,
   withLatestFrom
 } = require('rxjs/operators');
 
@@ -19,7 +18,7 @@ const createAudioStream = require('../audio/createAudioStream');
 const toSTT = require('../operators/toSTT');
 const trace = require('../operators/trace');
 const createWindows = require('../operators/createWindows');
-const storeRawAudio = require('../storage/storeRawAudio');
+// const storeRawAudio = require('../storage/storeRawAudio');
 
 const getSttConfig = config => pick(
   config,
@@ -39,7 +38,7 @@ const consumeOneClientStream = function consumeOneClientStream(
   _toSTT = toSTT,
   _getStreamConfig = getStreamConfig,
   // _predictElements = predictElements,
-  _storeRawAudio = storeRawAudio,
+  // _storeRawAudio = storeRawAudio,
   // _storeNlp = storeNlp,
   // _createPredictions = createPredictions,
   _createWindows = createWindows

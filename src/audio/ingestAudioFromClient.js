@@ -5,8 +5,7 @@ const {
   map,
   // mergeMap,
   share,
-  takeUntil,
-  tap
+  takeUntil
 } = require('rxjs/operators');
 // const isBase64 = require('is-base64');
 
