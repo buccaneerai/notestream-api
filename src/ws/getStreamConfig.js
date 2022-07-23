@@ -1,18 +1,41 @@
 // import pick = require('lodash/pick');
 const Joi = require('joi');
+const get = require('lodash/get');
 const omit = require('lodash/omit');
 const {of,throwError,zip} = require('rxjs');
-const {filter, map, mergeMap, shareReplay, take} = require('rxjs/operators');
+const {
+  filter,
+  map,
+  mergeMap,
+  share,
+  shareReplay,
+  take
+} = require('rxjs/operators');
 const {client} = require('@buccaneerai/graphql-sdk');
 
 const {NEW_STT_STREAM} = require('./producer');
 
 const getSttEngines = () => ['deepspeech', 'gcp', 'aws', 'awsmed', 'deepgram'];
-const getInputTypes = () => ['s3File', 'audioStream'];
+const getInputTypes = () => ['s3File', 'audioStream', 'telephoneCall'];
+const getSupportedAudioMimeTypes = () => [
+  // linear16
+  'LINEAR16',
+  'audio/l16',
+  'audio/linear16',
+  // Mulaw (most typically for phone calls)
+  'audio/x-mulaw',
+  'audio/basic',
+  'audio/mulaw',
+  // TODO: WAV
+  // TODO: MPEG
+  // FLAC
+  // 'audio/flac',
+];
 
 const errors = {
   invalidConfig: validationError => new Error(validationError),
   invalidGraphQLResponse: res => new Error(`invalid GraphQL response: ${res}`),
+  noToken: () => new Error('unauthorized'),
 };
 
 const schema = Joi.object({
@@ -34,7 +57,9 @@ const schema = Joi.object({
   sendSTTOutput: Joi.boolean().default(false),
   channels: Joi.number().integer().default(1).allow(1),
   sampleRate: Joi.number().integer().default(16000).allow(16000),
-  audioEncoding: Joi.string().allow(['LINEAR16']).default('LINEAR16'),
+  audioEncoding: Joi.string()
+    .allow(getSupportedAudioMimeTypes())
+    .default('audio/l16'),
   context: Joi.object(),
   useRealtime: Joi.boolean().default(true),
   saveRawAudio: Joi.boolean().default(true),
@@ -63,28 +88,43 @@ const validateAndParseResponse = response => (
   : throwError(errors.invalidGraphQLResponse(response))
 );
 
-const gql = (url = process.env.GRAPHQL_URL, token = process.env.JWT_TOKEN) => (
-  client({url, token})
-);
+const getTokenOrThrow = () => e => {
+  const token = get(e, 'data.context.socket.handshake.auth.token');
+  if (token) return of(token);
+  return throwError(errors.noToken());
+};
 
 const getStreamConfig = function getStreamConfig({
   _validate = validate(),
-  _createRun = gql().createRun,
+  _gql = client,
+  url = process.env.GRAPHQL_URL,
 } = {}) {
-  return stream$ => stream$.pipe(
-    filter(eventIsNewSTTStream),
-    take(1),
-    map(_validate),
-    mergeMap(processValidationOrThrow),
-    mergeMap(config => zip(
-      of(config),
-      _createRun({doc: {...omit(config, 'context'), status: 'running'}}).pipe(
-        mergeMap(validateAndParseResponse)
-      )
-    )),
-    map(([config, run]) => ({...config, runId: run._id})),
-    shareReplay(1)
-  );
+  return stream$ => {
+    const streamSub$ = stream$.pipe(
+      filter(eventIsNewSTTStream),
+      share()
+    );
+    const config$ = streamSub$.pipe(
+      take(1),
+      map(e => ({...e, data: omit(e.data, 'context')})),
+      map(_validate),
+      mergeMap(processValidationOrThrow)
+    );
+    const token$ = streamSub$.pipe(mergeMap(getTokenOrThrow()));
+    const configWithRunId$ = zip(config$, token$).pipe(
+      mergeMap(([config, token]) => zip(
+        of(config),
+        _gql({url, token}).createRun({
+          doc: {...omit(config, 'context'), status: 'running'}
+        }).pipe(
+          mergeMap(validateAndParseResponse)
+        )
+      )),
+      map(([config, run]) => ({...config, runId: run._id})),
+      shareReplay(1)
+    );
+    return configWithRunId$;
+  };
 };
 
 module.exports = getStreamConfig;

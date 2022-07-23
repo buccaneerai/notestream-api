@@ -43,7 +43,7 @@ describe('authenticator', () => {
     const socket = {
       handshake: {
         auth: {
-          token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZjZhNDgwNmJmYTY5ZmIyYmVhZTcwMjUiLCJlbWFpbCI6ImFkbWluQGJ1Y2NhbmVlci5haSIsImlzQWRtaW4iOnRydWUsImlhdCI6MTYxNDExMTY0NywiZXhwIjoxNjQ1NjQ3NjQ3fQ.adFe-rLbE0KmZoZ2GOZfKZtzQQl3wEXPv9QLPCBmb6Q',
+          token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZjZhNDgwNmJmYTY5ZmIyYmVhZTcwMjUiLCJlbWFpbCI6ImFkbWluQGJ1Y2NhbmVlci5haSIsImlzQWRtaW4iOnRydWUsImlhdCI6MTY0MTc1MjYwNCwiZXhwIjoxNjczMjg4NjA0fQ.lk9rN6Zkwhz0uf0hgPmrxGz7nZrIDZFz4SmGIdf3jRU',
         }
       }
     };

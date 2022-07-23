@@ -38,10 +38,10 @@
   dependencies:
     regenerator-runtime "^0.13.4"
 
-"@buccaneerai/graphql-sdk@^2.18.0":
-  version "2.18.0"
-  resolved "https://npm.pkg.github.com/download/@buccaneerai/graphql-sdk/2.18.0/787d60608e6032395850c75e739ce84e0ac8488a34c1c369a7c1a7440e54dae9#87d80b5930c744f5accd11a22fb017d934e618c7"
-  integrity sha512-qDPA7IDJJrkWTbN6GVPetxaL+vJ4Kk99v/unWdj7J32H8OtxNkbPeE5oeIr+fT903/o8RgR5HIL6W3XTM16ZiQ==
+"@buccaneerai/graphql-sdk@^2.34.0":
+  version "2.34.0"
+  resolved "https://npm.pkg.github.com/download/@buccaneerai/graphql-sdk/2.34.0/f0d94af4ea4f09bd1bf2e94995eaa108ca309ddb705b4690a163784af05cd9fa#c83364fb0bfd0e1a814b1c7cc5dce5214c7ec1a7"
+  integrity sha512-qFuW25KCujw/FTmBz7cW+o2ul47TlaTTwmcuHXt2AmQ7cwjy2sKL0oXnPXtqWHg+zWIhvCladU76nCCHwi2kOg==
   dependencies:
     graphql "^15.5.0"
     graphql-request "^3.4.0"
@@ -58,6 +58,25 @@
     lodash "^4.17.20"
     rxjs "^6.6.3"
     rxjs-stream "^3.2.1"
+
+"@buccaneerai/rxjs-fs@^2.0.0":
+  version "2.0.0"
+  resolved "https://npm.pkg.github.com/download/@buccaneerai/rxjs-fs/2.0.0/e778d394005535f9722fd3c3ef26629cb4bc6e17fc1e70e16836f2f9b2274a18#641833108d6f36f4b9f4b98b6fe63d30c771cf53"
+  integrity sha512-RqC9Z2kA5miJD16efHeo54ahyhy8VL7IBMKYqS0DMeTatYyb5Kh/AbZnx9pJcOIJ/AmADZNJ/rJU5xBNxyA7Lg==
+  dependencies:
+    lodash "^4.17.20"
+    rxjs "^6.6.3"
+
+"@buccaneerai/rxjs-linear16@^2.0.2":
+  version "2.0.2"
+  resolved "https://npm.pkg.github.com/download/@buccaneerai/rxjs-linear16/2.0.2/2198b7e69a5cc8aefef8ffdb9c2aa2d08a49dd2ea7c143f4f92effd9d649c79b#f7cf05a736df493dc482a7ca5f03616787d4ec3c"
+  integrity sha512-7c9Kv5admTavwM4fCVLGB2lWHg+zs4KjuaUoYGeKI6rmGvHcGtwvz4deBIQfZBI7KbaZ5eTyvQASjpwX0GHbsA==
+  dependencies:
+    "@buccaneerai/rxjs-fs" "^2.0.0"
+    lodash "^4.17.20"
+    mime "^2.5.2"
+    rxjs "^6.6.3"
+    wavefile "11.0.0"
 
 "@buccaneerai/rxjs-s3@^1.0.0":
   version "1.0.0"
@@ -1994,6 +2013,11 @@ is-arrayish@^0.3.1:
   resolved "https://registry.yarnpkg.com/is-arrayish/-/is-arrayish-0.3.2.tgz#4574a2ae56f7ab206896fb431eaeed066fdf8f03"
   integrity sha512-eVRqCvVlZbuw3GrM63ovNSNAeA1K16kaR/LRY/92w0zxQ5/1YzwblUX652i4Xs9RwAGjW9d9y6X88t8OaAJfWQ==
 
+is-base64@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/is-base64/-/is-base64-1.1.0.tgz#8ce1d719895030a457c59a7dcaf39b66d99d56b4"
+  integrity sha512-Nlhg7Z2dVC4/PTvIFkgVVNvPHSO2eR/Yd0XzhGiXCXEvWnptXlXa/clQ8aePPiMuxEGcWfzWbGw2Fe3d+Y3v1g==
+
 is-binary-path@~2.1.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/is-binary-path/-/is-binary-path-2.1.0.tgz#ea1f7f3b80f064236e83470f86c09c254fb45b09"
@@ -2489,6 +2513,11 @@ mime@1.6.0:
   version "1.6.0"
   resolved "https://registry.yarnpkg.com/mime/-/mime-1.6.0.tgz#32cd9e5c64553bd58d19a568af452acff04981b1"
   integrity sha512-x0Vn8spI+wuJ1O6S7gnbaQg8Pxh4NNHb7KSINmEWKiPE4RKOplvijn+NkmYmmRgP68mc70j2EbeTFRsrswaQeg==
+
+mime@^2.5.2:
+  version "2.6.0"
+  resolved "https://registry.yarnpkg.com/mime/-/mime-2.6.0.tgz#a2a682a95cd4d0cb1d6257e28f83da7e35800367"
+  integrity sha512-USPkMeET31rOMiarsBNIHZKLGgvKc/LrjofAnBlOttf5ajRvqiRA8QsenbcooctK6d6Ts6aqZXBA+XbkKthiQg==
 
 mimic-response@^1.0.0, mimic-response@^1.0.1:
   version "1.0.1"
@@ -4020,6 +4049,11 @@ verror@1.10.0:
     assert-plus "^1.0.0"
     core-util-is "1.0.2"
     extsprintf "^1.2.0"
+
+wavefile@11.0.0:
+  version "11.0.0"
+  resolved "https://registry.yarnpkg.com/wavefile/-/wavefile-11.0.0.tgz#9302165874327ff63a704d00b154c753eaa1b8e7"
+  integrity sha512-/OBiAALgWU24IG7sC84cDO/KfFuvajWc5Uec0oV2zrpOOZZDgGdOwHwgEzOrwh8jkubBk7PtZfQBIcI1OaE5Ng==
 
 which@^2.0.1:
   version "2.0.2"

@@ -1,4 +1,4 @@
-// const get = require('lodash/get');
+const get = require('lodash/get');
 const pick = require('lodash/pick');
 const { combineLatest, merge } = require('rxjs');
 const {
@@ -9,20 +9,16 @@ const {
   shareReplay,
   take,
   takeUntil,
-  tap,
+  withLatestFrom
 } = require('rxjs/operators');
 
 const { DISCONNECTION, STT_STREAM_STOP } = require('./producer');
 const getStreamConfig = require('./getStreamConfig');
-const createAudioStream = require('./createAudioStream');
+const createAudioStream = require('../audio/createAudioStream');
 const toSTT = require('../operators/toSTT');
-// const nlp = require('../operators/nlp');
 const trace = require('../operators/trace');
-// const predictElements = require('../operators/predictElements');
 const createWindows = require('../operators/createWindows');
-const storeRawAudio = require('../storage/storeRawAudio');
-// const storeWords = require('../storage/storeWords');
-// const createPredictions = require('../storage/createPredictions');
+// const storeRawAudio = require('../storage/storeRawAudio');
 
 const getSttConfig = config => pick(
   config,
@@ -42,7 +38,7 @@ const consumeOneClientStream = function consumeOneClientStream(
   _toSTT = toSTT,
   _getStreamConfig = getStreamConfig,
   // _predictElements = predictElements,
-  _storeRawAudio = storeRawAudio,
+  // _storeRawAudio = storeRawAudio,
   // _storeNlp = storeNlp,
   // _createPredictions = createPredictions,
   _createWindows = createWindows
@@ -50,8 +46,7 @@ const consumeOneClientStream = function consumeOneClientStream(
   return connectionStream$ => {
     const clientStreamSub$ = connectionStream$.pipe(shareReplay(5));
     const disconnect$ = clientStreamSub$.pipe(
-      filter(e => e.type === DISCONNECTION),
-      trace('ws.DISCONNECTION')
+      filter(e => e.type === DISCONNECTION)
     );
     const stop$ = clientStreamSub$.pipe(
       filter(e => e.type === STT_STREAM_STOP)
@@ -69,15 +64,22 @@ const consumeOneClientStream = function consumeOneClientStream(
     );
     const stt$ = config$.pipe(
       trace('ws.START_STREAM'),
-      mergeMap(config =>
+      withLatestFrom(socket$),
+      map(([config, socket]) => [config, get(socket, 'handshake.auth.token')]),
+      mergeMap(([config, token]) =>
         clientStreamSub$.pipe(
           _createAudioStream(config),
-          (
-            config.inputType === 'audioStream' && config.saveRawAudio
-            ? _storeRawAudio(pick(config, 'runId', 'audioFileId'))
-            : tap(null)
-          ),
-          _toSTT({stop$: end$, ...getSttConfig(config)})
+          // FIXME - should store audio
+          // (
+          //   config.inputType === 'audioStream' && config.saveRawAudio
+          //   ? _storeRawAudio(pick(config, 'runId', 'audioFileId'))
+          //   : tap(null)
+          // ),
+          _toSTT({
+            token,
+            stop$: end$,
+            ...getSttConfig(config)
+          })
         )
       ),
       map(event => ({ ...event, pipeline: 'stt' })),
@@ -92,8 +94,12 @@ const consumeOneClientStream = function consumeOneClientStream(
     //   map(([,noteWindow]) => stt$),
     //   trace('consumeOneClientStream.out')
     // );
+    const runId$ = config$.pipe(
+      map(conf => ({runId: conf.runId, pipeline: 'runCreated'}))
+    );
     const output$ = config$.pipe(
       mergeMap(config => merge(
+        runId$,
         noteWindow$,
         stt$.pipe(filter(() => config.sendSTTOutput))
       )),

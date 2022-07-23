@@ -22,9 +22,17 @@ const eventResolvers = {
   stop: (context, obs) => obs.next({type: STT_STREAM_STOP, data: { context }}),
   'new-stt-stream': (context, obs, json) =>
     obs.next({ type: NEW_STT_STREAM, data: { ...json, context } }),
-  'next-stt-chunk': (context, obs, [json, chunk]) =>
-    obs.next({ type: NEXT_AUDIO_CHUNK, data: { chunk, data: json, context } }),
+  'new-stream': (context, obs, json) =>
+    obs.next({ type: NEW_STT_STREAM, data: { ...json, context } }),
+  // Events containing chunks of audio binary
+  'next-stt-chunk': (context, obs, json, binary) =>
+    obs.next({ type: NEXT_AUDIO_CHUNK, data: { ...json, chunk: binary, context } }),
+  'next-chunk': (context, obs, json, binary) => {
+    obs.next({ type: NEXT_AUDIO_CHUNK, data: { ...json, chunk: binary, context } });
+  },
   'stt-stream-complete': (context, obs, json) =>
+    obs.next({ type: STT_STREAM_DONE, data: { ...json, context } }),
+  complete: (context, obs, json) =>
     obs.next({ type: STT_STREAM_DONE, data: { ...json, context } }),
   volatile: (context, obs) => obs.next({ type: VOLATILE, data: { context } }),
   error: (context, obs, err) => obs.error(err),
@@ -36,7 +44,7 @@ const mapConnectionToEvents = socket => {
     const context = { socket, user: socket.user };
     obs.next({ type: CONNECTION, data: { context } });
     toPairs(eventResolvers).forEach(([eventName, resolver]) =>
-      socket.on(eventName, data => resolver(context, obs, data))
+      socket.on(eventName, (data, binary) => resolver(context, obs, data, binary))
     );
   });
   return clientEvent$;

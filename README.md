@@ -29,7 +29,9 @@ yarn dev
 ### Testing the API
 With the app running, you can simulate a real stream using this package's cli tools:
 ```bash
-yarn cli simulate --audio-file-id 60621d23347140dc6007dba2
+yarn cli from-file --audio-file-id 60621d23347140dc6007dba2
+# run a stream for 30 seconds from a sample audio file
+yarn cli from-stream --take 30 --save-windows --save-words
 ```
 For the full list of available options, see  `./scripts/notestream/index.js`.
 

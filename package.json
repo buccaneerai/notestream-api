@@ -1,6 +1,6 @@
 {
   "name": "notestream-api",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "main": "build/index.js",
   "author": "Buccaneer LLC",
   "license": "UNLICENSED",
@@ -23,8 +23,10 @@
     "sinon": "^7.2.2"
   },
   "dependencies": {
-    "@buccaneerai/graphql-sdk": "^2.18.0",
+    "@buccaneerai/graphql-sdk": "^2.34.0",
     "@buccaneerai/rxjs-csv": "^2.1.0",
+    "@buccaneerai/rxjs-fs": "^2.0.0",
+    "@buccaneerai/rxjs-linear16": "^2.0.2",
     "@buccaneerai/rxjs-s3": "^1.0.0",
     "@buccaneerai/rxjs-socketio": "^4.0.1",
     "aws-sdk": "^2.438.0",
@@ -37,6 +39,7 @@
     "flatted": "^3.1.0",
     "graphql": "^15.5.0",
     "graphql-request": "^3.4.0",
+    "is-base64": "^1.1.0",
     "joi": "^14.0.0",
     "jsonwebtoken": "^8.5.1",
     "lodash": "^4.17.11",
