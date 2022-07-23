@@ -1,9 +1,10 @@
-import {expect} from 'chai';
-import {marbles} from 'rxjs-marbles/mocha';
-import sinon from 'sinon';
-import {of} from 'rxjs';
+const {expect} = require('chai');
+const {marbles} = require('rxjs-marbles/mocha');
+const sinon = require('sinon');
+const {of} = require('rxjs');
 
-import predictElements, {testExports} from './predictElements';
+const predictElements = require('./predictElements');
+const {testExports} = predictElements;
 const {
   matchIsSNOMED,
   mapPatternMatchToPrediction,

@@ -8,4 +8,4 @@ const composeListString = descriptorStrings => (
   }, '')
 );
 
-export default composeListString;
+module.exports = composeListString;

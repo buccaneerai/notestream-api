@@ -1,43 +1,43 @@
-import express from 'express';
-import http from 'http';
-// import helmet from 'helmet';
-// import compression from 'compression';
-// import bodyParser from 'body-parser';
-import cors from 'cors';
-import Server from 'socket.io';
+const express = require('express');
+const http = require('http');
+// import helmet = require('helmet');
+// import compression = require('compression');
+// import bodyParser = require('body-parser');
+const cors = require('cors');
+const {Server} = require('socket.io');
 
-import config from '../utils/config';
-import logger, { info as logInfo, error as logError } from '../utils/logger';
-import createConsumer from './createConsumer';
+const authenticator = require('../lib/authenticator');
+const config = require('../utils/config');
+const logger = require('../utils/logger');
+const createConsumer = require('./createConsumer');
+
+const logInfo = logger.info;
+const logError = logger.error;
 
 const defaultSocketOptions = {
   path: '/',
   transports: ['websocket'],
   allowUpgrades: true,
   serveClient: false,
+  cors: {
+    origin: ['http://localhost:3000', '*:*'],
+    credentials: true,
+    allowedHeaders: ['authorization'],
+  }
 };
 
 const startSocketIO = ({
   httpServer,
-  origins = ['http://localhost:3000', '*:*'], // '*:*' FIXME: is this necessary?
   socketOptions = defaultSocketOptions,
   _socketIO = (...params) => new Server(...params),
-  // _authenticator = authenticator,
+  _authenticator = authenticator,
 }) => {
-  const io = _socketIO(httpServer, { origins, ...socketOptions });
-  io.origins(origins);
-  // TODO: Answer -> This is how to handle an error in the socket
-  // Does that mean we should keep it or let it throw out and handle it at the observable level?
-  // io.on('connection', (socket) => {
-  //   socket.on('error', (error) => {
-  //     console.log('We got the error!');
-  //   });
-  // });
-  // io.use(_authenticator); // FIXME: - add authentication
+  const io = _socketIO(httpServer, { ...socketOptions });
+  io.use(_authenticator());
   return io;
 };
 
-export const startWebSocket = ({
+const startWebSocket = ({
   expressApp,
   wsPort,
   _startSocketIO = startSocketIO,
@@ -71,7 +71,7 @@ export const startWebSocket = ({
 };
 
 // start server
-export const start = (port = config().WS_PORT) => {
+const start = (port = config().PORT) => {
   try {
     const app = express();
     app.use(
@@ -87,3 +87,6 @@ export const start = (port = config().WS_PORT) => {
     logError(`Error starting server: caught @ ${__filename} => `, err);
   }
 };
+
+module.exports.start = start;
+module.exports.startWebSocket = startWebSocket;

@@ -1,7 +1,7 @@
-import {expect} from 'chai';
-import {of} from 'rxjs';
+const {expect} = require('chai');
+const {of} = require('rxjs');
 
-import createConsumer from './createConsumer';
+const createConsumer = require('./createConsumer');
 
 describe('createConsumer', () => {
   it('should export a function', () => {

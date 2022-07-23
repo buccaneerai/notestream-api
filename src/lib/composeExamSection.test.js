@@ -1,6 +1,6 @@
-import {expect} from 'chai';
+const {expect} = require('chai');
 
-import composeExamSection from './composeExamSection';
+const composeExamSection = require('./composeExamSection');
 
 const elements = [
    {

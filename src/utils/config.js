@@ -1,5 +1,5 @@
-import path from 'path';
-import dotenv from 'dotenv';
+const path = require('path');
+const dotenv = require('dotenv');
 
 // initialize configuration on first load of the module
 dotenv.config({path: path.resolve(__dirname, '../../.env')});
@@ -15,4 +15,4 @@ const config = function config() {
   };
 };
 
-export default config;
+module.exports = config;

@@ -1,8 +1,8 @@
-import {expect} from 'chai';
-import sinon from 'sinon';
-import { of, Subject } from 'rxjs';
+const {expect} = require('chai');
+const sinon = require('sinon');
+const { of, Subject } = require('rxjs');
 
-import hashPassword from './hashPassword';
+const hashPassword = require('./hashPassword');
 
 describe('hashPassword', () => {
   it('should return an observable with the hash<String>', done => {

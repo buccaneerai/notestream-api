@@ -1,6 +1,6 @@
-import {expect} from 'chai';
+const {expect} = require('chai');
 
-import composeRosSection from './composeRosSection';
+const composeRosSection = require('./composeRosSection');
 
 const fakeElements = [
   {

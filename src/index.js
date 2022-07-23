@@ -1,9 +1,16 @@
-import path from 'path';
-import dotenv from 'dotenv';
+const path = require('path');
+const dotenv = require('dotenv');
 
-import * as socketioApp from './ws/server';
+// FIXME: this could be an issue...  It was origiannly "import * as socketioApp"
+const socketioApp = require('./ws/server');
 
 dotenv.config({path: path.resolve(__dirname, '../.env')});
 
-if (process.env.START_SERVER === 'false') return of(null);
-socketioApp.start();
+function start() {
+  if (process.env.START_SERVER === 'false') return null;
+  socketioApp.start();
+}
+
+start();
+
+

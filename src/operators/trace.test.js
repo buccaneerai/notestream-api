@@ -1,23 +1,23 @@
-import {expect} from 'chai';
-import sinon from 'sinon';
-import {observe} from 'rxjs-marbles/mocha';
-import {of} from 'rxjs';
-import {finalize} from 'rxjs/operators';
+const {expect} = require('chai');
+const sinon = require('sinon');
+const {observe} = require('rxjs-marbles/mocha');
+const {of} = require('rxjs');
+const {finalize} = require('rxjs/operators');
 
-import trace from './trace';
+const trace = require('./trace');
 
 describe('trace', () => {
   it('should log the data that passes through the observable', observe(() => {
     const logSpy = sinon.spy();
-    const input$ = of(...['foo', 'bar']);
+    const input$ = of(...[{context: 'donotlog', name: 'foo'}, {name: 'bar'}]);
     return input$.pipe(
-      trace('output', logSpy),
+      trace('output', {blacklist: ['context']}, logSpy),
       finalize(() => {
         expect(logSpy.callCount).to.equal(2);
         expect(logSpy.getCall(0).args[0]).to.equal('output');
-        expect(logSpy.getCall(0).args[1]).to.equal('foo');
+        expect(logSpy.getCall(0).args[1]).to.deep.equal({name: 'foo'});
         expect(logSpy.getCall(1).args[0]).to.equal('output');
-        expect(logSpy.getCall(1).args[1]).to.equal('bar');
+        expect(logSpy.getCall(1).args[1]).to.deep.equal({name: 'bar'});
       })
     );
   }));

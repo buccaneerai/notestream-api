@@ -1,8 +1,8 @@
-import {expect} from 'chai';
-import sinon from 'sinon';
-import { of, Subject } from 'rxjs';
+const {expect} = require('chai');
+const sinon = require('sinon');
+const { of, Subject } = require('rxjs');
 
-import checkPassword from './checkPassword';
+const checkPassword = require('./checkPassword');
 
 describe('checkPassword', () => {
   it('should emit true if passwords match', done => {

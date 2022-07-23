@@ -1,4 +1,4 @@
-import composeListString from './composeListString';
+const composeListString = require('./composeListString');
 
 const parseQualifiers = values => (
   values && values[0]
@@ -29,7 +29,7 @@ const composeHeadExam = function composeHeadExam({
   findingsWithInput,
   subtitle = 'Head'
 }) {
-  console.log('findings', JSON.stringify(findingsWithInput));
+  // console.log('findings', JSON.stringify(findingsWithInput));
   const descriptors = findingsWithInput.flatMap(
     f => f.verifiedFindings.map(
       vf => parsers[f.code].parse(vf.findingInputCodes, vf.findingInputValues)
@@ -39,4 +39,4 @@ const composeHeadExam = function composeHeadExam({
   return {subtitle, body};
 };
 
-export default composeHeadExam;
+module.exports = composeHeadExam;

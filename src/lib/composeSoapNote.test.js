@@ -1,6 +1,6 @@
-import {expect} from 'chai';
+const {expect} = require('chai');
 
-import composeSoapNote from './composeSoapNote';
+const composeSoapNote = require('./composeSoapNote');
 
 const fakeElements = [
   {

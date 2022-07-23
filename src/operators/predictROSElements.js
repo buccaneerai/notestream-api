@@ -1,7 +1,7 @@
-import { of } from 'rxjs';
-import { map } from 'rxjs/operators';
+const { of } = require('rxjs');
+const { map } = require('rxjs/operators');
 
-export const defaultElements = [
+const defaultElements = [
   {
     name: 'ROS - General',
     description: 'General/constitutional symptoms',
@@ -177,4 +177,5 @@ const predictROSElements = () => () =>
     }))
   );
 
-export default predictROSElements;
+module.exports = predictROSElements;
+module.exports.defaultElements = defaultElements;

@@ -1,6 +1,6 @@
 node_modules/
 docker/
-src/
 *.md
 npm-debug*
 .circleci
+.github

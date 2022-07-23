@@ -1,4 +1,4 @@
-import get from 'lodash/get';
+const get = require('lodash/get');
 
 // remove SNOMED qualifiers like ' (finding)', ' (disorder)', etc...
 const prettyName = ({name}) => name.replace(/\s\(.*\)$/, '');
@@ -25,4 +25,4 @@ const composeProblemSection = function composeProblemSection({
   return section;
 };
 
-export default composeProblemSection;
+module.exports = composeProblemSection;

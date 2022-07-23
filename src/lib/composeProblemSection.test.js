@@ -1,6 +1,6 @@
-import {expect} from 'chai';
+const {expect} = require('chai');
 
-import composeProblemSection from './composeProblemSection';
+const composeProblemSection = require('./composeProblemSection');
 
 describe('composeProblemSection', () => {
   it('should correctly compose problem section bullets', () => {
