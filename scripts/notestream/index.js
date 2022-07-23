@@ -48,6 +48,7 @@ program
   .option('--stt-engines <sttEngines...>', 'stt engines to use', ['aws-medical', 'gcp', 'ibm'])
   .option('--ensemblers <ensemblers...>', 'ensemblers to use', [])
   .option('--input-type <inputType>', 'input source type', 'audioFile')
+  .option('--take <take>', 'Number of seconds to sample', null)
   .option('--save-raw-stt', 'whether to store raw STT ooutput', true)
   .option('--save-words', 'whether to store word output', true)
   .option('--save-windows', 'whether to save note windows', true)

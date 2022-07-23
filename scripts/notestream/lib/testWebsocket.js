@@ -1,12 +1,18 @@
 const randomstring = require('randomstring');
 const {concat, of, timer} = require('rxjs');
-const {delay, mapTo, mergeMap, scan} = require('rxjs/operators');
+const {
+  delay,
+  mapTo,
+  mergeMap,
+  scan,
+  takeUntil
+} = require('rxjs/operators');
 
 const {conduit} = require('@buccaneerai/rxjs-socketio');
 
 const testWebSocket = ({
   url,
-  token = '',
+  token,
   audioFileId,
   sttEngines,
   ensemblers,
@@ -14,14 +20,18 @@ const testWebSocket = ({
   saveRawSTT,
   saveWindows,
   delayTime = 500,
+  take = null,
   _conduit = conduit
 }) => {
   console.log('🚰 Sending messages to ', url);
   const streamId = randomstring.generate(7);
+  const stop$ = take ? timer(take * 1000) : of();
   const conduitOptions = {
-    url: `${url}?token=${token}`,
+    stop$,
+    url,
     socketOptions: {
       transports: ['websocket'],
+      auth: {token},
     },
   };
   const firstMessage$ = of({
@@ -47,6 +57,7 @@ const testWebSocket = ({
   const messageFromServer$ = messageIn$.pipe(
     // tap(w => console.log('SENDING_MESSAGE: ', w)),
     _conduit(conduitOptions),
+    takeUntil(stop$)
   );
   messageFromServer$.subscribe(
     console.log,
