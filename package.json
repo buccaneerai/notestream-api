@@ -29,7 +29,7 @@
     "@buccaneerai/rxjs-s3": "^1.0.0",
     "@buccaneerai/rxjs-socketio": "^4.0.1",
     "aws-sdk": "^2.438.0",
-    "bcrypt": "^3.0.5",
+    "bcrypt": "^5.0.0",
     "cors": "^2.8.5",
     "dotenv": "^7.0.0",
     "express": "^4.16.4",
