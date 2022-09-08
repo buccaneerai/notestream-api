@@ -18,9 +18,14 @@ jobs:
           registry-url: 'https://npm.pkg.github.com/'
           scope: '@buccaneerai'
           always-auth: true
-      - run: yarn install
+      - name: Setup private npm auth
+        run: yarn install
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
+      - name: copy .npmrc (so Docker can install private npm packages)
+        run: |
+          echo "@buccaneerai:registry=https://npm.pkg.github.com/" > .npmrc
+          echo "//npm.pkg.github.com/:_authToken=${{ secrets.NPM_AUTH_TOKEN }}" >> .npmrc
       - name: Setup test environment
         run: cp local.env .env
       - name: Run tests
@@ -31,7 +36,7 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.AWS_REGION }}
-      - name: Login to AWS ECS
+      - name: Login to AWS ECR
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
       - name: Build and push docker image to AWS
