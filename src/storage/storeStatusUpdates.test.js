@@ -3,8 +3,7 @@ const sinon = require('sinon');
 const {marbles} = require('rxjs-marbles/mocha');
 const {throwError} = require('rxjs');
 
-const {DISCONNECTION, STT_STREAM_STOP} = require('../ws/producer');
-const {STT_COMPLETE} = require('../ws/consumeOneClientStream');
+const {DISCONNECTION, STT_STREAM_STOP, STT_STREAM_COMPLETE} = require('../ws/producer');
 const storeStatusUpdates = require('./storeStatusUpdates');
 const {updateStatus} = storeStatusUpdates.testExports;
 

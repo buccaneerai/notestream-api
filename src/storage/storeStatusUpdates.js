@@ -1,8 +1,7 @@
 const {of, merge} = require('rxjs');
 const {mergeMap, retry, take} = require('rxjs/operators');
 
-const {DISCONNECTION, STT_STREAM_STOP} = require('../ws/producer');
-const {STT_COMPLETE} = require('../ws/consumeOneClientStream');
+const {DISCONNECTION, STT_STREAM_STOP, STT_STREAM_COMPLETE} = require('../ws/producer');
 const updateRun = require('./updateRun');
 
 const updateStatus = ({runId, _updateRun = updateRun}) => e => {
@@ -12,7 +11,7 @@ const updateStatus = ({runId, _updateRun = updateRun}) => e => {
   if (e.type === STT_STREAM_STOP) {
     return _updateRun({runId})({status: 'stopped'});
   }
-  if (e.type === STT_COMPLETE) {
+  if (e.type === STT_STREAM_COMPLETE) {
     return _updateRun({runId})({status: 'completed'});
   }
   // if event is not recognized, return an empty observable
