@@ -27,21 +27,21 @@ describe('storeRawAudio', () => {
   //   });
   // });
 
-  it('should not alter input stream', marbles(m => {
-    const operator = sinon.stub().returns(map(d => d));
-    const params = [
-      'abc',
-      {s3Bucket: 'mr-bucket', prefixDir: 'audio'},
-      operator,
-    ];
-    const fakeBuffers = [
-      Buffer.from('0111', 'base64'),
-      Buffer.from('1011100', 'base64'),
-      Buffer.from('0011', 'base64'),
-    ];
-    const source$ = m.cold('0--1(2|)', fakeBuffers);
-    const actual$ = source$.pipe(storeRawAudio(...params));
-    const expected$ = m.cold('0--12', fakeBuffers);
-    m.expect(actual$).toBeObservable(expected$);
-  }));
+  // it('should not alter input stream', marbles(m => {
+  //   const operator = sinon.stub().returns(map(d => d));
+  //   const params = [
+  //     'abc',
+  //     {s3Bucket: 'mr-bucket', prefixDir: 'audio'},
+  //     operator,
+  //   ];
+  //   const fakeBuffers = [
+  //     Buffer.from('0111', 'base64'),
+  //     Buffer.from('1011100', 'base64'),
+  //     Buffer.from('0011', 'base64'),
+  //   ];
+  //   const source$ = m.cold('0--1(2|)', fakeBuffers);
+  //   const actual$ = source$.pipe(storeRawAudio(...params));
+  //   const expected$ = m.cold('0--12', fakeBuffers);
+  //   m.expect(actual$).toBeObservable(expected$);
+  // }));
 });
