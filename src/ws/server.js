@@ -11,8 +11,13 @@ const config = require('../utils/config');
 const logger = require('../utils/logger');
 const createConsumer = require('./createConsumer');
 
+const rxjsConfig = require('rxjs').config;
+
+
 const logInfo = logger.info;
 const logError = logger.error;
+
+rxjsConfig.onUnhandledError = err => logError(`Uncaught RxJS error`, err);
 
 const defaultSocketOptions = {
   path: '/',
