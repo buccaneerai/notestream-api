@@ -1,8 +1,9 @@
-const { filter, map, mergeAll } = require('rxjs/operators');
+const omit = require('lodash/omit');
+const { map, mergeAll, tap } = require('rxjs/operators');
 
 const { fromSocketIO, NEXT_AUDIO_CHUNK } = require('./producer');
 const consumeOneClientStream = require('./consumeOneClientStream');
-const trace = require('../operators/trace');
+const logger = require('../utils/logger');
 
 const createConsumer = ({
   io,
@@ -12,8 +13,11 @@ const createConsumer = ({
   const clientStream$$ = _fromSocketIO({ io });
   const outputStream$$ = clientStream$$.pipe(
     map(input$ => input$.pipe(
-      filter(e => e.type !== NEXT_AUDIO_CHUNK),
-      trace('PRODUCED')
+      tap(e =>
+        e.type !== NEXT_AUDIO_CHUNK
+        ? logger.info('WS_PRODUCED', omit(e, 'context', 'data.context', 'data.chunk'))
+        : null
+      ),
     )),
     map(clientStream$ => clientStream$.pipe(_consumeOneClientStream()))
   );
