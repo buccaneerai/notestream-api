@@ -35,7 +35,7 @@ dotenv.config({path: path.resolve(__dirname, '../../.env')});
   // );
 
 // JWT token corresponding to the test Practitioner user
-const fakeUserToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MDM1NjVmNzM4MGRmMjAwMzA4YjAyOWMiLCJlbWFpbCI6ImJvbmVzLm1jY295QGJ1Y2NhbmVlci5haSIsImlzQWRtaW4iOmZhbHNlLCJhY2NvdW50SWQiOiI2MjJhNTk4ODRmNzI5YjgxMmI0NjgxZDciLCJyb2xlSWRzIjpbIjYyMmE2MmIzODNiY2MwOTZkYjY2ZGYwZSJdLCJpYXQiOjE2NTgzMzI0MTcsImV4cCI6MjA5MDMzMjQxN30.ygdm2fGzvpi2TOKlkloihxCfRw8fgH4LbRY-mTYN2kc';
+const fakeUserToken = process.env.FAKE_USER_JWT;
 const audioFilePath = path.resolve(
   __dirname,
   '../audio-samples/headache-sample.l16'
