@@ -10,6 +10,7 @@ const {
   take,
   takeLast,
   takeUntil,
+  tap,
   withLatestFrom
 } = require('rxjs/operators');
 
@@ -39,14 +40,15 @@ const getSttConfig = config => pick(
   'saveWords'
 );
 
-const consumeOneClientStream = function consumeOneClientStream(
+const consumeOneClientStream = function consumeOneClientStream({
   _createAudioStream = createAudioStream,
   _toSTT = toSTT,
   _getStreamConfig = getStreamConfig,
   // _storeRawAudio = storeRawAudio,
   _createWindows = createWindows,
-  _storeStatusUpdates = storeStatusUpdates
-) {
+  _storeStatusUpdates = storeStatusUpdates,
+  returnOutputData = false,
+} = {}) {
   return connectionStream$ => {
     const clientStreamSub$ = connectionStream$.pipe(shareReplay(5));
     const disconnect$ = clientStreamSub$.pipe(
@@ -122,7 +124,9 @@ const consumeOneClientStream = function consumeOneClientStream(
       output$
     ]).pipe(
       // takeUntil(end$),
-      map(([socket, event]) => socket.emit('message', event))
+      tap(([socket, event]) => socket.emit('message', event)),
+      map(([,event]) => event),
+      filter(() => returnOutputData)
     );
     return messageBack$;
   };
