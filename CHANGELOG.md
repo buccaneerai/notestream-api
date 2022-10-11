@@ -1,3 +1,10 @@
+# [1.0.0-dev.2](https://github.com/buccaneerai/notestream-api/compare/v1.0.0-dev.1...v1.0.0-dev.2) (2022-10-11)
+
+
+### Bug Fixes
+
+* THR-214 Bump version ([d8ec21f](https://github.com/buccaneerai/notestream-api/commit/d8ec21f7b092a5e5ea69685a9a0d74222fb525f4))
+
 # 1.0.0-dev.1 (2022-10-07)
 
 
