@@ -1,6 +1,5 @@
 const get = require('lodash/get');
-const {merge} = require('rxjs');
-const {bufferTime,map,scan,share,take} = require('rxjs/operators');
+const {bufferTime,scan} = require('rxjs/operators');
 const roundTo = require('round-to');
 
 const trace = require('./trace');
@@ -11,7 +10,7 @@ const reduceChunksToMessages = (
   _roundTo = roundTo
 ) => (
   (acc, chunks) => {
-    const byteLength = chunks.reduce((acc, c) => acc + Buffer.byteLength(c), 0);
+    const byteLength = chunks.reduce((acc2, c) => acc2 + Buffer.byteLength(c), 0);
     return {
       runId: get(streamConfig, 'runId'),
       inputType: get(streamConfig, 'inputType'),
