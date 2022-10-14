@@ -1,5 +1,6 @@
 const get = require('lodash/get');
-const {bufferTime,scan} = require('rxjs/operators');
+const {merge} = require('rxjs');
+const {bufferTime,filter,scan,share} = require('rxjs/operators');
 const roundTo = require('round-to');
 
 const trace = require('./trace');
@@ -56,12 +57,19 @@ const logAudioStreamProgress = ({
   config,
   logInterval = 5000,
   eventKey = 'audioStreamProgress',
+  emitMessages = false,
   _toMessages = toMessages,
   _trace = trace
-} = {}) => fileChunk$ => fileChunk$.pipe(
-  _toMessages({config, logInterval}),
-  _trace(eventKey)
-);
+} = {}) => fileChunk$ => {
+  const fileChunkSub$ = fileChunk$.pipe(share());
+  const logs$ = fileChunkSub$.pipe(
+    _toMessages({config, logInterval}),
+    _trace(eventKey),
+    filter(() => emitMessages)
+  );
+  const out$ = merge(fileChunkSub$, logs$);
+  return out$;
+};
 
 module.exports = logAudioStreamProgress;
 module.exports.testExports = {

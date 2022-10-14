@@ -14,6 +14,24 @@ describe('logAudioStreamProgress', () => {
     expect(logAudioStreamProgress()).to.be.a('function');
   });
 
+  it('should not alter input stream', marbles(m => {
+    const buffers = [
+      Buffer.from('0'),
+      Buffer.from('1'),
+      Buffer.from('2'),
+      Buffer.from('3'),
+      Buffer.from('4'),
+    ];
+    const input$ = m.cold('-0-1---23-(4|)', buffers);
+    const params = {
+      config: {runId: 'myrun', inputType: 'audioStream'},
+      logInterval: 1,
+    };
+    const actual$ = input$.pipe(logAudioStreamProgress(params));
+    const expected$ = input$;
+    m.expect(actual$).toBeObservable(expected$);
+  }));
+
   it('should generate appropriate messages', marbles(m => {
     const buffers = [
       Buffer.from('hasta'),
