@@ -14,7 +14,7 @@ const DISCONNECTION = 'ws/DISCONNECTION';
 const DISCONNECTING = 'ws/DISCONNECTING';
 const VOLATILE = 'ws/VOLATILE';
 
-const eventResolvers = {
+const eventResolvers = () => ({
   disconnecting: (context, obs) => obs.next({ type: DISCONNECTING, data: { context } }),
   disconnect: (context, obs, reason) => {
     obs.next({ type: DISCONNECTION, data: { reason, context } });
@@ -37,14 +37,14 @@ const eventResolvers = {
     obs.next({ type: STT_STREAM_DONE, data: { ...json, context } }),
   volatile: (context, obs) => obs.next({ type: VOLATILE, data: { context } }),
   error: (context, obs, err) => obs.error(err),
-};
+});
 
 // converts a socket.io connection event stream into an Observable
-const mapConnectionToEvents = socket => {
+const mapConnectionToEvents = () => socket => {
   const clientEvent$ = new Observable(obs => {
     const context = { socket, user: socket.user };
     obs.next({ type: CONNECTION, data: { context } });
-    toPairs(eventResolvers).forEach(([eventName, resolver]) =>
+    toPairs(eventResolvers()).forEach(([eventName, resolver]) =>
       socket.on(eventName, (data, binary) => resolver(context, obs, data, binary))
     );
   });
@@ -57,12 +57,14 @@ const fromSocketIO = ({ io }) => {
     io.on('error', err => logError('Error in producer socket', err));
   });
   const connectionStream$$ = clientConnectionSocket$.pipe(
-    map(mapConnectionToEvents)
+    // for each socket create an event stream with all of the events from it
+    map(mapConnectionToEvents())
   );
   return connectionStream$$;
 };
 
 module.exports.mapConnectionToEvents = mapConnectionToEvents;
+module.exports.eventResolvers = eventResolvers;
 module.exports.fromSocketIO = fromSocketIO;
 module.exports.NEW_STT_STREAM = NEW_STT_STREAM;
 module.exports.NEXT_AUDIO_CHUNK = NEXT_AUDIO_CHUNK;

@@ -23,6 +23,7 @@ const getStreamConfig = require('./getStreamConfig');
 const createAudioStream = require('../audio/createAudioStream');
 const toSTT = require('../operators/toSTT');
 const trace = require('../operators/trace');
+const logAudioStreamProgress = require('../operators/logAudioStreamProgress');
 const createWindows = require('../operators/createWindows');
 const storeStatusUpdates = require('../storage/storeStatusUpdates');
 // const storeRawAudio = require('../storage/storeRawAudio');
@@ -75,6 +76,7 @@ const consumeOneClientStream = function consumeOneClientStream({
       mergeMap(([config, token]) =>
         clientStreamSub$.pipe(
           _createAudioStream(config),
+          logAudioStreamProgress({config}),
           // FIXME - should store audio
           // (
           //   config.inputType === 'audioStream' && config.saveRawAudio
