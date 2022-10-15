@@ -1,3 +1,10 @@
+# [1.0.0-dev.4](https://github.com/buccaneerai/notestream-api/compare/v1.0.0-dev.3...v1.0.0-dev.4) (2022-10-15)
+
+
+### Bug Fixes
+
+* STT conduit now logs errors ([48e6ffb](https://github.com/buccaneerai/notestream-api/commit/48e6ffbf63ce6337a4ef4caad995e54fa71f5f0e))
+
 # [1.0.0-dev.3](https://github.com/buccaneerai/notestream-api/compare/v1.0.0-dev.2...v1.0.0-dev.3) (2022-10-14)
 
 
