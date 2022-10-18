@@ -1,3 +1,10 @@
+# [1.0.0-dev.5](https://github.com/buccaneerai/notestream-api/compare/v1.0.0-dev.4...v1.0.0-dev.5) (2022-10-18)
+
+
+### Bug Fixes
+
+* updated socketio operator ([058bc06](https://github.com/buccaneerai/notestream-api/commit/058bc06f9913bf16611d8042d1dfefa55796cc52))
+
 # [1.0.0-dev.4](https://github.com/buccaneerai/notestream-api/compare/v1.0.0-dev.3...v1.0.0-dev.4) (2022-10-15)
 
 
