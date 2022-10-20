@@ -1,3 +1,10 @@
+# [1.0.0-dev.6](https://github.com/buccaneerai/notestream-api/compare/v1.0.0-dev.5...v1.0.0-dev.6) (2022-10-20)
+
+
+### Bug Fixes
+
+* updated graphql-sdk version ([455d843](https://github.com/buccaneerai/notestream-api/commit/455d843de75501479ce57b8ef348e5ceec7f3bcf))
+
 # [1.0.0-dev.5](https://github.com/buccaneerai/notestream-api/compare/v1.0.0-dev.4...v1.0.0-dev.5) (2022-10-18)
 
 
