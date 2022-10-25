@@ -1,3 +1,10 @@
+# [1.0.0-dev.7](https://github.com/buccaneerai/notestream-api/compare/v1.0.0-dev.6...v1.0.0-dev.7) (2022-10-25)
+
+
+### Bug Fixes
+
+* **bug:** storeWindows now reads s3 bucket and key from graphql response ([55e87b2](https://github.com/buccaneerai/notestream-api/commit/55e87b232d1ced569829cfd843cc10aae14d943d))
+
 # [1.0.0-dev.6](https://github.com/buccaneerai/notestream-api/compare/v1.0.0-dev.5...v1.0.0-dev.6) (2022-10-20)
 
 
