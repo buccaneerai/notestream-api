@@ -53,7 +53,7 @@ const schema = Joi.object({
     .items(Joi.string())
     .default(['tfEnsembler']),
   ensemblerOptions: Joi.object()
-    .default({baselineSTTEngine: 'aws-medical'}),
+    .default({baselineSTTEngine: process.env.BASELINE_STT_ENGINE || 'gcp'}),
   sendSTTOutput: Joi.boolean().default(false),
   channels: Joi.number().integer().default(1).allow(1),
   sampleRate: Joi.number().integer().default(16000).allow(16000),
