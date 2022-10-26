@@ -1,3 +1,10 @@
+# [1.0.0-dev.8](https://github.com/buccaneerai/notestream-api/compare/v1.0.0-dev.7...v1.0.0-dev.8) (2022-10-26)
+
+
+### Bug Fixes
+
+* **bug:** set gcp as default stt engine since aws currently does not work ([64bc1a1](https://github.com/buccaneerai/notestream-api/commit/64bc1a1ba7e20dabf2e4962d372753569bf4c228))
+
 # [1.0.0-dev.7](https://github.com/buccaneerai/notestream-api/compare/v1.0.0-dev.6...v1.0.0-dev.7) (2022-10-25)
 
 
