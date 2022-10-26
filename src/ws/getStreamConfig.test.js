@@ -24,7 +24,7 @@ const sampleConfig = {
     // 'deepspeech',
   ],
   ensemblers: ['tfEnsembler'],
-  ensemblerOptions: {baselineSTTEngine: 'aws-medical'},
+  ensemblerOptions: {baselineSTTEngine: 'gcp'},
   // preferredSttEngine: 'deepspeech',
   sendSTTOutput: false,
   useRealtime: true,
