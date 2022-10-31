@@ -41,6 +41,9 @@ const errors = {
 const schema = Joi.object({
   streamId: Joi.string().alphanum().min(7).max(30),
   runId: Joi.string().alphanum().min(7).max(30),
+  telephoneCallId: Joi.string().alphanum().min(7).max(30),
+  encounterId: Joi.string().alphanum().min(7).max(30),
+  accountId: Joi.string().alphanum().min(7).max(30),
   inputType: Joi.string().required().allow(...getInputTypes()),
   audioFileId: Joi.string()
     .alphanum()
@@ -111,7 +114,15 @@ const getStreamConfig = function getStreamConfig({
       mergeMap(processValidationOrThrow)
     );
     const token$ = streamSub$.pipe(mergeMap(getTokenOrThrow()));
-    const configWithRunId$ = zip(config$, token$).pipe(
+    const configWithAccountId$ = zip(config$, token$).pipe(
+      mergeMap(([config, token]) => zip(
+        of(config),
+        _gql({url, token}).findEncounters({filter: {_id: config.encounterId}})
+      )),
+      map(([config, {encounters}]) => ({...config, accountId: encounters[0].accountId})),
+      shareReplay(1)
+    );
+    const configWithRunId$ = zip(configWithAccountId$, token$).pipe(
       mergeMap(([config, token]) => zip(
         of(config),
         _gql({url, token}).createRun({
