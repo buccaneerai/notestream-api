@@ -51,12 +51,11 @@ const startWebSocket = ({
   try {
     const httpServer = http.createServer(expressApp);
     const io = _startSocketIO({ httpServer });
-    const consumer$ = _createConsumer({ io }); // FIXME: enable to start consuming
-    consumer$.subscribe({
-      error: err => {
-        logError(`Error subscribing to consumer: caught @ ${__filename} => `, err);
-      },
-    });
+    const consumer$ = _createConsumer({ io });
+    consumer$.subscribe(
+      null,
+      err => logError(err),
+    );
     httpServer.on('connect', () => logInfo('HTTP_CONNECT'));
     httpServer.on('clientError', (err, socket) => {
       logError(`Http Client Error: caught @ ${__filename} b=> `, err);
