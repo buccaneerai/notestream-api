@@ -1,3 +1,10 @@
+# [1.0.0-dev.9](https://github.com/buccaneerai/notestream-api/compare/v1.0.0-dev.8...v1.0.0-dev.9) (2022-10-31)
+
+
+### Bug Fixes
+
+* THR-108 Fix notestream api calls for telephone calls ([46492b9](https://github.com/buccaneerai/notestream-api/commit/46492b9d71eb8b6185c9b37beba304b967dc305e))
+
 # [1.0.0-dev.8](https://github.com/buccaneerai/notestream-api/compare/v1.0.0-dev.7...v1.0.0-dev.8) (2022-10-26)
 
 
