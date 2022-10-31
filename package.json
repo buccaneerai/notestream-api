@@ -24,7 +24,7 @@
     "sinon": "^7.2.2"
   },
   "dependencies": {
-    "@buccaneerai/graphql-sdk": "^2.52.1",
+    "@buccaneerai/graphql-sdk": "^2.53.6",
     "@buccaneerai/logging-utils": "^1.1.1",
     "@buccaneerai/rxjs-csv": "^2.1.0",
     "@buccaneerai/rxjs-fs": "^2.0.0",
@@ -57,7 +57,7 @@
   "scripts": {
     "start": "node src/index.js",
     "dev": "npx nodemon ./src/index.js",
-    "debug": "npx nodemon debug ./src/index.js --inspect",
+    "debug": "node inspect ./src/index.js",
     "lint": "eslint -c .eslintrc ./src",
     "jwt:createadmintoken": "node ./scripts/generateTempAdminToken",
     "jwt:createsecret": "node ./scripts/createJwtSecret",

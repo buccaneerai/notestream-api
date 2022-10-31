@@ -2,6 +2,21 @@
 # yarn lockfile v1
 
 
+"@actions/core@^1.10.0":
+  version "1.10.0"
+  resolved "https://registry.yarnpkg.com/@actions/core/-/core-1.10.0.tgz#44551c3c71163949a2f06e94d9ca2157a0cfac4f"
+  integrity sha512-2aZDDa3zrrZbP5ZYg159sNoLRb61nQ7awl5pSvIq5Qpj81vwDzdMRKzkWJGJuwVvWpvZKx7vspJALyvaaIQyug==
+  dependencies:
+    "@actions/http-client" "^2.0.1"
+    uuid "^8.3.2"
+
+"@actions/http-client@^2.0.1":
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/@actions/http-client/-/http-client-2.0.1.tgz#873f4ca98fe32f6839462a6f046332677322f99c"
+  integrity sha512-PIXiMVtz6VvyaRsGY268qvj57hXQEpsYogYOu2nrQhlf+XCGmZstmuZBbAybUl1nQGnvS1k1eEsQ69ZoD7xlSw==
+  dependencies:
+    tunnel "^0.0.6"
+
 "@babel/code-frame@7.12.11":
   version "7.12.11"
   resolved "https://registry.yarnpkg.com/@babel/code-frame/-/code-frame-7.12.11.tgz#f4ad435aa263db935b8f10f2c552d23fb716a63f"
@@ -139,10 +154,10 @@
     "@babel/helper-validator-identifier" "^7.18.6"
     to-fast-properties "^2.0.0"
 
-"@buccaneerai/graphql-sdk@^2.52.1":
-  version "2.52.1"
-  resolved "https://npm.pkg.github.com/download/@buccaneerai/graphql-sdk/2.52.1/08a04ed60972e224ad32878a64e9264bb2902222#08a04ed60972e224ad32878a64e9264bb2902222"
-  integrity sha512-x82MdSm+Uo8632jXZodgOvSfCMgbLdYHNBpdisA89FfoA6wKVJuvape/KRpCX8jnypm3GsnFwI18j7dwMkgcwg==
+"@buccaneerai/graphql-sdk@^2.53.6":
+  version "2.53.6"
+  resolved "https://npm.pkg.github.com/download/@buccaneerai/graphql-sdk/2.53.6/1769b1d7e57eda3925fbfc3694ed6b7581dc9ad4#1769b1d7e57eda3925fbfc3694ed6b7581dc9ad4"
+  integrity sha512-9emKs4c7ipKZx1baSFEq8m/eJmUaMgixIFpDywCbAxXoQAb3K/OiWAehmcWomLR8mrRtzs8P7ifKKjfwqpxsRA==
   dependencies:
     graphql "^15.5.0"
     graphql-request "^3.4.0"
@@ -3338,9 +3353,11 @@ sax@>=0.6.0, sax@^1.2.4:
   integrity sha512-NqVDv9TpANUjFm0N8uM5GxL36UgKi9/atZw+x7YFnQ8ckwFGKrl4xX4yWtrey3UJm5nP1kUbnYgLopqWNSRhWw==
 
 semantic-release-export-data@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/semantic-release-export-data/-/semantic-release-export-data-1.0.0.tgz#e93a69936247fa418dbdf9e42ca4f909d7e36ac3"
-  integrity sha512-yi+GJR8adCcc+23wxvSdnf9pT5VWkJfSubyPRRywTMIuUxR32NvK8k/ok0WVM0BXjCsTUVJSz8oXi79ZxfnTyw==
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/semantic-release-export-data/-/semantic-release-export-data-1.0.1.tgz#4356a36a2f02d3a6d32c5edeca2d862df2459f49"
+  integrity sha512-6vlgrrzzcMi/REhQd65Bh4dfSKmgwXOJ/Q2RVlT9WsU4Ya1T2qGpkSrMfG/n6oFRrqBdbDlyZgxNd94ziW+vSg==
+  dependencies:
+    "@actions/core" "^1.10.0"
 
 "semver@2 || 3 || 4 || 5", semver@^5.3.0, semver@^5.6.0, semver@^5.7.1:
   version "5.7.1"
@@ -3821,6 +3838,11 @@ tunnel-agent@^0.6.0:
   dependencies:
     safe-buffer "^5.0.1"
 
+tunnel@^0.0.6:
+  version "0.0.6"
+  resolved "https://registry.yarnpkg.com/tunnel/-/tunnel-0.0.6.tgz#72f1314b34a5b192db012324df2cc587ca47f92c"
+  integrity sha512-1h/Lnq9yajKY2PEbBadPXj3VxsDDu844OnaAo52UVmIzIvwwtBPIuNvkjuzBlTWpfJyUbG3ez0KSBibQkj4ojg==
+
 tweetnacl@^0.14.3, tweetnacl@~0.14.0:
   version "0.14.5"
   resolved "https://registry.yarnpkg.com/tweetnacl/-/tweetnacl-0.14.5.tgz#5ae68177f192d4456269d108afa93ff8743f4f64"
@@ -3905,6 +3927,11 @@ uuid@^3.3.2:
   version "3.4.0"
   resolved "https://registry.yarnpkg.com/uuid/-/uuid-3.4.0.tgz#b23e4358afa8a202fe7a100af1f5f883f02007ee"
   integrity sha512-HjSDRw6gZE5JMggctHBcjVak08+KEVhSIiDzFnT9S9aegmp85S/bReBVTb4QTFaRNptJ9kuYaNhnbNEOkbKb/A==
+
+uuid@^8.3.2:
+  version "8.3.2"
+  resolved "https://registry.yarnpkg.com/uuid/-/uuid-8.3.2.tgz#80d5b5ced271bb9af6c445f21a1a04c606cefbe2"
+  integrity sha512-+NYs2QeMWy+GWFOEm9xnn6HCDp0l7QBD7ml8zLUmJ+93Q5NF0NocErnwkTkXVFNiX3/fpC6afS8Dhb/gz7R7eg==
 
 v8-compile-cache@^2.0.3:
   version "2.3.0"
