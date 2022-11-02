@@ -58,7 +58,7 @@ const createInputStream = function createInputStream(
             sampleRate: 8000,
             channels: 1,
             firstChunkContainsHeaders: false,
-          })
+          }),
         );
       default:
         return throwError(errors.unknownInputType());

@@ -5,7 +5,8 @@ const {
   filter,
   map,
   mapTo,
-  scan
+  scan,
+  tap
 } = require('rxjs/operators');
 const randomstring = require('randomstring');
 
@@ -70,9 +71,13 @@ const toSTT = ({
     merge(fileChunkMessage$, stopMessage$),
     lastMessage$
   );
-  const messageOut$ = message$.pipe(_conduit(conduitOptions));
+  const messageOut$ = message$.pipe(
+    _conduit(conduitOptions)
+  );
   const error$ = messageOut$.error$.pipe(
-    trace('conduit.error'),
+    tap((_err) => {
+      return trace(`conduit.error=${_err.message}`);
+    }),
     filter(() => false)
   );
   const word$ = messageOut$.pipe(map(mapResponseToWord()));
