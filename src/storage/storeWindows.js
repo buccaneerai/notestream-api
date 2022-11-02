@@ -19,9 +19,6 @@ const toS3File = function toS3File({
   contentType,
   _s3 = defaultS3Client,
 }) {
-  console.log({noteWindowId, s3Bucket, s3Key, contentType});
-  console.log(_s3);
-  console.log(process.env.AWS_REGION);
   return source$ => source$.pipe(
     mergeMap(buffer => from(
       _s3.putObject({
