@@ -1,3 +1,10 @@
+# [1.0.0-dev.12](https://github.com/buccaneerai/notestream-api/compare/v1.0.0-dev.11...v1.0.0-dev.12) (2022-11-02)
+
+
+### Bug Fixes
+
+* THR-108 Fix createRun ([f3701ec](https://github.com/buccaneerai/notestream-api/commit/f3701ecddd06b0ab579509cc7cbeda36f2bafbd8))
+
 # [1.0.0-dev.11](https://github.com/buccaneerai/notestream-api/compare/v1.0.0-dev.10...v1.0.0-dev.11) (2022-11-02)
 
 
