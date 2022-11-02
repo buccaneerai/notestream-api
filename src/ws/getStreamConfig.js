@@ -123,14 +123,16 @@ const getStreamConfig = function getStreamConfig({
       shareReplay(1)
     );
     const configWithRunId$ = zip(configWithAccountId$, token$).pipe(
-      mergeMap(([config, token]) => zip(
-        of(config),
-        _gql({url, token}).createRun({
-          doc: {...omit(config, 'context'), status: 'running'}
-        }).pipe(
-          mergeMap(validateAndParseResponse)
-        )
-      )),
+      mergeMap(([config, token]) => {
+        return zip(
+          of(config),
+          _gql({url, token}).createRun({
+            doc: {...omit(config, 'context'), status: 'running'}
+          }).pipe(
+            mergeMap(validateAndParseResponse)
+          )
+        );
+      }),
       map(([config, run]) => ({...config, runId: run._id})),
       shareReplay(1)
     );
