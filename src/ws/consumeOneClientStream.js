@@ -73,8 +73,8 @@ const consumeOneClientStream = function consumeOneClientStream({
     const stt$ = config$.pipe(
       withLatestFrom(socket$),
       map(([config, socket]) => [config, get(socket, 'handshake.auth.token')]),
-      mergeMap(([config, token]) =>
-        clientStreamSub$.pipe(
+      mergeMap(([config, token]) => {
+        return clientStreamSub$.pipe(
           _createAudioStream(config),
           logAudioStreamProgress({config}),
           // FIXME - should store audio
@@ -88,8 +88,8 @@ const consumeOneClientStream = function consumeOneClientStream({
             stop$: end$,
             ...getSttConfig(config)
           })
-        )
-      ),
+        );
+      }),
       map(event => ({ ...event, pipeline: 'stt' })),
       takeUntil(end$),
       share()
