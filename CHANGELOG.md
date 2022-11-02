@@ -1,3 +1,10 @@
+# [1.0.0-dev.10](https://github.com/buccaneerai/notestream-api/compare/v1.0.0-dev.9...v1.0.0-dev.10) (2022-10-31)
+
+
+### Bug Fixes
+
+* **logging:** added logs to debug issue with S3 permissions ([d84a3eb](https://github.com/buccaneerai/notestream-api/commit/d84a3eb09b2ae7755bba073fe51fbcd21994284e))
+
 # [1.0.0-dev.9](https://github.com/buccaneerai/notestream-api/compare/v1.0.0-dev.8...v1.0.0-dev.9) (2022-10-31)
 
 
