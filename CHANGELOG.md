@@ -1,3 +1,25 @@
+# [1.0.0-dev.11](https://github.com/buccaneerai/notestream-api/compare/v1.0.0-dev.10...v1.0.0-dev.11) (2022-11-02)
+
+
+### Bug Fixes
+
+* **bug:** resolved issue where notestream would stop accepting new connections after an error ([f00f91a](https://github.com/buccaneerai/notestream-api/commit/f00f91a79159ec1fc3f3223fc470fb7970e498b0))
+* **chore:** removed console.log statements ([b414a52](https://github.com/buccaneerai/notestream-api/commit/b414a52c57882f6e1122b7ce0cb00ae3f78b90c1))
+
+# [1.0.0-dev.10](https://github.com/buccaneerai/notestream-api/compare/v1.0.0-dev.9...v1.0.0-dev.10) (2022-10-31)
+
+
+### Bug Fixes
+
+* **logging:** added logs to debug issue with S3 permissions ([d84a3eb](https://github.com/buccaneerai/notestream-api/commit/d84a3eb09b2ae7755bba073fe51fbcd21994284e))
+
+# [1.0.0-dev.9](https://github.com/buccaneerai/notestream-api/compare/v1.0.0-dev.8...v1.0.0-dev.9) (2022-10-31)
+
+
+### Bug Fixes
+
+* THR-108 Fix notestream api calls for telephone calls ([46492b9](https://github.com/buccaneerai/notestream-api/commit/46492b9d71eb8b6185c9b37beba304b967dc305e))
+
 # [1.0.0-dev.8](https://github.com/buccaneerai/notestream-api/compare/v1.0.0-dev.7...v1.0.0-dev.8) (2022-10-26)
 
 
