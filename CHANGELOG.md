@@ -1,3 +1,11 @@
+# [1.0.0-dev.14](https://github.com/buccaneerai/notestream-api/compare/v1.0.0-dev.13...v1.0.0-dev.14) (2022-11-03)
+
+
+### Bug Fixes
+
+* THR-108 get the stt api working ([b70681a](https://github.com/buccaneerai/notestream-api/commit/b70681a70a7c9995e5b86c5a78b3877b06d95149))
+* THR-108 put back aws-medical ([9199746](https://github.com/buccaneerai/notestream-api/commit/9199746f8f7e5b6be9876f8479ce4af092372106))
+
 # [1.0.0-dev.13](https://github.com/buccaneerai/notestream-api/compare/v1.0.0-dev.12...v1.0.0-dev.13) (2022-11-02)
 
 
