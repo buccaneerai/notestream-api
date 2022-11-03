@@ -1,3 +1,10 @@
+# [1.0.0-dev.13](https://github.com/buccaneerai/notestream-api/compare/v1.0.0-dev.12...v1.0.0-dev.13) (2022-11-02)
+
+
+### Bug Fixes
+
+* THR-108 couple fixes ([a59782e](https://github.com/buccaneerai/notestream-api/commit/a59782ecba60edc2b4c06cb133ff3b6dfe578b39))
+
 # [1.0.0-dev.12](https://github.com/buccaneerai/notestream-api/compare/v1.0.0-dev.11...v1.0.0-dev.12) (2022-11-02)
 
 
