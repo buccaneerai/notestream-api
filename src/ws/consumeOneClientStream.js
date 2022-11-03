@@ -11,7 +11,7 @@ const {
   takeLast,
   takeUntil,
   tap,
-  withLatestFrom
+  withLatestFrom,
 } = require('rxjs/operators');
 
 const {
