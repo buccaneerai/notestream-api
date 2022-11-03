@@ -57,7 +57,7 @@ const toSTT = ({
     delay(delayTime)
   );
   const fileChunkMessage$ = (
-    inputType === 'audioStream'
+    inputType === 'audioStream' || inputType === 'telephoneCall'
     ? linear16Chunk$.pipe(
       scan((acc, next) => [next, acc[1] + 1], [null, -1]),
       map(([chunk, i]) => ({topic: 'next-stt-chunk', index: i, binary: chunk}))
@@ -75,12 +75,15 @@ const toSTT = ({
     _conduit(conduitOptions)
   );
   const error$ = messageOut$.error$.pipe(
-    tap((_err) => {
-      return trace(`conduit.error=${_err.message}`);
+    trace(`conduit.error`),
+    tap((err) => {
+      console.error(err);
     }),
     filter(() => false)
   );
-  const word$ = messageOut$.pipe(map(mapResponseToWord()));
+  const word$ = messageOut$.pipe(
+    map(mapResponseToWord())
+  );
   return merge(word$, error$);
 };
 

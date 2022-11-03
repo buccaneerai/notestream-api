@@ -16,7 +16,7 @@ const sampleConfig = {
   inputType: 's3File',
   sampleRate: 16000,
   sttEngines: [
-    'aws-medical',
+    // 'aws-medical',
     'gcp',
     'ibm',
     'deepgram',

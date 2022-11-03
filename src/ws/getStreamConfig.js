@@ -51,7 +51,7 @@ const schema = Joi.object({
     .when('inputType', {is: 's3File', then: Joi.required()}),
   sttEngines: Joi.array()
     .items(Joi.string().allow(...getSttEngines()))
-    .default(['aws-medical', 'gcp', 'ibm', 'deepgram']),
+    .default(['gcp', 'ibm', 'deepgram']),
   ensemblers: Joi.array()
     .items(Joi.string())
     .default(['tfEnsembler']),
