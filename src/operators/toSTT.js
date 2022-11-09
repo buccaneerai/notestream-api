@@ -2,14 +2,16 @@ const get = require('lodash/get');
 const {concat, merge, of} = require('rxjs');
 const {
   delay,
+  filter,
   map,
   mapTo,
-  scan
+  scan,
+  tap
 } = require('rxjs/operators');
 const randomstring = require('randomstring');
 
 const {conduit} = require('@buccaneerai/rxjs-socketio');
-// const trace = require('./trace');
+const trace = require('./trace');
 
 const makeStreamId = () => randomstring.generate(7)
 
@@ -55,7 +57,7 @@ const toSTT = ({
     delay(delayTime)
   );
   const fileChunkMessage$ = (
-    inputType === 'audioStream'
+    inputType === 'audioStream' || inputType === 'telephoneCall'
     ? linear16Chunk$.pipe(
       scan((acc, next) => [next, acc[1] + 1], [null, -1]),
       map(([chunk, i]) => ({topic: 'next-stt-chunk', index: i, binary: chunk}))
@@ -69,9 +71,20 @@ const toSTT = ({
     merge(fileChunkMessage$, stopMessage$),
     lastMessage$
   );
-  const messageOut$ = message$.pipe(_conduit(conduitOptions));
-  const word$ = messageOut$.pipe(map(mapResponseToWord()));
-  return word$;
+  const messageOut$ = message$.pipe(
+    _conduit(conduitOptions)
+  );
+  const error$ = messageOut$.error$.pipe(
+    trace(`conduit.error`),
+    tap((err) => {
+      console.error(err);
+    }),
+    filter(() => false)
+  );
+  const word$ = messageOut$.pipe(
+    map(mapResponseToWord())
+  );
+  return merge(word$, error$);
 };
 
 module.exports = toSTT;

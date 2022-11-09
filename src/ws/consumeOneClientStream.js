@@ -11,7 +11,7 @@ const {
   takeLast,
   takeUntil,
   tap,
-  withLatestFrom
+  withLatestFrom,
 } = require('rxjs/operators');
 
 const {
@@ -23,6 +23,7 @@ const getStreamConfig = require('./getStreamConfig');
 const createAudioStream = require('../audio/createAudioStream');
 const toSTT = require('../operators/toSTT');
 const trace = require('../operators/trace');
+const logAudioStreamProgress = require('../operators/logAudioStreamProgress');
 const createWindows = require('../operators/createWindows');
 const storeStatusUpdates = require('../storage/storeStatusUpdates');
 // const storeRawAudio = require('../storage/storeRawAudio');
@@ -72,9 +73,10 @@ const consumeOneClientStream = function consumeOneClientStream({
     const stt$ = config$.pipe(
       withLatestFrom(socket$),
       map(([config, socket]) => [config, get(socket, 'handshake.auth.token')]),
-      mergeMap(([config, token]) =>
-        clientStreamSub$.pipe(
+      mergeMap(([config, token]) => {
+        return clientStreamSub$.pipe(
           _createAudioStream(config),
+          logAudioStreamProgress({config}),
           // FIXME - should store audio
           // (
           //   config.inputType === 'audioStream' && config.saveRawAudio
@@ -86,8 +88,8 @@ const consumeOneClientStream = function consumeOneClientStream({
             stop$: end$,
             ...getSttConfig(config)
           })
-        )
-      ),
+        );
+      }),
       map(event => ({ ...event, pipeline: 'stt' })),
       takeUntil(end$),
       share()

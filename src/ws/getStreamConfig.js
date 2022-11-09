@@ -41,6 +41,9 @@ const errors = {
 const schema = Joi.object({
   streamId: Joi.string().alphanum().min(7).max(30),
   runId: Joi.string().alphanum().min(7).max(30),
+  telephoneCallId: Joi.string().alphanum().min(7).max(30),
+  encounterId: Joi.string().alphanum().min(7).max(30),
+  accountId: Joi.string().alphanum().min(7).max(30),
   inputType: Joi.string().required().allow(...getInputTypes()),
   audioFileId: Joi.string()
     .alphanum()
@@ -53,7 +56,7 @@ const schema = Joi.object({
     .items(Joi.string())
     .default(['tfEnsembler']),
   ensemblerOptions: Joi.object()
-    .default({baselineSTTEngine: 'aws-medical'}),
+    .default({baselineSTTEngine: process.env.BASELINE_STT_ENGINE || 'gcp'}),
   sendSTTOutput: Joi.boolean().default(false),
   channels: Joi.number().integer().default(1).allow(1),
   sampleRate: Joi.number().integer().default(16000).allow(16000),
@@ -111,15 +114,25 @@ const getStreamConfig = function getStreamConfig({
       mergeMap(processValidationOrThrow)
     );
     const token$ = streamSub$.pipe(mergeMap(getTokenOrThrow()));
-    const configWithRunId$ = zip(config$, token$).pipe(
+    const configWithAccountId$ = zip(config$, token$).pipe(
       mergeMap(([config, token]) => zip(
         of(config),
-        _gql({url, token}).createRun({
-          doc: {...omit(config, 'context'), status: 'running'}
-        }).pipe(
-          mergeMap(validateAndParseResponse)
-        )
+        _gql({url, token}).findEncounters({filter: {_id: config.encounterId}})
       )),
+      map(([config, {encounters}]) => ({...config, accountId: encounters[0].accountId})),
+      shareReplay(1)
+    );
+    const configWithRunId$ = zip(configWithAccountId$, token$).pipe(
+      mergeMap(([config, token]) => {
+        return zip(
+          of(config),
+          _gql({url, token}).createRun({
+            doc: {...omit(config, 'context'), status: 'running'}
+          }).pipe(
+            mergeMap(validateAndParseResponse)
+          )
+        );
+      }),
       map(([config, run]) => ({...config, runId: run._id})),
       shareReplay(1)
     );

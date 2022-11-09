@@ -24,7 +24,8 @@ describe('toSTT', () => {
 
   it('should return correct output stream given valid input stream', marbles(m => {
     const source$ = m.cold('----|', []);
-    const fakeOut$ = m.cold('-0-1--|', fakeResponses);
+    let fakeOut$ = m.cold('-0-1--|', fakeResponses);
+    fakeOut$.error$ = m.cold('--0---|', [{error: {message: 'new error'}}]);
     const params = {
       streamId: 'fakestream',
       runId: 'fakerun',

@@ -24,7 +24,7 @@ const sampleConfig = {
     // 'deepspeech',
   ],
   ensemblers: ['tfEnsembler'],
-  ensemblerOptions: {baselineSTTEngine: 'aws-medical'},
+  ensemblerOptions: {baselineSTTEngine: 'gcp'},
   // preferredSttEngine: 'deepspeech',
   sendSTTOutput: false,
   useRealtime: true,
@@ -32,6 +32,7 @@ const sampleConfig = {
   saveRawSTT: true,
   saveWords: true,
   saveWindows: true,
+  accountId: 'myaccountid',
   runId: 'myrunid',
   windowLength: 20000,
   windowTimeoutInterval: 15000,
@@ -59,7 +60,9 @@ describe('getStreamConfig', () => {
   it('should return config when given a valid input observable', marbles(m => {
     const run = {createRun: {_id: 'myrunid'}};
     const createRun = sinon.stub().returns(of(run));
-    const _gql = () => ({createRun});
+    const encounter = {encounters: [{_id: 'myencounterid', accountId: 'myaccountid'}]};
+    const findEncounters = sinon.stub().returns(of(encounter));
+    const _gql = () => ({createRun,findEncounters});
     const event = {
       type: NEW_STT_STREAM,
       data: {
@@ -102,7 +105,7 @@ describe('getStreamConfig', () => {
     const input = {data: {audioFileId: 'abcdefg', inputType: 's3File'}};
     const validations = validate()(input);
     expect(validations.error).to.be.a('null');
-    expect(validations.value).to.deep.equal(_.omit(sampleConfig, 'runId'));
+    expect(validations.value).to.deep.equal(_.omit(sampleConfig, ['runId', 'accountId']));
   });
 
   it('should identify errors when given invalid input', () => {

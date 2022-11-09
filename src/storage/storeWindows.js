@@ -4,20 +4,16 @@ const {map,mapTo,mergeMap,scan,takeLast} = require('rxjs/operators');
 const {toCSV} = require('@buccaneerai/rxjs-csv');
 const {client} = require('@buccaneerai/graphql-sdk');
 
-const defaultOptions = {
-  s3Bucket: process.env.S3_DATA_STORAGE_BUCKET,
-  prefixDir: process.env.S3_JOB_STORAGE_DIR,
-};
-
 const errors = {
   badGraphQLResponse: res => new Error(`bad GraphQL response: ${res}`)
 };
 
-const defaultS3Client = new AWS.S3();
+const defaultS3Client = new AWS.S3({
+  region: process.env.AWS_REGION || 'us-east-1',
+});
 
 const toS3File = function toS3File({
-  runId,
-  windowId,
+  noteWindowId,
   s3Bucket,
   s3Key,
   contentType,
@@ -30,7 +26,7 @@ const toS3File = function toS3File({
         Key: s3Key,
         ContentType: contentType,
         Body: buffer,
-        Tagging: `runId=${runId}&windowId=${windowId}&dataType=words`,
+        Tagging: `noteWindowId=${noteWindowId}&dataType=words`,
       }).promise()
     ))
   );
@@ -48,13 +44,11 @@ const storeWindows = function storeWindows({
   end,
   startTime,
   endTime,
-  options = {},
   _createNoteWindow = gql().createNoteWindow,
   _updateNoteWindow = gql().updateNoteWindow,
   _toCSV = toCSV,
   _toS3File = toS3File
 }) {
-  const config = {...defaultOptions, ...options};
   return wordWindow$ => {
     const doc = {
       runId,
@@ -73,7 +67,7 @@ const storeWindows = function storeWindows({
       )
     );
     const storage$ = doc$.pipe(
-      mergeMap(({_id}) => {
+      mergeMap(({_id, wordsS3Bucket, wordsS3Key}) => {
         return wordWindow$.pipe(
           _toCSV(),
           scan((acc, nextCsvStr) => `${acc}\n${nextCsvStr}` , ''),
@@ -81,9 +75,9 @@ const storeWindows = function storeWindows({
           map(csvStr => Buffer.from(csvStr, 'utf8')),
           _toS3File({
             runId,
-            windowId: _id,
-            s3Bucket: config.s3Bucket,
-            s3Key: `${config.prefixDir}/${runId}/note-windows/${_id}-words.csv`,
+            noteWindowId: _id,
+            s3Bucket: wordsS3Bucket,
+            s3Key: wordsS3Key,
             contentType: 'text/csv',
           }),
           takeLast(1),

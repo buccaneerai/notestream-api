@@ -16,7 +16,8 @@ const authenticator = ({
   if (!token) return next(errors.unauthorized());
   try {
     const data = _jwt.verify(token, secret);
-    if (get(data, '_id', null)) return next();
+    if (get(data, '_id', null) || get(data, 'serviceName', null)) return next();
+    _logger.error('_id or serviceName is not present', {message: 'Unauthorized'});
     return next(errors.unauthorized());
   } catch (e) {
     _logger.error(e.message, {message: 'Unauthorized'});
