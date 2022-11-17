@@ -1,3 +1,12 @@
+# [1.0.0-dev.16](https://github.com/buccaneerai/notestream-api/compare/v1.0.0-dev.15...v1.0.0-dev.16) (2022-11-17)
+
+
+### Bug Fixes
+
+* Automatically updating .github folder ([f236122](https://github.com/buccaneerai/notestream-api/commit/f23612284bd962e0ece7c5baa1aee7b6fd9091ec))
+* Automatically updating .github folder ([4f92320](https://github.com/buccaneerai/notestream-api/commit/4f92320e0c1dc545746316443ba34f3abb63a244))
+* Automatically updating .github folder ([60eb893](https://github.com/buccaneerai/notestream-api/commit/60eb893c199369427c64e07ea75c16e6a1f9da8a))
+
 # [1.0.0-dev.15](https://github.com/buccaneerai/notestream-api/compare/v1.0.0-dev.14...v1.0.0-dev.15) (2022-11-17)
 
 
