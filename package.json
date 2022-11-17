@@ -1,6 +1,6 @@
 {
   "name": "notestream-api",
-  "version": "1.0.0-dev.14",
+  "version": "1.0.0-dev.15",
   "main": "build/index.js",
   "author": "Buccaneer LLC",
   "license": "UNLICENSED",
