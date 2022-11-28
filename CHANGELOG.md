@@ -1,3 +1,10 @@
+# [1.0.0-dev.17](https://github.com/buccaneerai/notestream-api/compare/v1.0.0-dev.16...v1.0.0-dev.17) (2022-11-28)
+
+
+### Features
+
+* THR-188 Upload the 5 second linear16 audio chunks to the s3 app data bucket ([6eb88d3](https://github.com/buccaneerai/notestream-api/commit/6eb88d30be906bd26a30c9672ee3efb4ca392896))
+
 # [1.0.0-dev.16](https://github.com/buccaneerai/notestream-api/compare/v1.0.0-dev.15...v1.0.0-dev.16) (2022-11-17)
 
 
