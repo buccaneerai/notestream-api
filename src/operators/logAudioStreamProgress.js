@@ -5,8 +5,7 @@ const roundTo = require('round-to');
 const AWS = require('aws-sdk');
 
 const defaultOptions = {
-  s3Bucket: process.env.S3_DATA_STORAGE_BUCKET,
-  prefixDir: process.env.S3_AUDIO_DIR,
+  s3Bucket: process.env.S3_AUDIO_BUCKET || process.env.S3_DATA_STORAGE_BUCKET,
 };
 
 const defaultS3Client = new AWS.S3();
