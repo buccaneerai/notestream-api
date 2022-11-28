@@ -1,3 +1,10 @@
+# [1.0.0-dev.18](https://github.com/buccaneerai/notestream-api/compare/v1.0.0-dev.17...v1.0.0-dev.18) (2022-11-28)
+
+
+### Bug Fixes
+
+* THR-188 Add alternate s3 bucket location ([b6c7975](https://github.com/buccaneerai/notestream-api/commit/b6c79753db82e138d75676e646153cb329384f77))
+
 # [1.0.0-dev.17](https://github.com/buccaneerai/notestream-api/compare/v1.0.0-dev.16...v1.0.0-dev.17) (2022-11-28)
 
 
