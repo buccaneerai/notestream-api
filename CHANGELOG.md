@@ -1,3 +1,10 @@
+# [1.0.0-dev.19](https://github.com/buccaneerai/notestream-api/compare/v1.0.0-dev.18...v1.0.0-dev.19) (2022-12-01)
+
+
+### Bug Fixes
+
+* THR-301 Add script that allows us to re-stream audio from completed run by id ([7e0c3a6](https://github.com/buccaneerai/notestream-api/commit/7e0c3a613d12bf87a1072ab4ef797573853251b4))
+
 # [1.0.0-dev.18](https://github.com/buccaneerai/notestream-api/compare/v1.0.0-dev.17...v1.0.0-dev.18) (2022-11-28)
 
 
