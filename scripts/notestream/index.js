@@ -1,11 +1,16 @@
-const path = require('path');
+const AWS = require('aws-sdk');
 const dotenv = require('dotenv');
 // const get = require('lodash/get');
 const {Command} = require('commander');
+const fs = require('fs');
+const path = require('path');
+
 // const runPipeline = require('./lib/runPipeline');
 // const s3FileToSTT = require('./lib/fileToSTT');
 const testWebsocket = require('./lib/testWebsocket');
 const liveStream = require('./lib/liveStream');
+
+const s3 = new AWS.S3({region: process.env.AWS_REGION});
 
 const program = new Command();
 dotenv.config({path: path.resolve(__dirname, '../../.env')});
@@ -40,6 +45,73 @@ const audioFilePath = path.resolve(
   __dirname,
   '../audio-samples/headache-sample.l16'
 );
+
+async function fromRun(opts) {
+    const listAllKeys = (params, out = []) => new Promise((resolve, reject) => {
+      s3.listObjectsV2(params).promise()
+        .then(({Contents, IsTruncated, NextContinuationToken}) => {
+          out.push(...Contents);
+          !IsTruncated ? resolve(out) : resolve(listAllKeys(Object.assign(params, {ContinuationToken: NextContinuationToken}), out));
+        })
+        .catch(reject);
+    });
+    const bucket = `${opts.stage}-thread-medical-app-data-bucket`;
+    const prefix = `notestream/runs/${opts.runId}/audio`;
+    let chunks = [];
+    listAllKeys({
+        Bucket: bucket,
+        Prefix: prefix
+      })
+      .then(async (items) => {
+        const audioFiles = items.map((item) => {
+          const arr = item.Key.split('/')
+          const key = arr[arr.length - 1];
+          const index = key.split('.')[0];
+          return {
+            ...item,
+            key,
+            index: parseInt(index, 10),
+          }
+        });
+        console.log(`Found ${audioFiles.length} keys...`);
+        audioFiles.sort((a, b) => a.index - b.index);
+        for (const file of audioFiles) {  // eslint-disable-line
+          console.log(`Fetching ${file.Key}...`);
+          const resp = await s3.getObject({ // eslint-disable-line
+            Bucket: bucket,
+            Key: file.Key
+          }).promise();
+          chunks.push(resp.Body);
+        }
+        const data = Buffer.concat(chunks);
+        const filePath = `/tmp/${opts.runId}.linear16`;
+        console.log(`Writing file to ${filePath}`);
+        fs.writeFileSync(filePath, data);
+        console.log('Attempting to stream the file!');
+        return liveStream()({
+          ...opts,
+          inputFilePath: filePath,
+        }).subscribe(console.log,console.error,console.log.bind(null, 'DONE'));
+      })
+      .catch(console.log);
+}
+
+program
+  .command('from-run')
+  .option('-r, --run-id <runId>', 'runId', '6387ae20e67b1a150ff78e52')
+  .option('-s, --stage <stage>', 'stage', 'staging')
+  .option('-u, --url <url>', 'target URL', `http://localhost:${process.env.PORT}`)
+  .option('-t, --token <token>', 'JWT token', fakeUserToken)
+  .option('-e, --stt-engines <sttEngines...>', 'stt engines', ['aws-medical', 'gcp', 'ibm'])
+  .option('--ensemblers <ensemblers...>', 'ensemblers', [])
+  .option('--input-type <inputType>', 'input source type', 'audioStream')
+  .option('--take <take>', 'Number of seconds to sample', null)
+  .option('--skip <skip>', 'Number of seconds to skip', null)
+  .option('--save-raw-stt', 'save raw STT output', true)
+  .option('--save-words', 'save words output', true)
+  .option('--save-windows', 'whether to save note windows', true)
+  .action(fromRun);
+
 program
   .command('from-file')
   .option('-f, --audio-file-id <audioFileId>', 'audio file to run', '60621d23347140dc6007dba2')

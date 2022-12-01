@@ -30,6 +30,7 @@ const liveStream = ({
   _conduit = conduit
 } = {}) => opts => {
   const streamId = randomstring.generate(7);
+  console.log(`Attempting to stream audio file ${opts.inputFilePath} to ${opts.url}...`);
   const stop$ = opts.take ? timer(opts.take * 1000) : of();
   const firstMessage = {
     streamId,
@@ -64,7 +65,7 @@ const liveStream = ({
     completeMessage$
   );
   const eventFromServer$ = message$.pipe(
-    // tap(m => console.log('WS.messageIn', m)),
+    tap(m => console.log('WS.messageIn', m)),
     _conduit({
       url: opts.url,
       stop$,
