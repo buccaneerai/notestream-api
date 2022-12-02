@@ -2,16 +2,64 @@ const get = require('lodash/get');
 const {merge} = require('rxjs');
 const {bufferTime,filter,scan,share} = require('rxjs/operators');
 const roundTo = require('round-to');
+const AWS = require('aws-sdk');
 
+const defaultOptions = {
+  s3Bucket: process.env.S3_AUDIO_BUCKET || process.env.S3_DATA_STORAGE_BUCKET,
+};
+
+const defaultS3Client = new AWS.S3();
+
+const toS3File = function toS3File({
+  audioFileId,
+  runId,
+  s3Bucket,
+  s3Key,
+  contentType,
+  data,
+  _s3 = defaultS3Client,
+}) {
+  return _s3.putObject({
+      Bucket: s3Bucket,
+      Key: s3Key,
+      ContentType: contentType,
+      Body: data,
+      Tagging: `audioFileId=${audioFileId}&runId=${runId}`
+    }).promise()
+};
+
+const logger = require('../utils/logger');
 const trace = require('./trace');
 
 const reduceChunksToMessages = (
   streamConfig,
   logInterval,
-  _roundTo = roundTo
+  _roundTo = roundTo,
+  _logger = logger,
+  _toS3File = toS3File
 ) => (
   (acc, chunks) => {
+    const runId = get(streamConfig, 'runId');
     const byteLength = chunks.reduce((acc2, c) => acc2 + Buffer.byteLength(c), 0);
+    if (get(streamConfig, 'saveRawAudio')) {
+      const data = Buffer.concat(chunks);
+      const folder = `notestream/runs/${runId}/audio`;
+      const id = acc.windowIndex + 1;
+      const key = `${folder}/${id}.linear16`;
+      _toS3File({
+        audioFileId: id,
+        runId,
+        s3Bucket: defaultOptions.s3Bucket,
+        s3Key: key,
+        contentType: 'audio/L16',
+        data
+      }).then(() => {
+        _logger.info(`Wrote file to ${defaultOptions.s3Bucket}/${key}`);
+      }).catch((err) => {
+        _logger.error(`Unable to write file ${defaultOptions.s3Bucket}/${key}!`)
+        _logger.error(err);
+      });
+    }
     return {
       runId: get(streamConfig, 'runId'),
       inputType: get(streamConfig, 'inputType'),

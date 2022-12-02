@@ -1,8 +1,57 @@
-## [1.3.1](https://github.com/buccaneerai/notestream-api/compare/v1.3.0...v1.3.1) (2022-11-09)
+# [1.4.0-dev.1](https://github.com/buccaneerai/notestream-api/compare/v1.3.1...v1.4.0-dev.1) (2022-12-02)
 
 
 ### Bug Fixes
 
+* Automatically updating .github folder ([f236122](https://github.com/buccaneerai/notestream-api/commit/f23612284bd962e0ece7c5baa1aee7b6fd9091ec))
+* Automatically updating .github folder ([4f92320](https://github.com/buccaneerai/notestream-api/commit/4f92320e0c1dc545746316443ba34f3abb63a244))
+* Automatically updating .github folder ([60eb893](https://github.com/buccaneerai/notestream-api/commit/60eb893c199369427c64e07ea75c16e6a1f9da8a))
+* THR-188 Add alternate s3 bucket location ([b6c7975](https://github.com/buccaneerai/notestream-api/commit/b6c79753db82e138d75676e646153cb329384f77))
+* THR-278 Remove old ECR repo ([fa0bec8](https://github.com/buccaneerai/notestream-api/commit/fa0bec84ed5ec4cf06aa5af74eaecb995ace1329))
+* THR-301 Add script that allows us to re-stream audio from completed run by id ([7e0c3a6](https://github.com/buccaneerai/notestream-api/commit/7e0c3a613d12bf87a1072ab4ef797573853251b4))
+
+
+### Features
+
+* THR-188 Upload the 5 second linear16 audio chunks to the s3 app data bucket ([6eb88d3](https://github.com/buccaneerai/notestream-api/commit/6eb88d30be906bd26a30c9672ee3efb4ca392896))
+
+# [1.0.0-dev.19](https://github.com/buccaneerai/notestream-api/compare/v1.0.0-dev.18...v1.0.0-dev.19) (2022-12-01)
+
+
+### Bug Fixes
+
+* THR-301 Add script that allows us to re-stream audio from completed run by id ([7e0c3a6](https://github.com/buccaneerai/notestream-api/commit/7e0c3a613d12bf87a1072ab4ef797573853251b4))
+
+# [1.0.0-dev.18](https://github.com/buccaneerai/notestream-api/compare/v1.0.0-dev.17...v1.0.0-dev.18) (2022-11-28)
+
+
+### Bug Fixes
+
+* THR-188 Add alternate s3 bucket location ([b6c7975](https://github.com/buccaneerai/notestream-api/commit/b6c79753db82e138d75676e646153cb329384f77))
+
+# [1.0.0-dev.17](https://github.com/buccaneerai/notestream-api/compare/v1.0.0-dev.16...v1.0.0-dev.17) (2022-11-28)
+
+
+### Features
+
+* THR-188 Upload the 5 second linear16 audio chunks to the s3 app data bucket ([6eb88d3](https://github.com/buccaneerai/notestream-api/commit/6eb88d30be906bd26a30c9672ee3efb4ca392896))
+
+# [1.0.0-dev.16](https://github.com/buccaneerai/notestream-api/compare/v1.0.0-dev.15...v1.0.0-dev.16) (2022-11-17)
+
+
+### Bug Fixes
+
+* Automatically updating .github folder ([f236122](https://github.com/buccaneerai/notestream-api/commit/f23612284bd962e0ece7c5baa1aee7b6fd9091ec))
+* Automatically updating .github folder ([4f92320](https://github.com/buccaneerai/notestream-api/commit/4f92320e0c1dc545746316443ba34f3abb63a244))
+* Automatically updating .github folder ([60eb893](https://github.com/buccaneerai/notestream-api/commit/60eb893c199369427c64e07ea75c16e6a1f9da8a))
+
+# [1.0.0-dev.15](https://github.com/buccaneerai/notestream-api/compare/v1.0.0-dev.14...v1.0.0-dev.15) (2022-11-17)
+
+
+### Bug Fixes
+
+* THR-278 Remove old ECR repo ([fa0bec8](https://github.com/buccaneerai/notestream-api/commit/fa0bec84ed5ec4cf06aa5af74eaecb995ace1329))
+=======
 * audio stream logging should not alter input stream ([175679c](https://github.com/buccaneerai/notestream-api/commit/175679c59782685452522c6b3a05f8939521ab55))
 * **bug:** resolved issue where notestream would stop accepting new connections after an error ([f00f91a](https://github.com/buccaneerai/notestream-api/commit/f00f91a79159ec1fc3f3223fc470fb7970e498b0))
 * **bug:** set gcp as default stt engine since aws currently does not work ([64bc1a1](https://github.com/buccaneerai/notestream-api/commit/64bc1a1ba7e20dabf2e4962d372753569bf4c228))
