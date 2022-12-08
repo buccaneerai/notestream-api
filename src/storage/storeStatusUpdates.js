@@ -5,14 +5,15 @@ const {DISCONNECTION, STT_STREAM_STOP, STT_STREAM_COMPLETE} = require('../ws/pro
 const updateRun = require('./updateRun');
 
 const updateStatus = ({runId, _updateRun = updateRun}) => e => {
+  const audioCheckpoint = e.log || undefined;
   if (e.type === DISCONNECTION) {
-    return _updateRun({runId})({status: 'disconnected'});
+    return _updateRun({runId})({status: 'disconnected', audioCheckpoint});
   }
   if (e.type === STT_STREAM_STOP) {
-    return _updateRun({runId})({status: 'stopped'});
+    return _updateRun({runId})({status: 'stopped', audioCheckpoint});
   }
   if (e.type === STT_STREAM_COMPLETE) {
-    return _updateRun({runId})({status: 'completed'});
+    return _updateRun({runId})({status: 'completed', audioCheckpoint});
   }
   // if event is not recognized, return an empty observable
   return of();
