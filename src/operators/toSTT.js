@@ -28,6 +28,7 @@ const toSTT = ({
   ensemblerOptions,
   saveRawSTT,
   saveWords,
+  audioCheckpoint = null,
   stop$ = of(),
   _conduit = conduit,
   _makeStreamId = makeStreamId,
@@ -46,6 +47,16 @@ const toSTT = ({
     saveRawSTT,
     saveWords,
   };
+  let chunkIndexEnd = 0;
+  let end = 0;
+  if (audioCheckpoint) {
+    if (audioCheckpoint.chunkIndexEnd > -1) {
+      chunkIndexEnd = audioCheckpoint.chunkIndexEnd; // eslint-disable-line
+    }
+    if (audioCheckpoint.end > -1) {
+      end = audioCheckpoint.end; // eslint-disable-line
+    }
+  }
   const conduitOptions = {
     url,
     socketOptions: {
@@ -60,7 +71,10 @@ const toSTT = ({
     inputType === 'audioStream' || inputType === 'telephoneCall'
     ? linear16Chunk$.pipe(
       scan((acc, next) => [next, acc[1] + 1], [null, -1]),
-      map(([chunk, i]) => ({topic: 'next-stt-chunk', index: i, binary: chunk}))
+      map(([chunk, i]) => {
+        // Send the audioCheckpoint's last end time and index
+        return {topic: 'next-stt-chunk', index: i + chunkIndexEnd, end, binary: chunk};
+      })
     )
     : of()
   );
@@ -82,7 +96,13 @@ const toSTT = ({
     filter(() => false)
   );
   const word$ = messageOut$.pipe(
-    map(mapResponseToWord())
+    map(mapResponseToWord()),
+    tap((arg) => {
+      if (arg.sttEngine === 'aws-medical') {
+        console.log(`Chunk endOffset=${end}`);
+        console.log(`Word i=${arg.i} start=${arg.start} end=${arg.end}`);
+      }
+    }),
   );
   return merge(word$, error$);
 };

@@ -39,7 +39,8 @@ const getSttConfig = config => pick(
   'ensemblers',
   'ensemblerOptions',
   'saveRawSTT',
-  'saveWords'
+  'saveWords',
+  'audioCheckpoint'
 );
 
 const consumeOneClientStream = function consumeOneClientStream({
@@ -107,10 +108,12 @@ const consumeOneClientStream = function consumeOneClientStream({
           }),
           mergeMap((message) => {
             if (message.type && message.type === 'log') {
+              // Add the latest log message to the run as audioCheckpoint
               return _updateRun({runId: message.runId})({audioCheckpoint: message});
             }
-            return of();
+            return of(message);
           }),
+          filter((message) => !message.type && !message.updateRun),
           _toSTT({
             token,
             stop$: end$,

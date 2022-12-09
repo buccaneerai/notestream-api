@@ -162,9 +162,11 @@ const getStreamConfig = function getStreamConfig({
       mergeMap(([config, runs]) => {
         if (runs && runs.runs && runs.runs[0] && runs.runs[0].audioCheckpoint) {
           // resume previous stream
+          const run = runs.runs[0];
           return of({
             ...config,
-            audioCheckpoint: runs.runs[0].audioCheckpoint
+            accountId: run.accountId,
+            audioCheckpoint: run.audioCheckpoint
           });
         }
         // raise an error, this is a failure mode

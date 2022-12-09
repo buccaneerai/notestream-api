@@ -7,6 +7,13 @@ const updateRun = require('./updateRun');
 const updateStatus = ({runId, _updateRun = updateRun}) => e => {
   const audioCheckpoint = e.log || undefined;
   if (e.type === DISCONNECTION) {
+    const { data: { reason = null } = {} } = e;
+    if (reason === 'io client disconnect' || reason === 'client namespace disconnect') {
+      // user closed the connection purposefully, at this point STT_STREAM_STOP has already been called
+      // just return an empty observable
+      return of();
+    }
+    // user was disconnected
     return _updateRun({runId})({status: 'disconnected', audioCheckpoint});
   }
   if (e.type === STT_STREAM_STOP) {
