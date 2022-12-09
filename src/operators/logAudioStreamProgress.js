@@ -75,6 +75,7 @@ const reduceChunksToMessages = (
       bytesInWindow: byteLength,
       avgBytesPerChunk: _roundTo(byteLength / chunks.length, 2),
       avgBytesPerSecond: _roundTo(byteLength / logInterval / 1000, 2),
+      type: 'log',
     };
   }
 );
@@ -95,6 +96,7 @@ const toMessages = ({
     bytesInWindow: null,
     avgBytesPerChunk: null,
     avgBytesPerSecond: null,
+    type: 'log',
   }
 }) => fileChunk$ => fileChunk$.pipe(
   bufferTime(logInterval), // cache chunks for time window
@@ -105,13 +107,17 @@ const logAudioStreamProgress = ({
   config,
   logInterval = 5000,
   eventKey = 'audioStreamProgress',
-  emitMessages = false,
+  emitMessages = true,
   _toMessages = toMessages,
   _trace = trace
 } = {}) => fileChunk$ => {
   const fileChunkSub$ = fileChunk$.pipe(share());
+  let initialState;
+  if (config.audioCheckpoint) {
+    initialState = config.audioCheckpoint;
+  }
   const logs$ = fileChunkSub$.pipe(
-    _toMessages({config, logInterval}),
+    _toMessages({config, logInterval, initialState}),
     _trace(eventKey),
     filter(() => emitMessages)
   );

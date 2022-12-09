@@ -13,14 +13,23 @@ const CONNECTION = 'ws/CONNECTION';
 const DISCONNECTION = 'ws/DISCONNECTION';
 const DISCONNECTING = 'ws/DISCONNECTING';
 const VOLATILE = 'ws/VOLATILE';
+const RECONNECT = 'ws/RECONNECT';
+const RESUME_STREAM = 'ws/RESUME_STREAM';
 
 const eventResolvers = () => ({
-  disconnecting: (context, obs) => obs.next({ type: DISCONNECTING, data: { context } }),
+  disconnecting: (context, obs) => {
+    return obs.next({ type: DISCONNECTING, data: { context } });
+  },
   disconnect: (context, obs, reason) => {
     obs.next({ type: DISCONNECTION, data: { reason, context } });
     return obs.complete();
   },
-  stop: (context, obs) => obs.next({type: STT_STREAM_STOP, data: { context }}),
+  stop: (context, obs) => {
+    return obs.next({type: STT_STREAM_STOP, data: { context }});
+  },
+  'resume-stream': (context, obs, json) => {
+    return obs.next({ type: RESUME_STREAM, data: { ...json, context } });
+  },
   'new-stt-stream': (context, obs, json) =>
     obs.next({ type: NEW_STT_STREAM, data: { ...json, context } }),
   'new-stream': (context, obs, json) =>
@@ -44,16 +53,18 @@ const mapConnectionToEvents = () => socket => {
   const clientEvent$ = new Observable(obs => {
     const context = { socket, user: socket.user };
     obs.next({ type: CONNECTION, data: { context } });
-    toPairs(eventResolvers()).forEach(([eventName, resolver]) =>
-      socket.on(eventName, (data, binary) => resolver(context, obs, data, binary))
-    );
+    toPairs(eventResolvers()).forEach(([eventName, resolver]) => {
+      return socket.on(eventName, (data, binary) => resolver(context, obs, data, binary))
+    });
   });
   return clientEvent$;
 };
 
 const fromSocketIO = ({ io }) => {
   const clientConnectionSocket$ = new Observable(obs => {
-    io.on('connection', socket => obs.next(socket));
+    io.on('connection', socket => {
+      return obs.next(socket);
+    });
     io.on('error', err => logError('Error in producer socket', err));
   });
   const connectionStream$$ = clientConnectionSocket$.pipe(
@@ -75,3 +86,5 @@ module.exports.CONNECTION = CONNECTION;
 module.exports.DISCONNECTION = DISCONNECTION;
 module.exports.DISCONNECTING = DISCONNECTING;
 module.exports.VOLATILE = VOLATILE;
+module.exports.RECONNECT = RECONNECT;
+module.exports.RESUME_STREAM = RESUME_STREAM;
