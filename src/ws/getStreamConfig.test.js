@@ -4,7 +4,7 @@ const {marbles} = require('rxjs-marbles/mocha');
 const sinon = require('sinon');
 const {of} = require('rxjs');
 
-const {NEW_STT_STREAM} = require('./producer');
+const {NEW_STT_STREAM,RESUME_STREAM} = require('./producer');
 const getStreamConfig = require('./getStreamConfig');
 const {testExports} = getStreamConfig;
 const {validate} = testExports;
@@ -15,6 +15,7 @@ const sampleConfig = {
   channels: 1,
   inputType: 's3File',
   sampleRate: 16000,
+  isResume: false,
   sttEngines: [
     'aws-medical',
     'gcp',
@@ -73,13 +74,38 @@ describe('getStreamConfig', () => {
     };
     const input$ = m.cold('--0-1-', [{type: 'foo', data: 'bar'}, event]);
     const actual$ = input$.pipe(getStreamConfig({_gql}));
-    const expected$ = m.cold('----(0|)', [sampleConfig]);
+    const expected$ = m.cold('----(0)', [sampleConfig]);
     m.expect(actual$).toBeObservable(expected$);
-    // expect(createRun.callCount).to.equal(1);
-    // expect(createRun.getCall(0).args[0]).to.deep.include({
-    //   token: 'mytoken'
-    // });
-    // m.expect(actual$).toHaveSubscriptions('^--');
+    expect(createRun.callCount).to.equal(0);
+  }));
+
+  it('should return an audioCheckpoint from existing run when given a resume stream input and does not create a new run', marbles(m => {
+    const runs = {runs: [{_id: 'myrunid', accountId: 'myaccountid', audioCheckpoint: {start: 5, end: 10}}]};
+    const createRun = sinon.stub().returns(of());
+    const findRuns = sinon.stub().returns(of(runs));
+    const encounter = {encounters: [{_id: 'myencounterid', accountId: 'myaccountid'}]};
+    const findEncounters = sinon.stub().returns(of(encounter));
+    const _gql = () => ({findRuns,findEncounters,createRun});
+    const event = {
+      type: RESUME_STREAM,
+      data: {
+        runId: 'myrunid',
+        audioFileId: 'abcdefg',
+        inputType: 's3File',
+        context: {socket: {handshake: {auth: {token: 'mytoken'}}}},
+      },
+    };
+    const input$ = m.cold('--0-1-', [{type: 'foo', data: 'bar'}, event]);
+    const actual$ = input$.pipe(getStreamConfig({_gql}));
+    const expected$ = m.cold('----(0)', [{
+      ...sampleConfig,
+      isResume: true,
+      audioCheckpoint: {
+          start: 5,
+          end: 10
+      }
+    }]);
+    m.expect(actual$).toBeObservable(expected$);
   }));
 
   it('should throw unauthorized if no token is present', marbles(m => {

@@ -1,6 +1,6 @@
 const get = require('lodash/get');
 const pick = require('lodash/pick');
-const { combineLatest, merge } = require('rxjs');
+const { of, combineLatest, merge, BehaviorSubject } = require('rxjs');
 const {
   filter,
   map,
@@ -26,6 +26,7 @@ const trace = require('../operators/trace');
 const logAudioStreamProgress = require('../operators/logAudioStreamProgress');
 const createWindows = require('../operators/createWindows');
 const storeStatusUpdates = require('../storage/storeStatusUpdates');
+const updateRun = require('../storage/updateRun');
 // const storeRawAudio = require('../storage/storeRawAudio');
 
 const getSttConfig = config => pick(
@@ -38,7 +39,8 @@ const getSttConfig = config => pick(
   'ensemblers',
   'ensemblerOptions',
   'saveRawSTT',
-  'saveWords'
+  'saveWords',
+  'audioCheckpoint'
 );
 
 const consumeOneClientStream = function consumeOneClientStream({
@@ -48,15 +50,31 @@ const consumeOneClientStream = function consumeOneClientStream({
   // _storeRawAudio = storeRawAudio,
   _createWindows = createWindows,
   _storeStatusUpdates = storeStatusUpdates,
+  _updateRun = updateRun,
   returnOutputData = false,
 } = {}) {
   return connectionStream$ => {
+    const lastAudioLog$ = new BehaviorSubject(null);
     const clientStreamSub$ = connectionStream$.pipe(shareReplay(5));
     const disconnect$ = clientStreamSub$.pipe(
-      filter(e => e.type === DISCONNECTION)
+      filter(e => e.type === DISCONNECTION),
+      map((e) => {
+        const log = lastAudioLog$.getValue();
+        return {
+          ...e,
+          log
+        };
+      }),
     );
     const stop$ = clientStreamSub$.pipe(
-      filter(e => e.type === STT_STREAM_STOP)
+      filter(e => e.type === STT_STREAM_STOP),
+      map((e) => {
+        const log = lastAudioLog$.getValue();
+        return {
+          ...e,
+          log
+        };
+      }),
     );
     const end$ = merge(disconnect$, stop$).pipe(share());
     const socket$ = clientStreamSub$.pipe(
@@ -67,7 +85,12 @@ const consumeOneClientStream = function consumeOneClientStream({
     const config$ = clientStreamSub$.pipe(
       _getStreamConfig(),
       take(1),
-      trace('ws.START_STREAM'),
+      tap((config) => {
+        if (config.isResume) {
+          return trace('ws.RESUME_STREAM');
+        }
+        return trace('ws.START_STREAM');
+      }),
       shareReplay(1)
     );
     const stt$ = config$.pipe(
@@ -76,18 +99,26 @@ const consumeOneClientStream = function consumeOneClientStream({
       mergeMap(([config, token]) => {
         return clientStreamSub$.pipe(
           _createAudioStream(config),
+          // Note: Audio is saved to s3 in logAudioSTreamProgress
           logAudioStreamProgress({config}),
-          // FIXME - should store audio
-          // (
-          //   config.inputType === 'audioStream' && config.saveRawAudio
-          //   ? _storeRawAudio(pick(config, 'runId', 'audioFileId'))
-          //   : tap(null)
-          // ),
+          tap((message) => {
+            if (message.type && message.type === 'log') {
+              lastAudioLog$.next(message);
+            }
+          }),
+          mergeMap((message) => {
+            if (message.type && message.type === 'log') {
+              // Add the latest log message to the run as audioCheckpoint
+              return _updateRun({runId: message.runId})({audioCheckpoint: message});
+            }
+            return of(message);
+          }),
+          filter((message) => !message.type && !message.updateRun),
           _toSTT({
             token,
             stop$: end$,
             ...getSttConfig(config)
-          })
+          }),
         );
       }),
       map(event => ({ ...event, pipeline: 'stt' })),
@@ -96,7 +127,10 @@ const consumeOneClientStream = function consumeOneClientStream({
     );
     const complete$ = stt$.pipe(
       takeLast(1),
-      map(() => ({type: STT_STREAM_COMPLETE})),
+      map(() => {
+        const log = lastAudioLog$.getValue();
+        return {type: STT_STREAM_COMPLETE, log};
+      }),
       share()
     );
     const noteWindow$ = config$.pipe(
