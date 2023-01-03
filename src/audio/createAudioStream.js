@@ -6,6 +6,7 @@ const {toLinear16} = require('@buccaneerai/rxjs-linear16');
 
 const streamS3Audio = require('./streamS3Audio');
 const ingestAudioFromClient = require('./ingestAudioFromClient');
+const ingestFromPriorRun = require('./ingestFromPriorRun');
 // const audioChunkToLinear16 = require('./audioChunkToLinear16');
 
 const errors = {
@@ -21,6 +22,7 @@ const createInputStream = function createInputStream(
   config,
   _findAudioFiles = gql().findAudioFiles,
   _ingestAudioFromClient = ingestAudioFromClient,
+  _ingestFromPriorRun = ingestFromPriorRun,
   _toLinear16 = toLinear16
 ) {
   return clientStream$ => {
@@ -59,6 +61,10 @@ const createInputStream = function createInputStream(
             channels: 1,
             firstChunkContainsHeaders: false,
           }),
+        );
+      case 'rerun':
+        return clientStream$.pipe(
+          _ingestFromPriorRun({runId: config.runId})
         );
       default:
         return throwError(errors.unknownInputType());
