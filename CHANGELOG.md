@@ -1,3 +1,16 @@
+# [1.5.0](https://github.com/buccaneerai/notestream-api/compare/v1.4.0...v1.5.0) (2022-12-15)
+
+
+### Bug Fixes
+
+* THR-266 Add tests and fix logic around word start/end offset ([93801ba](https://github.com/buccaneerai/notestream-api/commit/93801baabc99362f34ca858d6c279f5ca0ef71e5))
+* THR-266 Bump versions ([7e261f5](https://github.com/buccaneerai/notestream-api/commit/7e261f59962f93b98aefce19cb67153f1ef34ada))
+
+
+### Features
+
+* THR-266 Reconnect when wifi cuts out on microphone and resume stream ([fda28bf](https://github.com/buccaneerai/notestream-api/commit/fda28bfad46ff5ea89cf2fce4d4c2986428bae05))
+
 # [1.5.0-dev.1](https://github.com/buccaneerai/notestream-api/compare/v1.4.0...v1.5.0-dev.1) (2022-12-15)
 
 
