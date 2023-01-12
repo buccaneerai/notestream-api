@@ -20,6 +20,7 @@
     "mocha": "^5.2.0",
     "nodemon": "^2.0.2",
     "rxjs-marbles": "^7.0.1",
+    "semantic-release": "v19.x.x",
     "semantic-release-export-data": "^1.0.0",
     "sinon": "^7.2.2"
   },
