@@ -1,3 +1,12 @@
+## [1.5.1](https://github.com/buccaneerai/notestream-api/compare/v1.5.0...v1.5.1) (2023-01-12)
+
+
+### Bug Fixes
+
+* Bump node version to 16 ([718b05f](https://github.com/buccaneerai/notestream-api/commit/718b05f9737b73a20efc400ee5142d61ee38c142))
+* **deps:** updated graphql-sdk minimum version ([83e7287](https://github.com/buccaneerai/notestream-api/commit/83e7287aa4faf1c8ab134ecfd0594f20021fe547))
+* semantic release and encounter _ids ([b9af797](https://github.com/buccaneerai/notestream-api/commit/b9af797ae0456e6379441940d7dfc93cc28a50e4))
+
 # [1.5.0](https://github.com/buccaneerai/notestream-api/compare/v1.4.0...v1.5.0) (2022-12-15)
 
 
