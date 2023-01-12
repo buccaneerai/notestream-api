@@ -1,3 +1,61 @@
+# [1.5.0-dev.1](https://github.com/buccaneerai/notestream-api/compare/v1.4.0...v1.5.0-dev.1) (2022-12-15)
+
+
+### Bug Fixes
+
+* THR-266 Add tests and fix logic around word start/end offset ([93801ba](https://github.com/buccaneerai/notestream-api/commit/93801baabc99362f34ca858d6c279f5ca0ef71e5))
+* THR-266 Bump versions ([7e261f5](https://github.com/buccaneerai/notestream-api/commit/7e261f59962f93b98aefce19cb67153f1ef34ada))
+
+
+### Features
+
+* THR-266 Reconnect when wifi cuts out on microphone and resume stream ([fda28bf](https://github.com/buccaneerai/notestream-api/commit/fda28bfad46ff5ea89cf2fce4d4c2986428bae05))
+
+# [1.4.0-dev.2](https://github.com/buccaneerai/notestream-api/compare/v1.4.0-dev.1...v1.4.0-dev.2) (2022-12-09)
+
+
+### Bug Fixes
+
+* THR-266 Add tests and fix logic around word start/end offset ([93801ba](https://github.com/buccaneerai/notestream-api/commit/93801baabc99362f34ca858d6c279f5ca0ef71e5))
+* THR-266 Bump versions ([7e261f5](https://github.com/buccaneerai/notestream-api/commit/7e261f59962f93b98aefce19cb67153f1ef34ada))
+
+### Features
+
+* THR-266 Reconnect when wifi cuts out on microphone and resume stream ([fda28bf](https://github.com/buccaneerai/notestream-api/commit/fda28bfad46ff5ea89cf2fce4d4c2986428bae05))
+
+# [1.4.0-dev.1](https://github.com/buccaneerai/notestream-api/compare/v1.3.1...v1.4.0-dev.1) (2022-12-02)
+
+
+### Bug Fixes
+
+* Automatically updating .github folder ([f236122](https://github.com/buccaneerai/notestream-api/commit/f23612284bd962e0ece7c5baa1aee7b6fd9091ec))
+* Automatically updating .github folder ([4f92320](https://github.com/buccaneerai/notestream-api/commit/4f92320e0c1dc545746316443ba34f3abb63a244))
+* Automatically updating .github folder ([60eb893](https://github.com/buccaneerai/notestream-api/commit/60eb893c199369427c64e07ea75c16e6a1f9da8a))
+* THR-188 Add alternate s3 bucket location ([b6c7975](https://github.com/buccaneerai/notestream-api/commit/b6c79753db82e138d75676e646153cb329384f77))
+* THR-278 Remove old ECR repo ([fa0bec8](https://github.com/buccaneerai/notestream-api/commit/fa0bec84ed5ec4cf06aa5af74eaecb995ace1329))
+* THR-301 Add script that allows us to re-stream audio from completed run by id ([7e0c3a6](https://github.com/buccaneerai/notestream-api/commit/7e0c3a613d12bf87a1072ab4ef797573853251b4))
+
+
+### Features
+
+* THR-188 Upload the 5 second linear16 audio chunks to the s3 app data bucket ([6eb88d3](https://github.com/buccaneerai/notestream-api/commit/6eb88d30be906bd26a30c9672ee3efb4ca392896))
+
+
+# [1.4.0](https://github.com/buccaneerai/notestream-api/compare/v1.3.1...v1.4.0) (2022-12-02)
+
+### Bug Fixes
+
+* Automatically updating .github folder ([f236122](https://github.com/buccaneerai/notestream-api/commit/f23612284bd962e0ece7c5baa1aee7b6fd9091ec))
+* Automatically updating .github folder ([4f92320](https://github.com/buccaneerai/notestream-api/commit/4f92320e0c1dc545746316443ba34f3abb63a244))
+* Automatically updating .github folder ([60eb893](https://github.com/buccaneerai/notestream-api/commit/60eb893c199369427c64e07ea75c16e6a1f9da8a))
+* THR-188 Add alternate s3 bucket location ([b6c7975](https://github.com/buccaneerai/notestream-api/commit/b6c79753db82e138d75676e646153cb329384f77))
+* THR-278 Remove old ECR repo ([fa0bec8](https://github.com/buccaneerai/notestream-api/commit/fa0bec84ed5ec4cf06aa5af74eaecb995ace1329))
+* THR-301 Add script that allows us to re-stream audio from completed run by id ([7e0c3a6](https://github.com/buccaneerai/notestream-api/commit/7e0c3a613d12bf87a1072ab4ef797573853251b4))
+
+### Features
+
+* THR-188 Upload the 5 second linear16 audio chunks to the s3 app data bucket ([6eb88d3](https://github.com/buccaneerai/notestream-api/commit/6eb88d30be906bd26a30c9672ee3efb4ca392896))
+
 # [1.0.0-dev.19](https://github.com/buccaneerai/notestream-api/compare/v1.0.0-dev.18...v1.0.0-dev.19) (2022-12-01)
 
 
@@ -34,6 +92,22 @@
 ### Bug Fixes
 
 * THR-278 Remove old ECR repo ([fa0bec8](https://github.com/buccaneerai/notestream-api/commit/fa0bec84ed5ec4cf06aa5af74eaecb995ace1329))
+=======
+* audio stream logging should not alter input stream ([175679c](https://github.com/buccaneerai/notestream-api/commit/175679c59782685452522c6b3a05f8939521ab55))
+* **bug:** resolved issue where notestream would stop accepting new connections after an error ([f00f91a](https://github.com/buccaneerai/notestream-api/commit/f00f91a79159ec1fc3f3223fc470fb7970e498b0))
+* **bug:** set gcp as default stt engine since aws currently does not work ([64bc1a1](https://github.com/buccaneerai/notestream-api/commit/64bc1a1ba7e20dabf2e4962d372753569bf4c228))
+* **bug:** storeWindows now reads s3 bucket and key from graphql response ([55e87b2](https://github.com/buccaneerai/notestream-api/commit/55e87b232d1ced569829cfd843cc10aae14d943d))
+* **chore:** removed console.log statements ([b414a52](https://github.com/buccaneerai/notestream-api/commit/b414a52c57882f6e1122b7ce0cb00ae3f78b90c1))
+* **logging:** added logs to debug issue with S3 permissions ([d84a3eb](https://github.com/buccaneerai/notestream-api/commit/d84a3eb09b2ae7755bba073fe51fbcd21994284e))
+* STT conduit now logs errors ([48e6ffb](https://github.com/buccaneerai/notestream-api/commit/48e6ffbf63ce6337a4ef4caad995e54fa71f5f0e))
+* THR-108 couple fixes ([a59782e](https://github.com/buccaneerai/notestream-api/commit/a59782ecba60edc2b4c06cb133ff3b6dfe578b39))
+* THR-108 Fix createRun ([f3701ec](https://github.com/buccaneerai/notestream-api/commit/f3701ecddd06b0ab579509cc7cbeda36f2bafbd8))
+* THR-108 Fix notestream api calls for telephone calls ([46492b9](https://github.com/buccaneerai/notestream-api/commit/46492b9d71eb8b6185c9b37beba304b967dc305e))
+* THR-108 get the stt api working ([b70681a](https://github.com/buccaneerai/notestream-api/commit/b70681a70a7c9995e5b86c5a78b3877b06d95149))
+* THR-108 put back aws-medical ([9199746](https://github.com/buccaneerai/notestream-api/commit/9199746f8f7e5b6be9876f8479ce4af092372106))
+* THR-214 Bump version ([d8ec21f](https://github.com/buccaneerai/notestream-api/commit/d8ec21f7b092a5e5ea69685a9a0d74222fb525f4))
+* updated graphql-sdk version ([455d843](https://github.com/buccaneerai/notestream-api/commit/455d843de75501479ce57b8ef348e5ceec7f3bcf))
+* updated socketio operator ([058bc06](https://github.com/buccaneerai/notestream-api/commit/058bc06f9913bf16611d8042d1dfefa55796cc52))
 
 # [1.0.0-dev.14](https://github.com/buccaneerai/notestream-api/compare/v1.0.0-dev.13...v1.0.0-dev.14) (2022-11-03)
 
