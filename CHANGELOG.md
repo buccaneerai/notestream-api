@@ -1,3 +1,10 @@
+# [1.6.0-dev.1](https://github.com/buccaneerai/notestream-api/compare/v1.5.1-dev.1...v1.6.0-dev.1) (2023-01-18)
+
+
+### Features
+
+* added new rerun inputType for runs ([2f63561](https://github.com/buccaneerai/notestream-api/commit/2f63561af2c3d1fef4250bde9735251fa09e2bd6))
+
 ## [1.5.1-dev.1](https://github.com/buccaneerai/notestream-api/compare/v1.5.0...v1.5.1-dev.1) (2023-01-12)
 
 
