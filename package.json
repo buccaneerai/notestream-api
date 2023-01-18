@@ -29,7 +29,7 @@
     "@buccaneerai/logging-utils": "^1.2.0",
     "@buccaneerai/rxjs-csv": "^2.1.0",
     "@buccaneerai/rxjs-fs": "^2.0.0",
-    "@buccaneerai/rxjs-linear16": "^2.0.4",
+    "@buccaneerai/rxjs-linear16": "^2.0.5",
     "@buccaneerai/rxjs-s3": "^1.0.0",
     "@buccaneerai/rxjs-socketio": "^4.2.0",
     "aws-sdk": "^2.438.0",

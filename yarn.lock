@@ -193,10 +193,10 @@
     lodash "^4.17.20"
     rxjs "^6.6.3"
 
-"@buccaneerai/rxjs-linear16@^2.0.4":
-  version "2.0.4"
-  resolved "https://npm.pkg.github.com/download/@buccaneerai/rxjs-linear16/2.0.4/1f30c58df36c005d09e470aee2a828616cacc630#1f30c58df36c005d09e470aee2a828616cacc630"
-  integrity sha512-gcrLhHhVpocghX+li8vxdh3rSvOyvbsRjdeUSR/hsFlvXbCAAS+wB5g4s0Q0dm5+dPtR7P0pVcUnkJszW7EoPg==
+"@buccaneerai/rxjs-linear16@^2.0.5":
+  version "2.0.5"
+  resolved "https://npm.pkg.github.com/download/@buccaneerai/rxjs-linear16/2.0.5/f4c97c9902eada7850bfd53723810e36bf6bcc65#f4c97c9902eada7850bfd53723810e36bf6bcc65"
+  integrity sha512-Ob0VZmNnv9gzJclqJg6aBSBlHSigbpbuWbdcf57esK4buvg8chrTNZJxV996TPCUhOfndb70IkC0j5WaaE1EMA==
   dependencies:
     "@buccaneerai/rxjs-fs" "^2.0.0"
     lodash "^4.17.20"
