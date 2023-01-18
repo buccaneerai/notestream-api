@@ -154,10 +154,10 @@
     "@babel/helper-validator-identifier" "^7.18.6"
     to-fast-properties "^2.0.0"
 
-"@buccaneerai/graphql-sdk@^2.58.0":
-  version "2.60.0"
-  resolved "https://npm.pkg.github.com/download/@buccaneerai/graphql-sdk/2.60.0/d7fac733bbcf60e1d2cce9a0b01d33cd82a4a793#d7fac733bbcf60e1d2cce9a0b01d33cd82a4a793"
-  integrity sha512-4z6ZH4PxWPDfXU6zfXTAfQo1k08XNyzJxdoGHTV4WQHucW7m1jb+Znu9q7uUiwjBysztVsSe7VhampqaVMjrtw==
+"@buccaneerai/graphql-sdk@^2.60.0":
+  version "2.61.1"
+  resolved "https://npm.pkg.github.com/download/@buccaneerai/graphql-sdk/2.61.1/ae94d4eb2b178b102090c5b4211f8406525e8b88#ae94d4eb2b178b102090c5b4211f8406525e8b88"
+  integrity sha512-uShMNttG08lGweakWm71GxH/chnAma2dKuWT0ldf80riGvHF2hj6aoIlonhsmkJC7qNJS/qGJwy6EbFvtlzowQ==
   dependencies:
     graphql "^15.5.0"
     graphql-request "^3.4.0"
@@ -193,10 +193,10 @@
     lodash "^4.17.20"
     rxjs "^6.6.3"
 
-"@buccaneerai/rxjs-linear16@^2.0.2":
-  version "2.0.2"
-  resolved "https://npm.pkg.github.com/download/@buccaneerai/rxjs-linear16/2.0.2/2198b7e69a5cc8aefef8ffdb9c2aa2d08a49dd2ea7c143f4f92effd9d649c79b#f7cf05a736df493dc482a7ca5f03616787d4ec3c"
-  integrity sha512-7c9Kv5admTavwM4fCVLGB2lWHg+zs4KjuaUoYGeKI6rmGvHcGtwvz4deBIQfZBI7KbaZ5eTyvQASjpwX0GHbsA==
+"@buccaneerai/rxjs-linear16@^2.0.4":
+  version "2.0.4"
+  resolved "https://npm.pkg.github.com/download/@buccaneerai/rxjs-linear16/2.0.4/1f30c58df36c005d09e470aee2a828616cacc630#1f30c58df36c005d09e470aee2a828616cacc630"
+  integrity sha512-gcrLhHhVpocghX+li8vxdh3rSvOyvbsRjdeUSR/hsFlvXbCAAS+wB5g4s0Q0dm5+dPtR7P0pVcUnkJszW7EoPg==
   dependencies:
     "@buccaneerai/rxjs-fs" "^2.0.0"
     lodash "^4.17.20"
