@@ -1,3 +1,12 @@
+# [1.6.0-dev.2](https://github.com/buccaneerai/notestream-api/compare/v1.6.0-dev.1...v1.6.0-dev.2) (2023-01-19)
+
+
+### Bug Fixes
+
+* call quality ([d813c1b](https://github.com/buccaneerai/notestream-api/commit/d813c1ba3aac2772ad8e372513fd6a406b569bd2))
+* Fix call quality ([22020e6](https://github.com/buccaneerai/notestream-api/commit/22020e6878309544efd9db483e3f07a8740fe4d0))
+* Fix call quality ([0b3ea3d](https://github.com/buccaneerai/notestream-api/commit/0b3ea3d7923bf382a0f0a4dda6896fc5aa453439))
+
 # [1.6.0-dev.1](https://github.com/buccaneerai/notestream-api/compare/v1.5.1-dev.1...v1.6.0-dev.1) (2023-01-18)
 
 
