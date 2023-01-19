@@ -1,6 +1,6 @@
 const get = require('lodash/get');
 const { throwError } = require('rxjs');
-const {map,mergeMap} = require('rxjs/operators');
+const {map,mergeMap,bufferTime} = require('rxjs/operators');
 const {client} = require('@buccaneerai/graphql-sdk');
 const {toLinear16} = require('@buccaneerai/rxjs-linear16');
 
@@ -55,6 +55,8 @@ const createInputStream = function createInputStream(
       case 'telephoneCall':
         return clientStream$.pipe(
           _ingestAudioFromClient(),
+          bufferTime(1000),
+          map(chunksArr => Buffer.concat(chunksArr)),
           _toLinear16({
             mimeType: 'audio/x-mulaw',
             sampleRate: 8000,
