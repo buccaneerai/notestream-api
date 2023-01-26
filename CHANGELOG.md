@@ -1,3 +1,10 @@
+# [1.6.0-dev.3](https://github.com/buccaneerai/notestream-api/compare/v1.6.0-dev.2...v1.6.0-dev.3) (2023-01-26)
+
+
+### Bug Fixes
+
+* Bump node version to 16 ([718b05f](https://github.com/buccaneerai/notestream-api/commit/718b05f9737b73a20efc400ee5142d61ee38c142))
+
 # [1.6.0-dev.2](https://github.com/buccaneerai/notestream-api/compare/v1.6.0-dev.1...v1.6.0-dev.2) (2023-01-19)
 
 
