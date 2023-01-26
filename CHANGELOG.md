@@ -1,8 +1,32 @@
-## [1.5.1](https://github.com/buccaneerai/notestream-api/compare/v1.5.0...v1.5.1) (2023-01-12)
+# [1.6.0-dev.3](https://github.com/buccaneerai/notestream-api/compare/v1.6.0-dev.2...v1.6.0-dev.3) (2023-01-26)
 
 
 ### Bug Fixes
 
+* Bump node version to 16 ([718b05f](https://github.com/buccaneerai/notestream-api/commit/718b05f9737b73a20efc400ee5142d61ee38c142))
+
+# [1.6.0-dev.2](https://github.com/buccaneerai/notestream-api/compare/v1.6.0-dev.1...v1.6.0-dev.2) (2023-01-19)
+
+
+### Bug Fixes
+
+* call quality ([d813c1b](https://github.com/buccaneerai/notestream-api/commit/d813c1ba3aac2772ad8e372513fd6a406b569bd2))
+* Fix call quality ([22020e6](https://github.com/buccaneerai/notestream-api/commit/22020e6878309544efd9db483e3f07a8740fe4d0))
+* Fix call quality ([0b3ea3d](https://github.com/buccaneerai/notestream-api/commit/0b3ea3d7923bf382a0f0a4dda6896fc5aa453439))
+
+# [1.6.0-dev.1](https://github.com/buccaneerai/notestream-api/compare/v1.5.1-dev.1...v1.6.0-dev.1) (2023-01-18)
+
+
+### Features
+
+* added new rerun inputType for runs ([2f63561](https://github.com/buccaneerai/notestream-api/commit/2f63561af2c3d1fef4250bde9735251fa09e2bd6))
+
+## [1.5.1-dev.1](https://github.com/buccaneerai/notestream-api/compare/v1.5.0...v1.5.1-dev.1) (2023-01-12)
+
+
+### Bug Fixes
+
+* Bump node 16 ([c78b85e](https://github.com/buccaneerai/notestream-api/commit/c78b85e2695203d0def232ce18ea01e8ce43a185))
 * Bump node version to 16 ([718b05f](https://github.com/buccaneerai/notestream-api/commit/718b05f9737b73a20efc400ee5142d61ee38c142))
 * **deps:** updated graphql-sdk minimum version ([83e7287](https://github.com/buccaneerai/notestream-api/commit/83e7287aa4faf1c8ab134ecfd0594f20021fe547))
 * semantic release and encounter _ids ([b9af797](https://github.com/buccaneerai/notestream-api/commit/b9af797ae0456e6379441940d7dfc93cc28a50e4))

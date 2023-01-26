@@ -52,7 +52,7 @@ describe('logAudioStreamProgress', () => {
         byteIndexStart: 0,
         byteIndexEnd: bytesInFirstWindow,
         bytesInWindow: bytesInFirstWindow,
-        avgBytesPerChunk: roundTo(bytesInFirstWindow / 2, 2),
+        avgBytesPerChunk: Math.floor(roundTo(bytesInFirstWindow / 2, 2)),
         avgBytesPerSecond: roundTo(bytesInFirstWindow / logInterval / 1000, 2),
         type: 'log',
       },
@@ -69,7 +69,7 @@ describe('logAudioStreamProgress', () => {
         byteIndexStart: bytesInFirstWindow,
         byteIndexEnd: bytesInFirstWindow + bytesInSecondWindow,
         bytesInWindow: bytesInSecondWindow,
-        avgBytesPerChunk: roundTo(bytesInSecondWindow / 3, 2),
+        avgBytesPerChunk: Math.floor(roundTo(bytesInSecondWindow / 3, 2)),
         avgBytesPerSecond: roundTo(bytesInSecondWindow / logInterval / 1000, 2),
         type: 'log'
       },

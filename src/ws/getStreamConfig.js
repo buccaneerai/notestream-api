@@ -17,7 +17,12 @@ const {client} = require('@buccaneerai/graphql-sdk');
 const {NEW_STT_STREAM, RESUME_STREAM} = require('./producer');
 
 const getSttEngines = () => ['deepspeech', 'gcp', 'aws', 'awsmed', 'deepgram'];
-const getInputTypes = () => ['s3File', 'audioStream', 'telephoneCall'];
+const getInputTypes = () => [
+  's3File',
+  'audioStream',
+  'rerun',
+  'telephoneCall'
+];
 const getSupportedAudioMimeTypes = () => [
   // linear16
   'LINEAR16',
@@ -44,6 +49,11 @@ const schema = Joi.object({
   streamId: Joi.string().alphanum().min(7).max(30),
   runId: Joi.string().alphanum().min(7).max(30),
   telephoneCallId: Joi.string().alphanum().min(7).max(30),
+  rerunId: Joi.string()
+    .alphanum()
+    .min(7)
+    .max(30)
+    .when('inputType', {is: 'rerun', then: Joi.required()}),
   encounterId: Joi.string().alphanum().min(7).max(30),
   accountId: Joi.string().alphanum().min(7).max(30),
   inputType: Joi.string().required().allow(...getInputTypes()),

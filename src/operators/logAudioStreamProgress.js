@@ -73,7 +73,7 @@ const reduceChunksToMessages = (
       byteIndexStart: acc.byteIndexEnd,
       byteIndexEnd: acc.byteIndexEnd + byteLength,
       bytesInWindow: byteLength,
-      avgBytesPerChunk: _roundTo(byteLength / chunks.length, 2),
+      avgBytesPerChunk: Math.floor(_roundTo(byteLength / chunks.length, 2)),
       avgBytesPerSecond: _roundTo(byteLength / logInterval / 1000, 2),
       type: 'log',
     };
