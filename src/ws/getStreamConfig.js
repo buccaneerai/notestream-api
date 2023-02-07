@@ -61,6 +61,9 @@ const schema = Joi.object({
     .alphanum()
     .min(7)
     .when('inputType', {is: 's3File', then: Joi.required()}),
+  mockEncounterId: Joi.string()
+    .alphanum()
+    .min(7),
   sttEngines: Joi.array()
     .items(Joi.string().allow(...getSttEngines()))
     .default(['aws-medical', 'gcp', 'ibm', 'deepgram']),
