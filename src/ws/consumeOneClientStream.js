@@ -1,5 +1,5 @@
 const get = require('lodash/get');
-const set = require('lodash/set');
+// const set = require('lodash/set');
 const pick = require('lodash/pick');
 const { of, combineLatest, merge, BehaviorSubject } = require('rxjs');
 const {
@@ -45,7 +45,6 @@ const getSttConfig = config => pick(
 );
 
 const consumeOneClientStream = function consumeOneClientStream({
-  requestToken,
   isSocketIOStream = true,
   _createAudioStream = createAudioStream,
   _toSTT = toSTT,
@@ -80,14 +79,10 @@ const consumeOneClientStream = function consumeOneClientStream({
       }),
     );
     const end$ = merge(disconnect$, stop$).pipe(share());
-    const socket$ = (
-      isSocketIOStream
-      ? clientStreamSub$.pipe(
-        filter(e => e.data.context && e.data.context.socket),
-        map(e => e.data.context.socket),
-        shareReplay(1)
-      )
-      : of(set({}, 'handshake.auth.token', requestToken))
+    const socket$ = clientStreamSub$.pipe(
+      filter(e => e.data.context && e.data.context.socket),
+      map(e => e.data.context.socket),
+      shareReplay(1)
     );
     const config$ = clientStreamSub$.pipe(
       _getStreamConfig(),
