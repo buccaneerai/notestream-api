@@ -154,24 +154,25 @@
     "@babel/helper-validator-identifier" "^7.18.6"
     to-fast-properties "^2.0.0"
 
-"@buccaneerai/graphql-sdk@^2.60.0":
-  version "2.61.1"
-  resolved "https://npm.pkg.github.com/download/@buccaneerai/graphql-sdk/2.61.1/ae94d4eb2b178b102090c5b4211f8406525e8b88#ae94d4eb2b178b102090c5b4211f8406525e8b88"
-  integrity sha512-uShMNttG08lGweakWm71GxH/chnAma2dKuWT0ldf80riGvHF2hj6aoIlonhsmkJC7qNJS/qGJwy6EbFvtlzowQ==
+"@buccaneerai/graphql-sdk@^2.68.2":
+  version "2.68.2"
+  resolved "https://npm.pkg.github.com/download/@buccaneerai/graphql-sdk/2.68.2/ab41d8e0661e77264d130cac2001ebcbf7cbb1b6#ab41d8e0661e77264d130cac2001ebcbf7cbb1b6"
+  integrity sha512-bZjOcM8lpCDNczLEVuFmsHPDG25CwEIzWFy9Xw+XkIXbLQmIRHFt9vnayaDMMs1xALZgoc8Ed6IIfXeWqkVPSw==
   dependencies:
     graphql "^15.5.0"
     graphql-request "^3.4.0"
     lodash "^4.17.21"
     rxjs "^6.6.3"
 
-"@buccaneerai/logging-utils@^1.2.0":
-  version "1.2.0"
-  resolved "https://npm.pkg.github.com/download/@buccaneerai/logging-utils/1.2.0/ff39e2b6d2e014337f6900da0f6ffcc80df04797#ff39e2b6d2e014337f6900da0f6ffcc80df04797"
-  integrity sha512-7jw4hWVQCm97yLbyRdRMB/xCxVY9sBGa9XtZS3GNni1X6UZEPgrAIa1b9FDqgvgf1kY/jLoru98UUksddgQSKQ==
+"@buccaneerai/logging-utils@^1.3.0":
+  version "1.3.0"
+  resolved "https://npm.pkg.github.com/download/@buccaneerai/logging-utils/1.3.0/7713f992e9b7c39ade3b18ef819e58e254ce6fb0#7713f992e9b7c39ade3b18ef819e58e254ce6fb0"
+  integrity sha512-vhGe/Fngezpo6IkaSMevL9tI2vch5bIBJFFaRpys71Jd/JLcS9OD/zUBupkqZVBCZfkD/QOGGiVQBVDdM/c9Bw==
   dependencies:
     express-winston "^4.2.0"
     flatted "^3.1.1"
     lodash "^4.17.21"
+    rxjs "^7.5.7"
     winston "^3.3.3"
 
 "@buccaneerai/rxjs-csv@^2.1.0":
