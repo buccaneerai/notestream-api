@@ -17,12 +17,7 @@ const sampleConfig = {
   sampleRate: 16000,
   isResume: false,
   sttEngines: [
-    'aws-medical',
-    'gcp',
-    'ibm',
-    'deepgram',
-    // 'aws',
-    // 'deepspeech',
+    'fathom'
   ],
   ensemblers: ['tfEnsembler'],
   ensemblerOptions: {baselineSTTEngine: 'gcp'},

@@ -51,7 +51,7 @@ async function fromRun(opts) {
       s3.listObjectsV2(params).promise()
         .then(({Contents, IsTruncated, NextContinuationToken}) => {
           out.push(...Contents);
-          !IsTruncated ? resolve(out) : resolve(listAllKeys(Object.assign(params, {ContinuationToken: NextContinuationToken}), out));
+          !IsTruncated ? resolve(out) : resolve(listAllKeys(Object.assign(params, {ContinuationToken: NextContinuationToken}), out)); // eslint-disable-line
         })
         .catch(reject);
     });
@@ -102,7 +102,7 @@ program
   .option('-s, --stage <stage>', 'stage', 'staging')
   .option('-u, --url <url>', 'target URL', `http://localhost:${process.env.PORT}`)
   .option('-t, --token <token>', 'JWT token', fakeUserToken)
-  .option('-e, --stt-engines <sttEngines...>', 'stt engines', ['aws-medical', 'gcp', 'ibm'])
+  .option('-e, --stt-engines <sttEngines...>', 'stt engines', ['fathom'])
   .option('--ensemblers <ensemblers...>', 'ensemblers', [])
   .option('--input-type <inputType>', 'input source type', 'audioStream')
   .option('--take <take>', 'Number of seconds to sample', null)
@@ -117,7 +117,7 @@ program
   .option('-f, --audio-file-id <audioFileId>', 'audio file to run', '60621d23347140dc6007dba2')
   .option('-u, --url <url>', 'url of server',`http://localhost:${process.env.PORT}`)
   .option('-a, --token <token>', 'JWT token', fakeUserToken)
-  .option('--stt-engines <sttEngines...>', 'stt engines to use', ['aws-medical', 'gcp', 'ibm'])
+  .option('--stt-engines <sttEngines...>', 'stt engines to use', ['fathom'])
   .option('--ensemblers <ensemblers...>', 'ensemblers to use', [])
   .option('--input-type <inputType>', 'input source type', 'audioFile')
   .option('--take <take>', 'Number of seconds to sample', null)
@@ -131,7 +131,7 @@ program
   .option('-u, --url <url>', 'target URL', `http://localhost:${process.env.PORT}`)
   .option('-t, --token <token>', 'JWT token', fakeUserToken)
   .option('-i, --input-file-path <inputFilePath>', 'Path to (LINEAR16) audio file', audioFilePath)
-  .option('-e, --stt-engines <sttEngines...>', 'stt engines', ['aws-medical', 'gcp', 'ibm'])
+  .option('-e, --stt-engines <sttEngines...>', 'stt engines', ['fathom'])
   .option('--ensemblers <ensemblers...>', 'ensemblers', [])
   .option('--input-type <inputType>', 'input source type', 'audioStream')
   .option('--take <take>', 'Number of seconds to sample', null)
