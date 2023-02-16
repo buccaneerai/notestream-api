@@ -16,7 +16,7 @@ const {client} = require('@buccaneerai/graphql-sdk');
 
 const {NEW_STT_STREAM, RESUME_STREAM} = require('./producer');
 
-const getSttEngines = () => ['fathon', 'deepspeech', 'gcp', 'aws', 'awsmed', 'deepgram'];
+const getSttEngines = () => ['fathom', 'deepspeech', 'gcp', 'aws', 'awsmed', 'deepgram'];
 const getInputTypes = () => [
   's3File',
   'audioStream',
