@@ -1,6 +1,7 @@
 const get = require('lodash/get');
+// const set = require('lodash/set');
 const pick = require('lodash/pick');
-const { of, combineLatest, merge, BehaviorSubject } = require('rxjs');
+const { of, combineLatest, merge, BehaviorSubject, zip } = require('rxjs');
 const {
   filter,
   map,
@@ -11,8 +12,10 @@ const {
   takeLast,
   takeUntil,
   tap,
-  withLatestFrom,
+  // withLatestFrom,
 } = require('rxjs/operators');
+
+const logger = require('@buccaneerai/logging-utils');
 
 const {
   DISCONNECTION,
@@ -22,7 +25,7 @@ const {
 const getStreamConfig = require('./getStreamConfig');
 const createAudioStream = require('../audio/createAudioStream');
 const toSTT = require('../operators/toSTT');
-const trace = require('../operators/trace');
+// const trace = require('../operators/trace');
 const logAudioStreamProgress = require('../operators/logAudioStreamProgress');
 const createWindows = require('../operators/createWindows');
 const storeStatusUpdates = require('../storage/storeStatusUpdates');
@@ -44,6 +47,7 @@ const getSttConfig = config => pick(
 );
 
 const consumeOneClientStream = function consumeOneClientStream({
+  isSocketIOStream = true,
   _createAudioStream = createAudioStream,
   _toSTT = toSTT,
   _getStreamConfig = getStreamConfig,
@@ -51,6 +55,7 @@ const consumeOneClientStream = function consumeOneClientStream({
   _createWindows = createWindows,
   _storeStatusUpdates = storeStatusUpdates,
   _updateRun = updateRun,
+  _logger = logger,
   returnOutputData = false,
 } = {}) {
   return connectionStream$ => {
@@ -80,25 +85,25 @@ const consumeOneClientStream = function consumeOneClientStream({
     const socket$ = clientStreamSub$.pipe(
       filter(e => e.data.context && e.data.context.socket),
       map(e => e.data.context.socket),
+      tap(() => _logger.info('consumeOneClientStream.socketEmitted', {})),
       shareReplay(1)
     );
     const config$ = clientStreamSub$.pipe(
       _getStreamConfig(),
       take(1),
-      tap((config) => {
-        if (config.isResume) {
-          return trace('ws.RESUME_STREAM');
-        }
-        return trace('ws.START_STREAM');
-      }),
+      tap(config => _logger.info(
+        config.isResume ? 'ws.RESUME_STREAM' : 'ws.START_STREAM',
+        {config}
+      )),
       shareReplay(1)
     );
-    const stt$ = config$.pipe(
-      withLatestFrom(socket$),
+    const stt$ = zip(config$, socket$).pipe(
+      // withLatestFrom(socket$),
       map(([config, socket]) => [config, get(socket, 'handshake.auth.token')]),
       mergeMap(([config, token]) => {
+        _logger.info('consumeOneClientStream.stt.start', {runId: config.runId});
         return clientStreamSub$.pipe(
-          _createAudioStream(config),
+          _createAudioStream({config}),
           // Note: Audio is saved to s3 in logAudioSTreamProgress
           logAudioStreamProgress({config}),
           tap((message) => {
@@ -160,7 +165,11 @@ const consumeOneClientStream = function consumeOneClientStream({
       output$
     ]).pipe(
       // takeUntil(end$),
-      tap(([socket, event]) => socket.emit('message', event)),
+      tap(([socket, event]) =>
+        isSocketIOStream
+        ? socket.emit('message', event)
+        : null
+      ),
       map(([,event]) => event),
       filter(() => returnOutputData)
     );

@@ -1,6 +1,7 @@
 const {expect} = require('chai');
 const sinon = require('sinon');
 const {marbles} = require('rxjs-marbles/mocha');
+const {tap} = require('rxjs/operators');
 
 const {
   DISCONNECTION,
@@ -73,6 +74,7 @@ describe('consumeOneClientStream', () => {
       _getStreamConfig: () => () => m.cold('-(0|)', [fakeConfig]),
       _createWindows: () => () => m.cold('-----|', []),
       _storeStatusUpdates: () => m.cold('-----(0|)', [fakeUpdateResponse]),
+      _logger: {info: sinon.spy(), error: sinon.spy(), toLog: tap},
       returnOutputData: true,
     };
     const input$ = m.cold('-0----1(2|)', events);

@@ -68,7 +68,9 @@ const toSTT = ({
     delay(delayTime)
   );
   const fileChunkMessage$ = (
-    inputType === 'audioStream' || inputType === 'telephoneCall'
+    inputType === 'audioStream'
+    || inputType === 'telephoneCall'
+    || inputType === 's3File'
     ? linear16Chunk$.pipe(
       scan((acc, next) => [next, acc[1] + 1], [null, -1]),
       map(([chunk, i]) => {
