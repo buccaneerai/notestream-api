@@ -1,3 +1,16 @@
+# [1.6.0-dev.5](https://github.com/buccaneerai/notestream-api/compare/v1.6.0-dev.4...v1.6.0-dev.5) (2023-02-21)
+
+
+### Bug Fixes
+
+* issues with token passing for runJobs ([51de487](https://github.com/buccaneerai/notestream-api/commit/51de4873d6871cceedd7e30df029391bfced9226))
+* resolved issue with STT pipeline where it did not use s3File input ([bd6123b](https://github.com/buccaneerai/notestream-api/commit/bd6123be25202b14f69cb721351e28299b77550c))
+
+
+### Features
+
+* added new HTTP api to create batch run job ([bb9a022](https://github.com/buccaneerai/notestream-api/commit/bb9a0222ea7ff23aeb6da191298a53df0ee78543))
+
 # [1.6.0-dev.4](https://github.com/buccaneerai/notestream-api/compare/v1.6.0-dev.3...v1.6.0-dev.4) (2023-02-17)
 
 
