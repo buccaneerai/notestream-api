@@ -56,7 +56,7 @@ async function fromRun(opts) {
         .catch(reject);
     });
     const bucket = `${opts.stage}-thread-medical-app-data-bucket`;
-    const prefix = `notestream/runs/${opts.runId}/audio`;
+    const prefix = `audio/${opts.runId}`;
     let chunks = [];
     listAllKeys({
         Bucket: bucket,
