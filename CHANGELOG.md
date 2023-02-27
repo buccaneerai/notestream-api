@@ -1,3 +1,10 @@
+# [1.6.0-dev.6](https://github.com/buccaneerai/notestream-api/compare/v1.6.0-dev.5...v1.6.0-dev.6) (2023-02-27)
+
+
+### Bug Fixes
+
+* run folder ([7b84e41](https://github.com/buccaneerai/notestream-api/commit/7b84e41d2cf146fc4c89bfc49d9178acbfb350fc))
+
 # [1.6.0-dev.5](https://github.com/buccaneerai/notestream-api/compare/v1.6.0-dev.4...v1.6.0-dev.5) (2023-02-21)
 
 
