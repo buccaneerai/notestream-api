@@ -43,7 +43,7 @@ const reduceChunksToMessages = (
     const byteLength = chunks.reduce((acc2, c) => acc2 + Buffer.byteLength(c), 0);
     if (get(streamConfig, 'saveRawAudio')) {
       const data = Buffer.concat(chunks);
-      const folder = `notestream/runs/${runId}/audio`;
+      const folder = `audio/${runId}`;
       const id = acc.windowIndex + 1;
       const key = `${folder}/${id}.linear16`;
       _toS3File({

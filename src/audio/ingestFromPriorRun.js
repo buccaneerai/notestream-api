@@ -30,7 +30,7 @@ const listKeys = ({bucket, prefix, _s3 = s3}) => (lastResponse = {}) => from(
 );
 
 const listAllKeys = ({runId, bucket}) => {
-  const prefix = `notestream/runs/${runId}/audio`;
+  const prefix = `audio/${runId}`;
   const nextBatch$ = new Subject();
   const listResponse$ = merge(of({}), nextBatch$).pipe(
     mergeMap(listKeys({bucket, prefix})),

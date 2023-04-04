@@ -16,7 +16,7 @@ const {client} = require('@buccaneerai/graphql-sdk');
 
 const {NEW_STT_STREAM, RESUME_STREAM} = require('./producer');
 
-const getSttEngines = () => ['deepspeech', 'gcp', 'aws', 'awsmed', 'deepgram'];
+const getSttEngines = () => ['fathom', 'deepspeech', 'gcp', 'aws', 'awsmed', 'deepgram'];
 const getInputTypes = () => [
   's3File',
   'audioStream',
@@ -61,9 +61,12 @@ const schema = Joi.object({
     .alphanum()
     .min(7)
     .when('inputType', {is: 's3File', then: Joi.required()}),
+  mockEncounterId: Joi.string()
+    .alphanum()
+    .min(7),
   sttEngines: Joi.array()
     .items(Joi.string().allow(...getSttEngines()))
-    .default(['aws-medical', 'gcp', 'ibm', 'deepgram']),
+    .default(['fathom']),
   ensemblers: Joi.array()
     .items(Joi.string())
     .default(['tfEnsembler']),

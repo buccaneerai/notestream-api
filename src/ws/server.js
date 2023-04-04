@@ -1,6 +1,6 @@
 const express = require('express');
 const http = require('http');
-// import helmet = require('helmet');
+const helmet = require('helmet');
 // import compression = require('compression');
 // import bodyParser = require('body-parser');
 const cors = require('cors');
@@ -11,8 +11,7 @@ const authenticator = require('../lib/authenticator');
 const config = require('../utils/config');
 const logger = require('../utils/logger');
 const createConsumer = require('./createConsumer');
-
-
+const router = require('../http/router');
 
 const logInfo = logger.info;
 const logError = logger.error;
@@ -29,6 +28,16 @@ const defaultSocketOptions = {
     credentials: true,
     allowedHeaders: ['authorization'],
   }
+};
+
+const startHttpServer = httpPort => {
+  const httpApp = express();
+  httpApp.use(helmet());
+  httpApp.use(express.json());
+  httpApp.use('/api', router());
+  httpApp.get('/health', (req, res) => res.json({message: 'healthy'}));
+  httpApp.listen(httpPort, logInfo(`HTTP server starting on ${httpPort}`));
+  return httpApp;
 };
 
 const startSocketIO = ({
@@ -75,7 +84,7 @@ const startWebSocket = ({
 };
 
 // start server
-const start = (port = config().PORT) => {
+const start = (port = config().PORT, httpPort = config().HTTP_PORT) => {
   try {
     const app = express();
     app.use(
@@ -87,6 +96,7 @@ const start = (port = config().PORT) => {
 
     app.use(logger.requestLogger());
     startWebSocket({ expressApp: app, wsPort: port });
+    startHttpServer(httpPort);
   } catch (err) {
     logError(`Error starting server: caught @ ${__filename} => `, err);
   }
