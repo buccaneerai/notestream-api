@@ -154,10 +154,10 @@
     "@babel/helper-validator-identifier" "^7.18.6"
     to-fast-properties "^2.0.0"
 
-"@buccaneerai/graphql-sdk@^2.68.2":
-  version "2.68.2"
-  resolved "https://npm.pkg.github.com/download/@buccaneerai/graphql-sdk/2.68.2/ab41d8e0661e77264d130cac2001ebcbf7cbb1b6#ab41d8e0661e77264d130cac2001ebcbf7cbb1b6"
-  integrity sha512-bZjOcM8lpCDNczLEVuFmsHPDG25CwEIzWFy9Xw+XkIXbLQmIRHFt9vnayaDMMs1xALZgoc8Ed6IIfXeWqkVPSw==
+"@buccaneerai/graphql-sdk@^2.71.0":
+  version "2.71.0"
+  resolved "https://npm.pkg.github.com/download/@buccaneerai/graphql-sdk/2.71.0/d9d4d7d4985628d39e0f5d539856db0d91e91d7b#d9d4d7d4985628d39e0f5d539856db0d91e91d7b"
+  integrity sha512-CAOA68e/tN7tiK1jOje+5BkskGSjspoqQ15rFSEjCH6RxQ1CtJIRDFER3XNum7T8PmVb1x9NOR8g+3ulK1Zd0w==
   dependencies:
     graphql "^15.5.0"
     graphql-request "^3.4.0"

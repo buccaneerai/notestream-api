@@ -16,6 +16,7 @@ const {
 } = require('rxjs/operators');
 
 const logger = require('@buccaneerai/logging-utils');
+const {client} = require('@buccaneerai/graphql-sdk');
 
 const {
   DISCONNECTION,
@@ -31,6 +32,10 @@ const createWindows = require('../operators/createWindows');
 const storeStatusUpdates = require('../storage/storeStatusUpdates');
 const updateRun = require('../storage/updateRun');
 // const storeRawAudio = require('../storage/storeRawAudio');
+
+const gql = (url = process.env.GRAPHQL_URL, token = process.env.JWT_TOKEN) => (
+  client({url, token})
+);
 
 const getSttConfig = config => pick(
   config,
@@ -55,6 +60,7 @@ const consumeOneClientStream = function consumeOneClientStream({
   _createWindows = createWindows,
   _storeStatusUpdates = storeStatusUpdates,
   _updateRun = updateRun,
+  _gql = gql(),
   _logger = logger,
   returnOutputData = false,
 } = {}) {
@@ -81,7 +87,29 @@ const consumeOneClientStream = function consumeOneClientStream({
         };
       }),
     );
-    const end$ = merge(disconnect$, stop$).pipe(share());
+    const end$ = merge(disconnect$, stop$).pipe(
+      mergeMap((data) => {
+        const runId = get(data, 'log.runId', null);
+        if (!runId) {
+          return of(data);
+        }
+        return _gql.findNoteWindows({filter: { runId }, queryOptions: { sortBy: 'timeCreated', sortDir: -1, limit: 1 }}).pipe(
+          mergeMap((response) => {
+            const { noteWindows = [] } = response;
+            if (noteWindows.length) {
+              const { _id: docId } = noteWindows[0];
+              return _gql.updateNoteWindow({docId, set: {lastNoteWindow: true}}).pipe(
+                map(() => {
+                  return data;
+                })
+              );
+            }
+            return of(data);
+          })
+        );
+      }),
+      share(),
+    );
     const socket$ = clientStreamSub$.pipe(
       filter(e => e.data.context && e.data.context.socket),
       map(e => e.data.context.socket),
@@ -132,9 +160,27 @@ const consumeOneClientStream = function consumeOneClientStream({
     );
     const complete$ = stt$.pipe(
       takeLast(1),
-      map(() => {
-        const log = lastAudioLog$.getValue();
-        return {type: STT_STREAM_COMPLETE, log};
+      mergeMap((data) => {
+        const runId = get(data, 'log.runId', null);
+        if (!runId) {
+          return of(data);
+        }
+        return _gql().findNoteWindows({filter: { runId }, queryOptions: { sortBy: 'timeCreated', sortDir: -1, limit: 1 }}).pipe(
+          mergeMap((response) => {
+            const { noteWindows = [] } = response;
+            if (noteWindows.length) {
+              const { _id: docId } = noteWindows[0];
+              return _gql.updateNoteWindow({docId, set: {lastNoteWindow: true}}).pipe(
+                map(() => {
+                  const log = lastAudioLog$.getValue();
+                  return {type: STT_STREAM_COMPLETE, log};
+                })
+              );
+            }
+            const log = lastAudioLog$.getValue();
+            return of({type: STT_STREAM_COMPLETE, log});
+          })
+        );
       }),
       share()
     );
