@@ -1,3 +1,10 @@
+# [1.7.0-dev.2](https://github.com/buccaneerai/notestream-api/compare/v1.7.0-dev.1...v1.7.0-dev.2) (2023-06-06)
+
+
+### Features
+
+* THR-425 Add flag for last note window ([13fa84f](https://github.com/buccaneerai/notestream-api/commit/13fa84fe8c5f95b723080bc0033d4489d88d8c59))
+
 # [1.7.0-dev.1](https://github.com/buccaneerai/notestream-api/compare/v1.6.0...v1.7.0-dev.1) (2023-04-04)
 
 
