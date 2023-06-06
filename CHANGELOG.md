@@ -1,3 +1,25 @@
+# [1.7.0-dev.1](https://github.com/buccaneerai/notestream-api/compare/v1.6.0...v1.7.0-dev.1) (2023-04-04)
+
+
+### Bug Fixes
+
+* issues with token passing for runJobs ([51de487](https://github.com/buccaneerai/notestream-api/commit/51de4873d6871cceedd7e30df029391bfced9226))
+* resolved issue with STT pipeline where it did not use s3File input ([bd6123b](https://github.com/buccaneerai/notestream-api/commit/bd6123be25202b14f69cb721351e28299b77550c))
+* run folder ([7b84e41](https://github.com/buccaneerai/notestream-api/commit/7b84e41d2cf146fc4c89bfc49d9178acbfb350fc))
+* typo ([ed60dee](https://github.com/buccaneerai/notestream-api/commit/ed60dee5f27951765abb33ef5e7c051aea26478b))
+
+
+### Features
+
+* Add fathom engine ([9e63aac](https://github.com/buccaneerai/notestream-api/commit/9e63aac4ef22563f9d7b1c7f0aebe456cc666dfb))
+* added new HTTP api to create batch run job ([bb9a022](https://github.com/buccaneerai/notestream-api/commit/bb9a0222ea7ff23aeb6da191298a53df0ee78543))
+
+# [1.6.0-dev.6](https://github.com/buccaneerai/notestream-api/compare/v1.6.0-dev.5...v1.6.0-dev.6) (2023-02-27)
+
+### Bug Fixes
+
+* run folder ([7b84e41](https://github.com/buccaneerai/notestream-api/commit/7b84e41d2cf146fc4c89bfc49d9178acbfb350fc))
+
 # [1.6.0-dev.5](https://github.com/buccaneerai/notestream-api/compare/v1.6.0-dev.4...v1.6.0-dev.5) (2023-02-21)
 
 
@@ -17,6 +39,20 @@
 ### Bug Fixes
 
 * typo ([ed60dee](https://github.com/buccaneerai/notestream-api/commit/ed60dee5f27951765abb33ef5e7c051aea26478b))
+
+# [1.6.0](https://github.com/buccaneerai/notestream-api/compare/v1.5.1...v1.6.0) (2023-01-26)
+
+### Bug Fixes
+
+* Bump node 16 ([c78b85e](https://github.com/buccaneerai/notestream-api/commit/c78b85e2695203d0def232ce18ea01e8ce43a185))
+* call quality ([d813c1b](https://github.com/buccaneerai/notestream-api/commit/d813c1ba3aac2772ad8e372513fd6a406b569bd2))
+* Fix call quality ([22020e6](https://github.com/buccaneerai/notestream-api/commit/22020e6878309544efd9db483e3f07a8740fe4d0))
+* Fix call quality ([0b3ea3d](https://github.com/buccaneerai/notestream-api/commit/0b3ea3d7923bf382a0f0a4dda6896fc5aa453439))
+
+
+### Features
+
+* added new rerun inputType for runs ([2f63561](https://github.com/buccaneerai/notestream-api/commit/2f63561af2c3d1fef4250bde9735251fa09e2bd6))
 
 
 ### Features
