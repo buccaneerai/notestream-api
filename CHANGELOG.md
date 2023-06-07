@@ -1,3 +1,15 @@
+# [1.7.0-dev.3](https://github.com/buccaneerai/notestream-api/compare/v1.7.0-dev.2...v1.7.0-dev.3) (2023-06-07)
+
+
+### Bug Fixes
+
+* Update graphql-sdk ([970d0d7](https://github.com/buccaneerai/notestream-api/commit/970d0d7e87382925f05bf5f6fffc5b10e29d16c6))
+
+
+### Features
+
+* THR-425 Add sqs message stuff ([057f659](https://github.com/buccaneerai/notestream-api/commit/057f659fee24273f9fc815dd096f4614f1ad20a5))
+
 # [1.7.0-dev.2](https://github.com/buccaneerai/notestream-api/compare/v1.7.0-dev.1...v1.7.0-dev.2) (2023-06-06)
 
 
