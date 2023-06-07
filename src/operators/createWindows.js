@@ -1,5 +1,5 @@
 const roundTo = require('round-to');
-const {timer} = require('rxjs');
+const {merge,timer} = require('rxjs');
 const {
   distinct,
   filter,
@@ -35,7 +35,15 @@ const createWindows = function createWindows({
     // FIXME: make sure this does not drop the first word in each index...
     const windowWords$ = windowIndex$.pipe(
       mergeMap(i => {
-        const closeWindow$ = timer(windowLength + windowTimeoutInterval);
+        const closeWindow$ = merge(
+          timer(windowLength + windowTimeoutInterval),
+          wordSub$.pipe(
+            filter(w =>
+              w.start >= i * (windowLength / 1000)
+              && w.end > i * (windowLength / 1000)
+            )
+          )
+        );
         return wordSub$.pipe(
           filter(w =>
             w.start >= i * (windowLength / 1000)
