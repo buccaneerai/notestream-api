@@ -113,7 +113,6 @@ const consumeOneClientStream = function consumeOneClientStream({
     const socket$ = clientStreamSub$.pipe(
       filter(e => e.data.context && e.data.context.socket),
       map(e => e.data.context.socket),
-      tap(() => _logger.info('consumeOneClientStream.socketEmitted', {})),
       shareReplay(1)
     );
     const config$ = clientStreamSub$.pipe(
@@ -185,7 +184,9 @@ const consumeOneClientStream = function consumeOneClientStream({
       share()
     );
     const noteWindow$ = config$.pipe(
-      mergeMap(config => stt$.pipe(_createWindows(config))),
+      mergeMap(config => stt$.pipe(
+        _createWindows(config))
+      ),
       filter(words => !words),
       share()
     );

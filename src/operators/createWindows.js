@@ -19,7 +19,7 @@ const createWindows = function createWindows({
   saveWindows = false,
   windowLength = 20000, // how long each window should be (in milliseconds)
   // how long to wait before closing a window (in milliseconds)
-  windowTimeoutInterval = 30000,
+  windowTimeoutInterval = 30000, // @TODO @XXX PRETTY SURE THIS IS CAUSING SOME MAJOR UNNCESSARY DELAYS
   _storeWindows = storeWindows
 }) {
   return word$ => {

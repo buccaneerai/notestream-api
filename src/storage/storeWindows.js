@@ -59,6 +59,7 @@ const storeWindows = function storeWindows({
       timeEnded: endTime,
       wordsUploaded: false,
     };
+    // Note window is created -> sqs message is created before words are stored
     const doc$ = _createNoteWindow({doc}).pipe(
       mergeMap(response =>
         response && response.createNoteWindow
@@ -69,7 +70,7 @@ const storeWindows = function storeWindows({
     const storage$ = doc$.pipe(
       mergeMap(({_id, wordsS3Bucket, wordsS3Key}) => {
         return wordWindow$.pipe(
-          _toCSV(),
+          _toCSV(), // @TODO make sure taht it always at least creates a valid csv
           scan((acc, nextCsvStr) => `${acc}\n${nextCsvStr}` , ''),
           takeLast(1),
           map(csvStr => Buffer.from(csvStr, 'utf8')),
@@ -81,7 +82,11 @@ const storeWindows = function storeWindows({
             contentType: 'text/csv',
           }),
           takeLast(1),
-          mergeMap(() => _updateNoteWindow({docId: _id, set: {}})),
+          mergeMap(() => {
+            return _updateNoteWindow({docId: _id, set: {
+              queueWindow: windowIndex === 0,
+            }});
+          }),
           mapTo(_id)
         );
       })
