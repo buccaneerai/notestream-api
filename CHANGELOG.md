@@ -1,3 +1,11 @@
+# [1.7.0-dev.4](https://github.com/buccaneerai/notestream-api/compare/v1.7.0-dev.3...v1.7.0-dev.4) (2023-06-09)
+
+
+### Bug Fixes
+
+* notewindow timeout issue ([f91d782](https://github.com/buccaneerai/notestream-api/commit/f91d78240f307d57635c7cfe22a1c51a5f8168b0))
+* put back queeing the window first ([b44e12c](https://github.com/buccaneerai/notestream-api/commit/b44e12c68e5dc273462819c3bca25d4c57403b37))
+
 # [1.7.0-dev.3](https://github.com/buccaneerai/notestream-api/compare/v1.7.0-dev.2...v1.7.0-dev.3) (2023-06-07)
 
 
